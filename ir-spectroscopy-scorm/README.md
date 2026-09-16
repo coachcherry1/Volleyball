@@ -43,36 +43,66 @@ by hand. That path is deliberately not built yet — it is not needed for the ac
 
 ---
 
-## The three levels
+## The two levels
 
 | Level | Name | What the student does |
 | --- | --- | --- |
-| 1 | Regions | Drops four region labels — X–H stretch, triple bond, double bond, fingerprint — onto the correct stretch of the wavenumber axis. Three spectra. |
-| 2 | Find the band | The compound is named and drawn. The student drags each **bond family** (C=O, O–H, C–H …) onto the peak it produced. Correlation table available. Six spectra. |
-| 3 | Name the group | The compound is hidden. The student labels each marked peak with the **specific** group — ester vs ketone vs acid vs amide, 1° vs 2° amine — then identifies the compound from three structures. No correlation table. Six spectra. |
+| 1 | Find the band | The compound is named and drawn. The student drags each **bond family** (C=O, O–H, C≡N …) onto the peak it produced. Correlation table available. Seven spectra. |
+| 2 | Name the group | The compound is hidden. The student labels each marked peak with the **specific** group — ester vs ketone vs acid vs amide, 1° vs 2° amine — then identifies the compound from three structures. No correlation table. Seven spectra. |
 
 Levels unlock in order. Wrong answers are never penalised: the tile returns to the tray and
 the feedback line explains the discriminator, e.g. dropping *C=O (ketone)* on ethyl
 acetate's 1742 cm⁻¹ band returns
 
-> Not at 1742 cm⁻¹. Near 1740 AND a strong C–O near 1200–1250 — ester, not ketone.
+> Not at 1742 cm⁻¹. Near 1740, higher than a ketone, and the strong C–O it pairs with shows
+> up in the fingerprint region.
 
 That explanation is the point of the activity; the score is incidental.
+
+### Only the diagnostic region is scored
+
+Every drop target is above 1500 cm⁻¹. Bands below that line — C–O single bonds, NO₂
+symmetric stretch, aromatic out-of-plane bends — are drawn, and C–O is named in the
+correlation table and the answer key, but a student is never asked to label one. Groups
+marked as fingerprint are excluded from the distractor pool too, so nobody is told a
+compound "has no C–O" when it plainly does.
+
+`tools/validate.js` enforces this: a scored band below 1500 fails the build.
+
+### Two dotted lines
+
+The plot draws a dashed divider at **3000 cm⁻¹** and another at **1500 cm⁻¹**, captioned on
+either side. The 1500 line separates the diagnostic region from the fingerprint. The 3000
+line separates sp² C–H from sp³ C–H, and the item bank is built so nothing straddles it:
+the sp² accepted window starts at exactly 3000 and the sp³ window ends at exactly 3000.
+
+Because of that line, the four C–H groups — sp³, sp², ≡C–H and aldehyde C–H — are asked for
+**by name at both levels**. Collapsing them into one "C–H" tile at Level 1 would make the
+peaks on either side of 3000 interchangeable, which is precisely the distinction being
+taught.
 
 ### Compounds in the bank
 
 22 compounds spanning the Organic I diagnostic set: alkane, alkene, terminal alkyne,
 arene, alcohol, phenol, ether, carboxylic acid (aliphatic and aromatic), ester, ketone,
 aryl ketone, aldehyde, aromatic aldehyde, 1° and 2° amide, 1° and 2° amine, nitrile, nitro,
-acid chloride and anhydride. Each run draws its spectra at random from that bank, so
-students who retry get a different set.
+acid chloride and anhydride.
+
+The draw is **balanced by theme, not purely random.** Each molecule carries a `theme`
+(`oh`, `acid`, `co`, `nh`, `hc`, `triple`, `other`) and every level takes one compound per
+core theme before filling the last place freely. A run therefore always contains an
+alcohol, a carboxylic acid, a carbonyl, an N–H compound, a plain hydrocarbon and a triple
+bond — which compound fills each place still varies, so a retry is a different set.
+
+`tools/validate.js` fails if any level's pool is missing a theme, so a class of compound
+can't silently drop out of rotation.
 
 ---
 
 ## Grading
 
 **Completion only.** The SCO writes `cmi.core.lesson_status = "completed"` once a student
-finishes all three levels and writes no numeric score, so the Schoology column reads
+finishes both levels and writes no numeric score, so the Schoology column reads
 complete / incomplete rather than a percent.
 
 Students still see their own first-try accuracy on the level-complete and finish screens —
@@ -127,7 +157,7 @@ Append a query string to show a single compound, useful for a lesson demo:
 src/index.html?molecule=ethylacetate&level=3
 ```
 
-`molecule` is any `id` from `ANSWER_KEY.md`; `level` is 1, 2 or 3 (default 3). A pinned
+`molecule` is any `id` from `ANSWER_KEY.md`; `level` is 1 or 2 (default 2). A pinned
 spectrum never writes to saved progress, so demoing in class will not disturb a student's
 resume state.
 
@@ -142,7 +172,8 @@ Everything a teacher would want to change lives in two files.
 ```js
 {
   id: 'propanenitrile', name: 'Propanenitrile', formula: 'C₃H₅N', cls: 'Nitrile',
-  tags: ['l2', 'l3'],                        // which levels may draw it
+  theme: 'triple',                           // draw bucket; see the bank notes above
+  tags: ['find', 'name'],                    // which levels may draw it
   structure: { pts: [...], bonds: [...], labels: {...} },
   bands: [
     { g: 'cn_nitrile', c: 2250, w: 18, d: 0.52, s: 'l', tol: [2180, 2300], t: true },
@@ -156,6 +187,7 @@ Everything a teacher would want to change lives in two files.
 - `c` centre, `w` full width at half maximum, `d` depth 0–1, `s` is `'l'` Lorentzian or
   `'g'` Gaussian.
 - `tol` is the window a label may be dropped in; `t: true` makes the band a drop target.
+  A drop target must be above 1500 cm⁻¹.
 
 **`src/js/groups.js`** — the label vocabulary and, importantly, the `hint` string shown as
 feedback. That is where to put the wording you use in class.
@@ -168,9 +200,13 @@ node tools/answer-key.js > ANSWER_KEY.md
 ./build.sh
 ```
 
-`tools/validate.js` is worth running every time. It refuses a bank where two different
-groups have overlapping drop windows in the same molecule, which would make a question
-ambiguous, and where another group's band sits inside a target's window.
+`tools/validate.js` is worth running every time. It refuses a bank where:
+
+- two different groups have overlapping drop windows in the same molecule, or another
+  group's band sits inside a target's window — either would make a question ambiguous;
+- a drop target sits below 1500 cm⁻¹, or on a group marked `fingerprint`;
+- an sp² C–H window does not start at exactly 3000, or an sp³ window does not end there;
+- a level's pool is missing one of the core themes.
 
 ---
 

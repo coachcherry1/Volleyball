@@ -34,6 +34,21 @@ for (const m of MOLECULES) {
     if (b.s !== 'l' && b.s !== 'g') fail(m, 'band at ' + b.c + ' has shape "' + b.s + '"');
     if (!b.t) continue;
     if (!b.g) fail(m, 'a scored band has no group');
+    /* the whole activity is about the diagnostic region */
+    if (b.c < 1500) {
+      fail(m, GROUPS[b.g] ? GROUPS[b.g].label + ' is scored at ' + b.c +
+                            ' cm-1, below the 1500 line' : 'a scored band sits below 1500');
+    }
+    if (b.g && GROUPS[b.g] && GROUPS[b.g].fingerprint) {
+      fail(m, GROUPS[b.g].label + ' is marked fingerprint and must not be a drop target');
+    }
+    /* sp2 and sp3 C-H must meet exactly at the 3000 line that the plot draws */
+    if (b.g === 'ch_sp2' && b.tol[0] !== 3000) {
+      fail(m, 'the sp2 C-H window starts at ' + b.tol[0] + ', not at the 3000 line');
+    }
+    if (b.g === 'ch_sp3' && b.tol[1] !== 3000) {
+      fail(m, 'the sp3 C-H window ends at ' + b.tol[1] + ', not at the 3000 line');
+    }
     if (!b.tol) { fail(m, 'scored band at ' + b.c + ' has no tolerance window'); continue; }
     if (b.c < b.tol[0] || b.c > b.tol[1]) {
       fail(m, 'scored band centre ' + b.c + ' sits outside its window ' + b.tol.join('-'));
@@ -72,35 +87,49 @@ for (const m of MOLECULES) {
   }
 }
 
-/* every level must have enough molecules to fill it */
-const NEEDED = { l2: 6, l3: 6 };
+/* every level must have enough molecules to fill it, and enough themes that a
+   run cannot miss a whole compound class - an activity with no alcohol in it is
+   the bug this check exists to prevent */
+const CORE_THEMES = ['oh', 'acid', 'co', 'nh', 'hc', 'triple'];
+const NEEDED = { find: 7, name: 7 };
 for (const tag of Object.keys(NEEDED)) {
-  const n = MOLECULES.filter(m => m.tags.includes(tag)).length;
-  if (n < NEEDED[tag]) problems.push('only ' + n + ' molecules tagged ' + tag + ', need ' + NEEDED[tag]);
+  const pool = MOLECULES.filter(m => m.tags.includes(tag));
+  if (pool.length < NEEDED[tag]) {
+    problems.push('only ' + pool.length + ' molecules tagged ' + tag + ', need ' + NEEDED[tag]);
+  }
+  for (const theme of CORE_THEMES) {
+    if (!pool.some(m => m.theme === theme)) {
+      problems.push('no molecule tagged ' + tag + ' has theme "' + theme + '", so that ' +
+                    'compound class can never appear in a Level ' +
+                    (tag === 'find' ? 1 : 2) + ' run');
+    }
+  }
 }
 
-/* Level 3 needs two same-level decoys of a different class for the compound question */
-for (const m of MOLECULES.filter(m => m.tags.includes('l3'))) {
+/* Level 2 needs two decoys of a different class for the compound question */
+for (const m of MOLECULES.filter(m => m.tags.includes('name'))) {
   const decoys = MOLECULES.filter(o => o.id !== m.id && o.cls !== m.cls).length;
   if (decoys < 2) problems.push(m.id + ': not enough compounds of another class to build the choices');
 }
 
-/* report family multiplicity, which is what Level 2 tile counts depend on */
+/* report repeated Level 1 keys, which is what the tile counts depend on */
 const multi = [];
 for (const m of MOLECULES) {
   const counts = {};
   for (const b of m.bands.filter(b => b.t)) {
-    const f = GROUPS[b.g].family;
-    counts[f] = (counts[f] || 0) + 1;
+    const k = levelKey(b.g, 'family');
+    counts[k] = (counts[k] || 0) + 1;
   }
-  const dupes = Object.keys(counts).filter(f => counts[f] > 1);
-  if (dupes.length) multi.push(m.id + ' needs ' + dupes.map(f => counts[f] + '× ' + FAMILIES[f].label).join(', '));
+  const dupes = Object.keys(counts).filter(k => counts[k] > 1);
+  if (dupes.length) {
+    multi.push(m.id + ' needs ' + dupes.map(k => counts[k] + '× ' + keyLabel(k)).join(', '));
+  }
 }
 
 console.log(MOLECULES.length + ' molecules, ' + Object.keys(GROUPS).length + ' groups, ' +
             MOLECULES.reduce((n, m) => n + m.bands.filter(b => b.t).length, 0) + ' scored bands');
 if (multi.length) {
-  console.log('\nLevel 2 items needing a repeated family tile:');
+  console.log('\nLevel 1 items needing a repeated tile:');
   multi.forEach(l => console.log('  ' + l));
 }
 if (warn.length) {

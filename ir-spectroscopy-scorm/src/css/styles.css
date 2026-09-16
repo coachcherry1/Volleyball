@@ -131,12 +131,12 @@ h2 { font-size: 0.95rem; margin: 0; }
 
 #plot { width: 100%; height: 100%; display: block; touch-action: none; }
 
-.overlay, .regions {
+.overlay {
   position: absolute;
   inset: 4px;
   pointer-events: none;
 }
-.overlay > *, .regions > * { pointer-events: auto; }
+.overlay > * { pointer-events: auto; }
 
 /* --------------------------------------------------------- peak drop slots */
 
@@ -164,45 +164,10 @@ h2 { font-size: 0.95rem; margin: 0; }
   cursor: default;
   font-weight: 600;
 }
-.slot.hover, .strip.hover {
+.slot.hover {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
-
-/* ------------------------------------------------------- Level 1 strips */
-
-.strip {
-  position: absolute;
-  font: inherit;
-  border: 1.5px dashed var(--accent);
-  border-radius: 6px;
-  background: rgba(15, 93, 143, 0.06);
-  background: color-mix(in srgb, var(--accent) 6%, transparent);
-  cursor: pointer;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 8px;
-}
-.strip.ok {
-  border-style: solid;
-  border-color: var(--good);
-  background: rgba(15, 122, 82, 0.12);
-  background: color-mix(in srgb, var(--good) 12%, transparent);
-}
-.strip-tag {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--accent);
-  background: var(--panel);
-  padding: 2px 6px;
-  border-radius: 4px;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.strip.ok .strip-tag { color: var(--good); }
 
 @keyframes shake {
   0%, 100% { transform: translate(-50%, -50%); }
@@ -210,13 +175,6 @@ h2 { font-size: 0.95rem; margin: 0; }
   75%      { transform: translate(calc(-50% + 5px), -50%); }
 }
 .slot.shake { animation: shake 0.28s ease; }
-
-@keyframes shake-strip {
-  0%, 100% { margin-left: 0; }
-  25%      { margin-left: -5px; }
-  75%      { margin-left: 5px; }
-}
-.strip.shake { animation: shake-strip 0.28s ease; }
 
 /* -------------------------------------------------------------- side panel */
 
@@ -301,7 +259,7 @@ h2 { font-size: 0.95rem; margin: 0; }
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
 }
 
-.picking .slot:not(.ok), .picking .strip:not(.ok) {
+.picking .slot:not(.ok) {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(15, 93, 143, 0.22);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
@@ -389,6 +347,8 @@ h2 { font-size: 0.95rem; margin: 0; }
 .ref-table th { color: var(--muted); font-weight: 600; }
 .ref-table .num { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .ref-table .note { color: var(--muted); }
+.ref-table .fingerprint-row td { opacity: 0.72; font-style: italic; }
+.ref-foot { margin: 10px 0 0; font-size: 0.74rem; color: var(--muted); }
 
 /* ----------------------------------------------------------------- screens */
 

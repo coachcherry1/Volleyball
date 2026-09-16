@@ -1,7 +1,18 @@
 /* groups.js — functional-group vocabulary used by the item bank and the tile tray.
  *
- * FAMILY = the coarse label used in Level 2 ("there is a C=O here").
- * GROUP  = the specific label used in Level 3 ("that C=O is an ester").
+ * Level 1 asks for the FAMILY of a band ("there is a C=O here"); Level 2 asks
+ * for the specific GROUP ("that C=O is an ester").
+ *
+ * Two flags change how a group is used:
+ *
+ *   atomic      the family label is too coarse to be a fair question, so this
+ *               group is asked for by name at BOTH levels. All four C-H groups
+ *               are atomic: "C-H" alone would make the sp2 and sp3 peaks
+ *               interchangeable, which is exactly the distinction being taught.
+ *
+ *   fingerprint the band lies below 1500 cm-1, outside the diagnostic region.
+ *               It is drawn and it appears in the correlation table, but it is
+ *               never a drop target and never a distractor.
  *
  * `hint` is the one-line rationale shown when a student drops the wrong tile,
  * so the feedback teaches the discriminator rather than just saying "no".
@@ -41,19 +52,19 @@ var GROUPS = {
     hint: 'N–H stretch sitting above a carbonyl near 1650 — that pairing is an amide.'
   },
   ch_sp3: {
-    family: 'ch', label: 'C–H (sp³ alkyl)', range: '2850–3000',
-    hint: 'Just below 3000 — saturated C–H. Almost every organic spectrum has this.'
+    family: 'ch', label: 'C–H (sp³ alkyl)', range: '2850–3000', atomic: true,
+    hint: 'RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this.'
   },
   ch_sp2: {
-    family: 'ch', label: 'C–H (sp² vinyl/aryl)', range: '3000–3100',
-    hint: 'Just ABOVE 3000 — the hydrogen is on an sp² carbon (alkene or ring).'
+    family: 'ch', label: 'C–H (sp² vinyl/aryl)', range: '3000–3100', atomic: true,
+    hint: 'LEFT of the 3000 line — the hydrogen is on an sp² carbon, an alkene or a ring. That side of 3000 is the whole test.'
   },
   ch_sp: {
-    family: 'ch', label: '≡C–H (terminal alkyne)', range: '3290–3320',
-    hint: 'A narrow, strong spike near 3300 — sp C–H. Sharper than any O–H.'
+    family: 'ch', label: '≡C–H (terminal alkyne)', range: '3290–3320', atomic: true,
+    hint: 'A narrow, strong spike near 3300 — sp C–H. Far left of 3000, and sharper than any O–H.'
   },
   ch_aldehyde: {
-    family: 'ch', label: 'C–H (aldehyde)', range: '2690–2850',
+    family: 'ch', label: 'C–H (aldehyde)', range: '2690–2850', atomic: true,
     hint: 'The two weak peaks near 2820 and 2720 are the aldehyde C–H Fermi doublet — they prove –CHO.'
   },
 
@@ -78,7 +89,7 @@ var GROUPS = {
   },
   co_ester: {
     family: 'carbonyl', label: 'C=O (ester)', range: '1730–1760',
-    hint: 'Near 1740 AND a strong C–O near 1200–1250 — ester, not ketone.'
+    hint: 'Near 1740, higher than a ketone, and the strong C–O it pairs with shows up in the fingerprint region.'
   },
   co_aldehyde: {
     family: 'carbonyl', label: 'C=O (aldehyde)', range: '1700–1740',
@@ -86,7 +97,7 @@ var GROUPS = {
   },
   co_ketone: {
     family: 'carbonyl', label: 'C=O (ketone)', range: '1670–1725',
-    hint: 'Near 1715 with no O–H, no C–O, and no aldehyde C–H — a plain ketone.'
+    hint: 'Near 1715 with no O–H and no aldehyde C–H near 2720 — a plain ketone.'
   },
   co_acid: {
     family: 'carbonyl', label: 'C=O (carboxylic acid)', range: '1680–1725',
@@ -97,26 +108,53 @@ var GROUPS = {
     hint: 'Unusually LOW for a carbonyl (~1655) because N donates into it — amide.'
   },
 
-  /* ---- double-bond / bend region ---- */
+  /* ---- double-bond region, down to the 1500 line ---- */
   cc_alkene: {
     family: 'cc', label: 'C=C (alkene)', range: '1620–1680',
     hint: 'One weak-to-medium band near 1640 — an isolated alkene.'
   },
   cc_arene: {
-    family: 'cc', label: 'C=C (aromatic ring)', range: '1450–1620',
+    family: 'cc', label: 'C=C (aromatic ring)', range: '1500–1620',
     hint: 'A PAIR of bands near 1600 and 1500 — that is ring breathing, not an isolated alkene.'
   },
   no2_group: {
-    family: 'no2', label: 'N–O (nitro)', range: '1340–1560',
-    hint: 'Two very strong bands near 1520 and 1350 — the asymmetric and symmetric NO₂ stretches.'
+    family: 'no2', label: 'N–O (nitro)', range: '1500–1560',
+    hint: 'A very strong band near 1520, with its partner near 1350 down in the fingerprint region — the two NO₂ stretches.'
   },
 
-  /* ---- C–O single-bond region ---- */
+  /* ---- below 1500: drawn and taught, but never scored ---- */
   co_single: {
     family: 'cosingle', label: 'C–O (single bond)', range: '1000–1300',
-    hint: 'Strong band in the 1000–1300 window — a C–O single bond (alcohol, ether, ester or acid).'
+    fingerprint: true,
+    hint: 'Strong band in the 1000–1300 window. Useful corroboration, but it sits in the fingerprint region, so it is not one of the peaks you label here.'
   }
 };
 
-/* Bands that exist to make the spectrum look real but are never drop targets. */
 var GROUP_IDS = Object.keys(GROUPS);
+
+/* The key a group answers to at each level. C-H groups stay specific at both. */
+function levelKey(groupId, mode) {
+  var g = GROUPS[groupId];
+  return (mode === 'group' || g.atomic) ? groupId : g.family;
+}
+
+/* Text for a key that may be either a family id or a group id. */
+function keyLabel(key) {
+  return FAMILIES[key] ? FAMILIES[key].label : GROUPS[key].label;
+}
+
+function keySub(key) {
+  return FAMILIES[key] ? FAMILIES[key].aka : GROUPS[key].range + ' cm⁻¹';
+}
+
+/* Everything a tile may show, per level. Fingerprint groups are excluded from
+   both: they are never the answer, and offering one as a distractor would
+   teach that e.g. ethyl acetate has no C-O, which is false. */
+var SCORABLE = GROUP_IDS.filter(function (k) { return !GROUPS[k].fingerprint; });
+
+var UNIVERSE = {
+  family: Object.keys(FAMILIES).filter(function (f) {
+    return SCORABLE.some(function (k) { return GROUPS[k].family === f && !GROUPS[k].atomic; });
+  }).concat(SCORABLE.filter(function (k) { return GROUPS[k].atomic; })),
+  group: SCORABLE
+};

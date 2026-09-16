@@ -1,30 +1,32 @@
 /* game.js — levels, drag-and-drop, feedback and progression.
  *
- * Level 1  orient to the axis: drop the four region labels onto the spectrum
- * Level 2  identify bands by family: "there is a C=O here"
- * Level 3  identify bands by specific group and then name the compound
+ * Level 1  identify bands by family, compound named:  "there is a C=O here"
+ * Level 2  identify bands by specific group, compound hidden, then name it
+ *
+ * The four C-H groups are asked for by name at BOTH levels (see `atomic` in
+ * groups.js): "C-H" alone would make the sp2 and sp3 peaks interchangeable,
+ * and telling them apart across the 3000 line is the point.
+ *
+ * Only bands above 1500 cm-1 are ever drop targets. The fingerprint region is
+ * drawn and discussed but never scored.
  *
  * Every drop works three ways so it survives a Chromebook trackpad, a touch
- * screen and a keyboard: pointer drag, click-tile-then-click-slot, and tab +
+ * screen and a keyboard: pointer drag, click-tile-then-click-peak, and tab +
  * Enter, which uses the same click path.
  */
 
 var Game = (function () {
   'use strict';
 
-  var REGIONS = [
-    { id: 'xh',     lo: 2500, hi: 4000, label: 'X–H stretch',  sub: 'O–H, N–H, C–H' },
-    { id: 'triple', lo: 2000, hi: 2500, label: 'Triple bonds',      sub: 'C≡N, C≡C' },
-    { id: 'double', lo: 1500, hi: 2000, label: 'Double bonds',      sub: 'C=O, C=C' },
-    { id: 'finger', lo: 400,  hi: 1500, label: 'Fingerprint',       sub: 'whole-molecule' }
-  ];
+  /* One molecule is drawn per theme, so a run always contains an alcohol, an
+     acid, a carbonyl, an N-H compound, a hydrocarbon and a triple bond instead
+     of whatever chance produces. The last slot is a free draw. */
+  var CORE_THEMES = ['oh', 'acid', 'co', 'nh', 'hc', 'triple'];
 
   var LEVELS = [
-    { n: 1, name: 'Regions',      items: 3, mode: 'region',
-      blurb: 'Drag each region name onto the correct stretch of the wavenumber axis.' },
-    { n: 2, name: 'Find the band', items: 6, mode: 'family', reference: true,
-      blurb: 'The compound is named for you. Drag each bond type onto the peak it produced.' },
-    { n: 3, name: 'Name the group', items: 6, mode: 'group', identify: true,
+    { n: 1, name: 'Find the band', tag: 'find', mode: 'family', items: 7, reference: true,
+      blurb: 'The compound is named for you. Drag each bond onto the peak it produced.' },
+    { n: 2, name: 'Name the group', tag: 'name', mode: 'group', items: 7, identify: true,
       blurb: 'The compound is hidden. Label every marked peak with the specific functional group, then name the compound.' }
   ];
 
@@ -64,24 +66,34 @@ var Game = (function () {
 
   function pickMolecules(tag, count, rand) {
     var pool = MOLECULES.filter(function (m) { return m.tags.indexOf(tag) >= 0; });
-    return shuffle(pool, rand).slice(0, count);
+    var chosen = [];
+
+    CORE_THEMES.forEach(function (theme) {
+      if (chosen.length >= count) return;
+      var candidates = pool.filter(function (m) {
+        return m.theme === theme && chosen.indexOf(m) < 0;
+      });
+      if (candidates.length) chosen.push(shuffle(candidates, rand)[0]);
+    });
+
+    /* fill any remaining places from whatever is left, themes included */
+    var rest = shuffle(pool.filter(function (m) { return chosen.indexOf(m) < 0; }), rand);
+    while (chosen.length < count && rest.length) chosen.push(rest.shift());
+
+    return shuffle(chosen, rand);
   }
 
   function newRun() {
     var seed = (Date.now() ^ Math.floor(Math.random() * 0x7fffffff)) >>> 0;
     var rand = IR.rng(seed);
+    var plan = {};
+    LEVELS.forEach(function (L) {
+      plan[L.n] = pickMolecules(L.tag, L.items, rand).map(function (m) { return m.id; });
+    });
     return {
-      seed: seed,
-      unlocked: 1,
-      level: 1,
-      index: 0,
-      done: [],
+      seed: seed, unlocked: 1, level: 1, index: 0, done: [],
       stats: { attempts: 0, firstTry: 0, slots: 0 },
-      plan: {
-        1: pickMolecules('l2', LEVELS[0].items, rand).map(function (m) { return m.id; }),
-        2: pickMolecules('l2', LEVELS[1].items, rand).map(function (m) { return m.id; }),
-        3: pickMolecules('l3', LEVELS[2].items, rand).map(function (m) { return m.id; })
-      }
+      plan: plan
     };
   }
 
@@ -95,16 +107,14 @@ var Game = (function () {
 
   function restore(saved) {
     if (!saved || !saved.p) return null;
-    try {
-      return {
-        seed: saved.s, unlocked: saved.u || 1, level: saved.l || 1, index: saved.i || 0,
-        done: saved.d || [], stats: saved.st || { attempts: 0, firstTry: 0, slots: 0 },
-        plan: saved.p
-      };
-    } catch (e) { return null; }
+    return {
+      seed: saved.s, unlocked: saved.u || 1, level: saved.l || 1, index: saved.i || 0,
+      done: saved.d || [], stats: saved.st || { attempts: 0, firstTry: 0, slots: 0 },
+      plan: saved.p
+    };
   }
 
-  /* ------------------------------------------------------------- level build */
+  /* ------------------------------------------------------------- item build */
 
   /* A pinned spectrum (?molecule=ethylacetate) is a one-item level, so the
      teacher can put a single named compound on the board during a lesson. */
@@ -119,62 +129,41 @@ var Game = (function () {
     var spec = IR.build(molecule, seed);
     var rand = IR.rng(seed ^ 0x51ed2701);
 
-    var slots = [], tiles = [];
+    var targets = spec.bands.filter(function (b) { return b.t; });
+    targets.sort(function (a, b) { return b.c - a.c; });
 
-    if (cfg.mode === 'region') {
-      slots = REGIONS.map(function (r, i) {
-        return { key: r.id, lo: r.lo, hi: r.hi, filled: false, tries: 0, i: i };
-      });
-      tiles = shuffle(REGIONS, rand).map(function (r) {
-        return { key: r.id, label: r.label, sub: r.sub, used: false };
-      });
-    } else {
-      var targets = spec.bands.filter(function (b) { return b.t; });
-      targets.sort(function (a, b) { return b.c - a.c; });
+    var slots = targets.map(function (b, i) {
+      /* Sharp bands are anchored at the deepest point of their window. Broad
+         ones are anchored at the envelope centre instead: the lowest point
+         inside a carboxylic acid's 2500-3300 O-H is the C-H spike riding on
+         top of it, which is not what the label is pointing at. */
+      var peak = b.s === 'g'
+        ? { v: b.c, t: IR.tAt(spec, b.c) }
+        : IR.depthAt(spec, b.tol[0], b.tol[1]);
+      return {
+        key: levelKey(b.g, cfg.mode), group: b.g,
+        v: peak.v, t: peak.t, band: b, filled: false, tries: 0, i: i
+      };
+    });
 
-      slots = targets.map(function (b, i) {
-        /* Sharp bands are anchored at the deepest point of their window. Broad
-           ones are anchored at the envelope centre instead: the lowest point
-           inside a carboxylic acid's 2500-3300 O-H is the C-H spike riding on
-           top of it, which is not what the label is pointing at. */
-        var peak = b.s === 'g'
-          ? { v: b.c, t: IR.tAt(spec, b.c) }
-          : IR.depthAt(spec, b.tol[0], b.tol[1]);
-        var group = GROUPS[b.g];
-        return {
-          key: cfg.mode === 'family' ? group.family : b.g,
-          group: b.g, v: peak.v, t: peak.t, band: b,
-          filled: false, tries: 0, i: i
-        };
-      });
+    /* One tile per SLOT, not per distinct answer: a molecule can legitimately
+       need the same label twice. */
+    var needed = {};
+    slots.forEach(function (s) { needed[s.key] = (needed[s.key] || 0) + 1; });
 
-      /* One tile per SLOT, not per distinct answer. At family level a molecule
-         can need the same label twice - toluene has sp2 and sp3 C-H, and both
-         are marked - so the tray has to hold two "C-H" tiles or the item
-         cannot be finished. */
-      var needed = {};
-      slots.forEach(function (s) { needed[s.key] = (needed[s.key] || 0) + 1; });
+    var wanted = [];
+    Object.keys(needed).forEach(function (k) {
+      for (var i = 0; i < needed[k]; i++) wanted.push(k);
+    });
 
-      var wanted = [];
-      Object.keys(needed).forEach(function (k) {
-        for (var i = 0; i < needed[k]; i++) wanted.push(k);
-      });
+    var distractors = shuffle(UNIVERSE[cfg.mode].filter(function (k) { return !needed[k]; }), rand)
+      .slice(0, cfg.mode === 'family' ? 2 : 3);
 
-      var universe = cfg.mode === 'family'
-        ? Object.keys(FAMILIES)
-        : Object.keys(GROUPS);
+    var tiles = shuffle(wanted.concat(distractors), rand).map(function (k) {
+      return { key: k, label: keyLabel(k), sub: keySub(k), used: false, distractor: !needed[k] };
+    });
 
-      var distractors = shuffle(universe.filter(function (k) { return !needed[k]; }), rand)
-        .slice(0, cfg.mode === 'family' ? 2 : 3);
-
-      tiles = shuffle(wanted.concat(distractors), rand).map(function (k) {
-        var label = cfg.mode === 'family' ? FAMILIES[k].label : GROUPS[k].label;
-        var sub = cfg.mode === 'family' ? FAMILIES[k].aka : GROUPS[k].range + ' cm⁻¹';
-        return { key: k, label: label, sub: sub, used: false, distractor: !needed[k] };
-      });
-    }
-
-    /* the multiple-choice compound question that closes out Level 3 */
+    /* the multiple-choice compound question that closes out Level 2 */
     var choices = null;
     if (cfg.identify) {
       var others = shuffle(MOLECULES.filter(function (m) {
@@ -197,28 +186,8 @@ var Game = (function () {
   /* Stagger chips that would otherwise sit on top of each other. */
   function layoutSlots(rect) {
     el.overlay.innerHTML = '';
-    el.regions.innerHTML = '';
-
-    if (item.cfg.mode === 'region') {
-      item.slots.forEach(function (s) {
-        var x0 = IR.xOfV(s.hi, rect), x1 = IR.xOfV(s.lo, rect);
-        var strip = make('button', 'strip');
-        strip.type = 'button';
-        strip.style.left = x0 + 'px';
-        strip.style.width = Math.max(10, x1 - x0) + 'px';
-        strip.style.top = rect.y + 'px';
-        strip.style.height = rect.h + 'px';
-        strip.dataset.slot = String(s.i);
-        strip.setAttribute('aria-label', 'Region from ' + s.hi + ' to ' + s.lo + ' wavenumbers');
-        var tag = make('span', 'strip-tag', s.filled ? s.filledLabel : '?');
-        if (s.filled) strip.classList.add('ok');
-        strip.appendChild(tag);
-        el.regions.appendChild(strip);
-      });
-      return;
-    }
-
     var placed = [];
+
     item.slots.forEach(function (s) {
       var x = IR.xOfV(s.v, rect);
       var yPeak = IR.yOfT(s.t, rect);
@@ -257,7 +226,7 @@ var Game = (function () {
       el.tray.appendChild(make('p', 'tray-empty', 'All labels placed.'));
       return;
     }
-    remaining.forEach(function (t, i) {
+    remaining.forEach(function (t) {
       var node = make('button', 'tile');
       node.type = 'button';
       node.dataset.tile = String(item.tiles.indexOf(t));
@@ -335,7 +304,7 @@ var Game = (function () {
       slot.filled = true;
       slot.filledLabel = tile.label;
       tile.used = true;
-      say(correctNote(slot), 'good');
+      say('Correct — ' + Math.round(slot.v) + ' cm⁻¹. ' + GROUPS[slot.group].hint, 'good');
       paintTray();
       paintSpectrum();
       if (item.slots.every(function (s) { return s.filled; })) finishLabels();
@@ -346,36 +315,18 @@ var Game = (function () {
     persist();
   }
 
-  function correctNote(slot) {
-    if (item.cfg.mode === 'region') {
-      var r = REGIONS.filter(function (x) { return x.id === slot.key; })[0];
-      return 'Yes — ' + r.lo + '–' + r.hi + ' cm⁻¹ is where ' +
-             r.sub + ' show up.';
-    }
-    var g = GROUPS[slot.group];
-    return 'Correct — ' + Math.round(slot.v) + ' cm⁻¹. ' + g.hint;
-  }
-
   function wrongNote(slot, tile) {
-    if (item.cfg.mode === 'region') {
-      var r = REGIONS.filter(function (x) { return x.id === tile.key; })[0];
-      return 'Not there. ' + tile.label + ' belong at ' + r.lo + '–' + r.hi +
-             ' cm⁻¹.';
-    }
-    var where = Math.round(slot.v) + ' cm⁻¹';
     if (tile.distractor) {
-      var range = item.cfg.mode === 'family'
-        ? 'anywhere in this spectrum'
-        : GROUPS[tile.key].range + ' cm⁻¹';
-      return 'This compound has no ' + tile.label + ' — you would be looking for it at ' +
-             range + ', and nothing is there.';
+      var g = GROUPS[tile.key];
+      var where = g ? 'at ' + g.range + ' cm⁻¹' : 'anywhere in this spectrum';
+      return 'This compound has no ' + tile.label + ' — you would be looking for it ' +
+             where + ', and nothing is there.';
     }
-    return 'Not at ' + where + '. ' + GROUPS[slot.group].hint;
+    return 'Not at ' + Math.round(slot.v) + ' cm⁻¹. ' + GROUPS[slot.group].hint;
   }
 
   function flash(slotIndex) {
-    var sel = item.cfg.mode === 'region' ? '.strip' : '.slot';
-    var nodes = (item.cfg.mode === 'region' ? el.regions : el.overlay).querySelectorAll(sel);
+    var nodes = el.overlay.querySelectorAll('.slot');
     for (var i = 0; i < nodes.length; i++) {
       if (nodes[i].dataset.slot === String(slotIndex)) {
         nodes[i].classList.remove('shake');
@@ -494,10 +445,10 @@ var Game = (function () {
     if (kind === 'intro') {
       box.appendChild(make('h2', null, 'Reading the diagnostic region'));
       box.appendChild(make('p', null,
-        'An IR spectrum below about 1500 cm⁻¹ is a fingerprint — unique, but ' +
-        'hard to read. Above 1500 cm⁻¹ is the diagnostic region, where individual ' +
-        'bonds announce themselves at predictable wavenumbers. Three levels, ' +
-        'fifteen spectra.'));
+        'Below 1500 cm⁻¹ an IR spectrum is a fingerprint — unique, but hard to ' +
+        'read. Above 1500 is the diagnostic region, where individual bonds announce ' +
+        'themselves at predictable wavenumbers. Every peak you are asked to label is in ' +
+        'that region; both dotted lines on the plot are there to help you place it.'));
       var ul = make('ul', 'screen-list');
       LEVELS.forEach(function (L) {
         var li = make('li', null);
@@ -529,7 +480,7 @@ var Game = (function () {
       box.appendChild(go);
 
     } else {
-      box.appendChild(make('h2', null, 'All three levels complete'));
+      box.appendChild(make('h2', null, 'Both levels complete'));
       box.appendChild(make('p', null, accuracyLine()));
       box.appendChild(make('p', 'screen-note', SCORM.isConnected()
         ? 'Your completion has been sent to the gradebook. You may close this window.'
@@ -568,7 +519,7 @@ var Game = (function () {
   function slotIndexAt(clientX, clientY) {
     var node = document.elementFromPoint(clientX, clientY);
     if (!node || !node.closest) return -1;
-    var hit = node.closest('.slot, .strip');
+    var hit = node.closest('.slot');
     return hit ? +hit.dataset.slot : -1;
   }
 
@@ -584,7 +535,6 @@ var Game = (function () {
     var idx = tileIndexOf(ev.target);
     if (idx < 0) return;
     var tileNode = ev.target.closest('.tile');
-
     drag = { index: idx, moved: false, node: null, pointerId: ev.pointerId,
              from: tileNode, x0: ev.clientX, y0: ev.clientY };
     try { tileNode.setPointerCapture(ev.pointerId); } catch (e) { /* not capturable */ }
@@ -596,8 +546,7 @@ var Game = (function () {
       /* movementX is unreliable on touch, so measure from the press point */
       if (Math.hypot(ev.clientX - drag.x0, ev.clientY - drag.y0) < 6) return;
       drag.moved = true;
-      var t = item.tiles[drag.index];
-      var ghost = make('div', 'ghost', t.label);
+      var ghost = make('div', 'ghost', item.tiles[drag.index].label);
       document.body.appendChild(ghost);
       drag.node = ghost;
       drag.from.classList.add('dragging');
@@ -606,7 +555,7 @@ var Game = (function () {
     drag.node.style.top = ev.clientY + 'px';
 
     var over = slotIndexAt(ev.clientX, ev.clientY);
-    var nodes = document.querySelectorAll('.slot, .strip');
+    var nodes = el.overlay.querySelectorAll('.slot');
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].classList.toggle('hover', over >= 0 && nodes[i].dataset.slot === String(over));
     }
@@ -618,7 +567,7 @@ var Game = (function () {
     drag = null;
     if (d.node) d.node.remove();
     d.from.classList.remove('dragging');
-    var nodes = document.querySelectorAll('.slot, .strip');
+    var nodes = el.overlay.querySelectorAll('.slot');
     for (var i = 0; i < nodes.length; i++) nodes[i].classList.remove('hover');
 
     /* A tap without movement is left to the click handler below, so that a
@@ -651,7 +600,7 @@ var Game = (function () {
   }
 
   function onStageClick(ev) {
-    var hit = ev.target.closest && ev.target.closest('.slot, .strip');
+    var hit = ev.target.closest && ev.target.closest('.slot');
     if (hit && selectedTile != null) {
       var tileIdx = selectedTile;
       clearSelection();
@@ -665,7 +614,7 @@ var Game = (function () {
   /* ------------------------------------------------------------------ boot */
 
   function cacheDom() {
-    ['plot', 'overlay', 'regions', 'tray', 'card', 'feedback', 'next', 'tabs',
+    ['plot', 'overlay', 'tray', 'card', 'feedback', 'next', 'tabs',
      'levelName', 'blurb', 'counter', 'screen', 'choices', 'stage', 'reference',
      'refbody', 'lms'].forEach(function (id) { el[id] = $(id); });
   }
@@ -679,13 +628,16 @@ var Game = (function () {
     table.appendChild(head);
     Object.keys(GROUPS).forEach(function (k) {
       var g = GROUPS[k];
-      var tr = make('tr');
-      tr.appendChild(make('td', null, g.label));
+      var tr = make('tr', g.fingerprint ? 'fingerprint-row' : null);
+      tr.appendChild(make('td', null, g.label + (g.fingerprint ? ' †' : '')));
       tr.appendChild(make('td', 'num', g.range));
       tr.appendChild(make('td', 'note', g.hint));
       table.appendChild(tr);
     });
     el.refbody.appendChild(table);
+    el.refbody.appendChild(make('p', 'ref-foot',
+      '† Below 1500 cm⁻¹, in the fingerprint region. Worth knowing, and worth ' +
+      'using as corroboration, but never one of the peaks you are asked to label here.'));
   }
 
   function start() {
@@ -704,7 +656,7 @@ var Game = (function () {
       state = newRun();
       state.pin = pin;
       state.unlocked = LEVELS.length;
-      state.level = (startLevel >= 1 && startLevel <= LEVELS.length) ? startLevel : 3;
+      state.level = (startLevel >= 1 && startLevel <= LEVELS.length) ? startLevel : 2;
     } else {
       state = restore(SCORM.loadState()) || newRun();
       if (!state.plan || !state.plan[1] || !byId(state.plan[1][0])) state = newRun();

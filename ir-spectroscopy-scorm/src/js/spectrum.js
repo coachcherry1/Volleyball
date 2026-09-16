@@ -195,31 +195,37 @@ var IR = (function () {
     ctx.lineJoin = 'round';
     ctx.stroke();
 
-    /* 1500 cm-1 divider: everything left of it is the diagnostic region */
-    var xd = Math.round(xOfV(1500, rect)) + 0.5;
-    ctx.save();
-    ctx.setLineDash([5, 4]);
-    ctx.strokeStyle = tone('--divider', '#b48ac8');
-    ctx.beginPath(); ctx.moveTo(xd, rect.y); ctx.lineTo(xd, rect.y + rect.h); ctx.stroke();
-    ctx.restore();
-    /* Captions sit below the baseline trace, each on its own chip, so they stay
-       readable whatever the spectrum does up there. */
+    /* Two teaching lines: 3000 separates sp2 C-H from sp3 C-H, and 1500
+       separates the diagnostic region from the fingerprint region. Captions sit
+       on their own chips, on two different rows so they cannot collide at
+       narrow widths, and below the baseline trace so they stay readable. */
     ctx.font = '10px system-ui, sans-serif';
-    var capY = rect.y + rect.h * 0.11;
-    function caption(text, align) {
-      var tw = ctx.measureText(text).width;
-      var cx = align === 'left' ? xd + 5 : xd - 5 - tw;
-      ctx.fillStyle = tone('--paper', '#ffffff');
-      ctx.globalAlpha = 0.88;
-      ctx.fillRect(cx - 3, capY - 8, tw + 6, 15);
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = muted;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, cx, capY);
+    ctx.textBaseline = 'middle';
+
+    function divider(v, capY, leftText, rightText) {
+      var xd = Math.round(xOfV(v, rect)) + 0.5;
+      ctx.save();
+      ctx.setLineDash([5, 4]);
+      ctx.strokeStyle = tone('--divider', '#b48ac8');
+      ctx.beginPath(); ctx.moveTo(xd, rect.y); ctx.lineTo(xd, rect.y + rect.h); ctx.stroke();
+      ctx.restore();
+
+      [[leftText, false], [rightText, true]].forEach(function (pair) {
+        var text = pair[0], toRight = pair[1];
+        var tw = ctx.measureText(text).width;
+        var cx = toRight ? xd + 5 : xd - 5 - tw;
+        ctx.fillStyle = tone('--paper', '#ffffff');
+        ctx.globalAlpha = 0.88;
+        ctx.fillRect(cx - 3, capY - 8, tw + 6, 15);
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = muted;
+        ctx.textAlign = 'left';
+        ctx.fillText(text, cx, capY);
+      });
     }
-    caption('fingerprint →', 'left');
-    caption('← diagnostic region', 'right');
+
+    divider(3000, rect.y + rect.h * 0.11, '\u2190 sp\u00B2 C\u2013H', 'sp\u00B3 C\u2013H \u2192');
+    divider(1500, rect.y + rect.h * 0.22, '\u2190 diagnostic region', 'fingerprint \u2192');
     ctx.textBaseline = 'alphabetic';
 
     return rect;
