@@ -68,7 +68,7 @@ Supporting bands (drawn, not scored): 2928, 2870, 1462, 1378, 993, 910 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| ≡C–H (terminal alkyne) | 3310 | 3230–3400 | 3290–3320 | A narrow, strong spike near 3300 — sp C–H. Far left of 3000, and sharper than any O–H. |
+| ≡C–H (sp C–H, terminal alkyne) | 3310 | 3230–3400 | 3290–3320 | A narrow, strong spike near 3300 — an sp hybridised C–H. Far left of 3000, and much sharper than any O–H. |
 | C≡C (alkyne) | 2120 | 2040–2200 | 2100–2260 | Weak and near 2120 — an alkyne. Nitriles sit higher and are stronger. |
 | C–H (sp³ alkyl) | 2958 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
@@ -120,7 +120,7 @@ Supporting bands (drawn, not scored): 1498, 1360, 810, 750 cm⁻¹.
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
 | O–H (carboxylic acid) | 3000 | 2480–3320 | 2500–3300 | Enormously broad — it swallows the C–H peaks and runs down past 2600. Only a carboxylic acid does that. |
-| C=O (carboxylic acid) | 1712 | 1676–1745 | 1680–1725 | A carbonyl underneath a gigantic 2500–3300 O–H — carboxylic acid. |
+| C=O (carbonyl) | 1712 | 1620–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 
 Drawn but never scored: C–O (single bond) at 1290 cm⁻¹ — below the 1500 line, so it is corroboration rather than a question.
 
@@ -133,7 +133,7 @@ Supporting bands (drawn, not scored): 2960, 2935, 1415, 935 cm⁻¹.
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
 | O–H (carboxylic acid) | 3010 | 2470–3330 | 2500–3300 | Enormously broad — it swallows the C–H peaks and runs down past 2600. Only a carboxylic acid does that. |
-| C=O (carboxylic acid) | 1685 | 1655–1740 | 1680–1725 | A carbonyl underneath a gigantic 2500–3300 O–H — carboxylic acid. |
+| C=O (carbonyl) | 1685 | 1655–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C=C (aromatic ring) | 1602 | 1560–1650 | 1500–1620 | A PAIR of bands near 1600 and 1500 — that is ring breathing, not an isolated alkene. |
 
 Drawn but never scored: C–O (single bond) at 1290 cm⁻¹ — below the 1500 line, so it is corroboration rather than a question.
@@ -146,7 +146,7 @@ Supporting bands (drawn, not scored): 3070, 1452, 930, 710 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| C=O (ester) | 1742 | 1700–1790 | 1730–1760 | Near 1740, higher than a ketone, and the strong C–O it pairs with shows up in the fingerprint region. |
+| C=O (carbonyl) | 1742 | 1620–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (sp³ alkyl) | 2985 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
 Drawn but never scored: C–O (single bond) at 1240 cm⁻¹ — below the 1500 line, so it is corroboration rather than a question.
@@ -159,7 +159,7 @@ Supporting bands (drawn, not scored): 2940, 1372, 1045 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| C=O (ketone) | 1715 | 1680–1760 | 1670–1725 | Near 1715 with no O–H and no aldehyde C–H near 2720 — a plain ketone. |
+| C=O (carbonyl) | 1715 | 1620–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (sp³ alkyl) | 2980 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
 Supporting bands (drawn, not scored): 2940, 1415, 1360, 1170 cm⁻¹.
@@ -170,7 +170,7 @@ Supporting bands (drawn, not scored): 2940, 1415, 1360, 1170 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| C=O (aldehyde) | 1727 | 1690–1765 | 1700–1740 | Check near 2720 — if the aldehyde C–H doublet is there, this carbonyl is an aldehyde. |
+| C=O (carbonyl) | 1727 | 1620–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (aldehyde) | 2820 | 2680–2838 | 2690–2850 | The two weak peaks near 2820 and 2720 are the aldehyde C–H Fermi doublet — they prove –CHO. |
 | C–H (sp³ alkyl) | 2962 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
@@ -182,7 +182,7 @@ Supporting bands (drawn, not scored): 2930, 2718, 1460, 1125 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| C=O (aldehyde) | 1702 | 1670–1760 | 1700–1740 | Check near 2720 — if the aldehyde C–H doublet is there, this carbonyl is an aldehyde. |
+| C=O (carbonyl) | 1702 | 1655–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (aldehyde) | 2820 | 2680–2838 | 2690–2850 | The two weak peaks near 2820 and 2720 are the aldehyde C–H Fermi doublet — they prove –CHO. |
 | C–H (sp² vinyl/aryl) | 3065 | 3000–3140 | 3000–3100 | LEFT of the 3000 line — the hydrogen is on an sp² carbon, an alkene or a ring. That side of 3000 is the whole test. |
 | C=C (aromatic ring) | 1598 | 1548–1650 | 1500–1620 | A PAIR of bands near 1600 and 1500 — that is ring breathing, not an isolated alkene. |
@@ -195,7 +195,7 @@ Supporting bands (drawn, not scored): 2738, 1585, 1455, 1205, 745, 688 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| C=O (ketone) | 1685 | 1655–1745 | 1670–1725 | Near 1715 with no O–H and no aldehyde C–H near 2720 — a plain ketone. |
+| C=O (carbonyl) | 1685 | 1655–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (sp² vinyl/aryl) | 3062 | 3000–3140 | 3000–3100 | LEFT of the 3000 line — the hydrogen is on an sp² carbon, an alkene or a ring. That side of 3000 is the whole test. |
 | C–H (sp³ alkyl) | 2925 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 | C=C (aromatic ring) | 1598 | 1545–1650 | 1500–1620 | A PAIR of bands near 1600 and 1500 — that is ring breathing, not an isolated alkene. |
@@ -208,7 +208,7 @@ Supporting bands (drawn, not scored): 1580, 1450, 1265, 760, 690 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| C=O (acid chloride) | 1802 | 1762–1870 | 1770–1820 | Above 1770 — the chlorine pulls electron density in and stiffens the C=O. Acid chloride. |
+| C=O (carbonyl) | 1802 | 1620–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (sp³ alkyl) | 2940 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
 Supporting bands (drawn, not scored): 1355, 1105, 605 cm⁻¹.
@@ -219,7 +219,7 @@ Supporting bands (drawn, not scored): 1355, 1105, 605 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| C=O (anhydride) | 1825 | 1775–1890 | 1740–1830 | TWO carbonyl peaks about 60 cm⁻¹ apart — only an anhydride does that. |
+| C=O (carbonyl) | 1825 | 1620–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (sp³ alkyl) | 2940 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
 Drawn but never scored: C–O (single bond) at 1125 cm⁻¹ — below the 1500 line, so it is corroboration rather than a question.
@@ -232,8 +232,8 @@ Supporting bands (drawn, not scored): 1752, 1370, 1000 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| N–H (amide) | 3352 | 3240–3480 | 3150–3400 | N–H stretch sitting above a carbonyl near 1650 — that pairing is an amide. |
-| C=O (amide) | 1655 | 1626–1700 | 1630–1690 | Unusually LOW for a carbonyl (~1655) because N donates into it — amide. |
+| N–H (amide) | 3352 | 3240–3480 | 3150–3400 | An N–H stretch sitting above a carbonyl — N–H plus C=O in the same spectrum is an amide. |
+| C=O (carbonyl) | 1655 | 1620–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (sp³ alkyl) | 2940 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
 Supporting bands (drawn, not scored): 3180, 1620, 1425 cm⁻¹.
@@ -244,8 +244,8 @@ Supporting bands (drawn, not scored): 3180, 1620, 1425 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| N–H (amide) | 3300 | 3180–3470 | 3150–3400 | N–H stretch sitting above a carbonyl near 1650 — that pairing is an amide. |
-| C=O (amide) | 1655 | 1600–1700 | 1630–1690 | Unusually LOW for a carbonyl (~1655) because N donates into it — amide. |
+| N–H (amide) | 3300 | 3180–3470 | 3150–3400 | An N–H stretch sitting above a carbonyl — N–H plus C=O in the same spectrum is an amide. |
+| C=O (carbonyl) | 1655 | 1620–1900 | 1630–1830 | Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl. |
 | C–H (sp³ alkyl) | 2940 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
 Supporting bands (drawn, not scored): 1560, 1410 cm⁻¹.
@@ -256,7 +256,7 @@ Supporting bands (drawn, not scored): 1560, 1410 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| N–H (1° amine) | 3368 | 3245–3500 | 3300–3400 | Two sharp-ish spikes means TWO N–H bonds — a primary amine. |
+| N–H (1° amine) | 3368 | 3245–3500 | 3300–3400 | COUNT THE SPIKES — two of them means two N–H bonds, so a primary amine. Weak and fairly sharp. |
 | C–H (sp³ alkyl) | 2958 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
 Supporting bands (drawn, not scored): 3290, 2930, 2860, 1612, 1070, 810 cm⁻¹.
@@ -267,7 +267,7 @@ Supporting bands (drawn, not scored): 3290, 2930, 2860, 1612, 1070, 810 cm⁻¹.
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
-| N–H (2° amine) | 3295 | 3200–3460 | 3280–3350 | A single weak N–H spike means one N–H bond — a secondary amine. |
+| N–H (2° amine) | 3295 | 3200–3460 | 3280–3350 | COUNT THE SPIKES — one weak N–H means a single N–H bond, so a secondary amine. |
 | C–H (sp³ alkyl) | 2958 | 2840–3000 | 2850–3000 | RIGHT of the 3000 line — the hydrogen is on an sp³ carbon. Almost every organic spectrum has this. |
 
 Supporting bands (drawn, not scored): 2930, 2860, 2790, 1465, 1130 cm⁻¹.
@@ -320,13 +320,15 @@ distinction the 3000 cm⁻¹ line exists to teach.
 | Level 1 asks for | Which covers |
 | --- | --- |
 | O–H | O–H (alcohol), O–H (carboxylic acid) |
-| N–H | N–H (1° amine), N–H (2° amine), N–H (amide) |
 | C≡N or C≡C | C≡N (nitrile), C≡C (alkyne) |
-| C=O | C=O (anhydride), C=O (acid chloride), C=O (ester), C=O (aldehyde), C=O (ketone), C=O (carboxylic acid), C=O (amide) |
 | C=C | C=C (alkene), C=C (aromatic ring) |
-| N–O | N–O (nitro) |
+| N–H (1° amine) | asked by name at both levels |
+| N–H (2° amine) | asked by name at both levels |
+| N–H (amide) | asked by name at both levels |
 | C–H (sp³ alkyl) | asked by name at both levels |
 | C–H (sp² vinyl/aryl) | asked by name at both levels |
-| ≡C–H (terminal alkyne) | asked by name at both levels |
+| ≡C–H (sp C–H, terminal alkyne) | asked by name at both levels |
 | C–H (aldehyde) | asked by name at both levels |
+| C=O (carbonyl) | asked by name at both levels |
+| N–O (nitro) | asked by name at both levels |
 

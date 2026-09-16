@@ -30,6 +30,12 @@ var Game = (function () {
       blurb: 'The compound is hidden. Label every marked peak with the specific functional group, then name the compound.' }
   ];
 
+  /* Bumped whenever the shape of a saved run changes - the level list, the
+     draw, or the group vocabulary. A save from an older build is discarded
+     rather than resumed, otherwise a student carries an out-of-date lineup of
+     spectra forward and never sees the new one. */
+  var SCHEMA = 3;
+
   var el = {};
   var state = null;
   var item = null;          /* the item on screen right now */
@@ -100,13 +106,14 @@ var Game = (function () {
   function persist() {
     if (state.pin) return;
     SCORM.saveState({
+      v: SCHEMA,
       s: state.seed, u: state.unlocked, l: state.level, i: state.index,
       d: state.done, st: state.stats, p: state.plan
     });
   }
 
   function restore(saved) {
-    if (!saved || !saved.p) return null;
+    if (!saved || !saved.p || saved.v !== SCHEMA) return null;
     return {
       seed: saved.s, unlocked: saved.u || 1, level: saved.l || 1, index: saved.i || 0,
       done: saved.d || [], stats: saved.st || { attempts: 0, firstTry: 0, slots: 0 },
@@ -191,13 +198,15 @@ var Game = (function () {
     item.slots.forEach(function (s) {
       var x = IR.xOfV(s.v, rect);
       var yPeak = IR.yOfT(s.t, rect);
-      var below = yPeak + 16 < rect.y + rect.h - 12;
+      /* The unfilled targets are 40px circles, so they need more clearance from
+         each other and from the trace than the old chips did. */
+      var below = yPeak + 28 < rect.y + rect.h - 22;
       var row = 0;
-      placed.forEach(function (p) { if (Math.abs(p.x - x) < 96 && p.row === row) row++; });
+      placed.forEach(function (p) { if (Math.abs(p.x - x) < 130 && p.row === row) row++; });
       placed.push({ x: x, row: row });
 
-      var y = below ? yPeak + 16 + row * 22 : yPeak - 18 - row * 22;
-      y = Math.max(rect.y + 8, Math.min(rect.y + rect.h - 10, y));
+      var y = below ? yPeak + 28 + row * 34 : yPeak - 30 - row * 34;
+      y = Math.max(rect.y + 22, Math.min(rect.y + rect.h - 22, y));
 
       var node = make('button', 'slot' + (s.filled ? ' ok' : ''));
       node.type = 'button';
@@ -661,6 +670,12 @@ var Game = (function () {
       state = restore(SCORM.loadState()) || newRun();
       if (!state.plan || !state.plan[1] || !byId(state.plan[1][0])) state = newRun();
     }
+
+    /* Write the run out before the first answer. Without this a discarded
+       older save survives in storage until a student answers something, and a
+       student who opens the activity and closes it again comes back to a
+       different set of spectra. */
+    persist();
 
     item = buildItem();
     render();

@@ -45,7 +45,11 @@ var IR = (function () {
       var span = b.s === 'g' ? 18 : 6;
       var c = b.c + (r() - 0.5) * 2 * span;
       if (b.t && b.tol) {
-        var pad = (b.tol[1] - b.tol[0]) * 0.18;
+        /* Keep the jittered centre off the edge of its window, but cap the
+           margin: a wide window (the carbonyl region is 280 cm-1 across) would
+           otherwise drag a band towards the middle and misplace it - an amide
+           C=O at 1655 would be pushed up past 1670. */
+        var pad = Math.min(10, (b.tol[1] - b.tol[0]) * 0.18);
         c = Math.max(b.tol[0] + pad, Math.min(b.tol[1] - pad, c));
       }
       out.push({

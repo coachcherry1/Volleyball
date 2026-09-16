@@ -48,16 +48,42 @@ by hand. That path is deliberately not built yet — it is not needed for the ac
 | Level | Name | What the student does |
 | --- | --- | --- |
 | 1 | Find the band | The compound is named and drawn. The student drags each **bond family** (C=O, O–H, C≡N …) onto the peak it produced. Correlation table available. Seven spectra. |
-| 2 | Name the group | The compound is hidden. The student labels each marked peak with the **specific** group — ester vs ketone vs acid vs amide, 1° vs 2° amine — then identifies the compound from three structures. No correlation table. Seven spectra. |
+| 2 | Name the group | The compound is hidden. The student labels each marked peak with the **specific** group — alcohol vs acid O–H, nitrile vs alkyne, alkene vs aromatic C=C — then identifies the compound from three structures. No correlation table. Seven spectra. |
 
 Levels unlock in order. Wrong answers are never penalised: the tile returns to the tray and
-the feedback line explains the discriminator, e.g. dropping *C=O (ketone)* on ethyl
-acetate's 1742 cm⁻¹ band returns
+the feedback line explains the discriminator, e.g. dropping *O–H (alcohol)* on butanoic
+acid's broad envelope returns
 
-> Not at 1742 cm⁻¹. Near 1740, higher than a ketone, and the strong C–O it pairs with shows
-> up in the fingerprint region.
+> Not at 2983 cm⁻¹. Enormously broad — it swallows the C–H peaks and runs down past 2600.
+> Only a carboxylic acid does that.
 
 That explanation is the point of the activity; the score is incidental.
+
+### One label for every carbonyl
+
+Ester, ketone, aldehyde, amide, acid chloride and anhydride C=O bands are separated by a
+few tens of wavenumbers. This package does not ask students to split them: there is a
+single **C=O (carbonyl)** label with an accepted window covering the whole 1630–1830
+region. The bands still *draw* at their correct positions — an amide at 1655, an anhydride
+at 1825 — so the spectra stay honest and you can point at the shifts in class.
+
+To reinstate the split, give the carbonyls distinct group ids in `src/js/groups.js` and
+point each molecule's band at the right one.
+
+### What is and isn't collapsed
+
+A group is asked for **by name at both levels** when the family label would hide a
+distinction worth teaching:
+
+- **the four C–H groups** — sp³, sp², sp (terminal alkyne) and aldehyde. One "C–H" tile
+  would make the peaks either side of 3000 interchangeable.
+- **the three N–H groups** — 1° amine, 2° amine, amide. These are *counting* distinctions
+  (two N–H spikes vs one), not small wavenumber shifts.
+- **any family with a single member**, computed automatically, so a lone "C=O" tile shows
+  its own label and range rather than a bare family name.
+
+Everything else collapses at Level 1 and splits at Level 2: O–H (alcohol vs acid),
+C≡N vs C≡C, and alkene vs aromatic C=C.
 
 ### Only the diagnostic region is scored
 
@@ -112,9 +138,15 @@ To report a percent instead, set `cmi.core.score.raw` alongside the status in
 `markComplete()` in `src/js/scorm.js` and add an `<adlcp:masteryscore>` to
 `src/imsmanifest.xml`.
 
-Progress is saved to `cmi.suspend_data` after every answer, so a student who closes the
-window mid-activity resumes where they left off. It also mirrors to `localStorage`, which
-is what makes resume work when the activity is opened outside an LMS.
+Progress is saved to `cmi.suspend_data` when the activity opens and after every answer, so
+a student who closes the window mid-activity resumes where they left off. It also mirrors
+to `localStorage`, which is what makes resume work when the activity is opened outside an
+LMS.
+
+The save carries a schema version (`SCHEMA` in `src/js/game.js`). **Bump it whenever you
+change the level list, the draw or the group vocabulary** — a save written by an older
+build is then discarded rather than resumed. Without that, a student carries a stale lineup
+of spectra forward and never sees your edits.
 
 ---
 

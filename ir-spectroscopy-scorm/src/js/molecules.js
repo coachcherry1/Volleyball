@@ -12,6 +12,11 @@
  *   tol   [lo, hi] the wavenumber window a student may drop the label in
  *   t     true if this band is a drop target
  *
+ * All carbonyls share one group, co_carbonyl: this activity does not split
+ * ester from ketone from amide by a few tens of wavenumbers. The accepted
+ * window is the whole carbonyl region, narrowed only where an aromatic ring
+ * C=C target sits just below it.
+ *
  * ONLY BANDS ABOVE 1500 cm-1 ARE SCORED. Everything below the 1500 line is the
  * fingerprint region: those bands are drawn, and C-O is named in the answer key
  * and the correlation table, but no student is ever asked to label one.
@@ -143,7 +148,7 @@ var MOLECULES = [
                  labels: { 4: 'O', 5: 'OH' } },
     bands: [
       { g: 'oh_acid', c: 3000, w: 700, d: 0.66, s: 'g', tol: [2480, 3320], t: true },
-      { g: 'co_acid', c: 1712, w: 26, d: 0.90, s: 'l', tol: [1676, 1745], t: true },
+      { g: 'co_carbonyl', c: 1712, w: 26, d: 0.90, s: 'l', tol: [1620, 1900], t: true },
       { g: 'co_single', c: 1290, w: 40, d: 0.58, s: 'l' },
       { g: null, c: 2960, w: 34, d: 0.55, s: 'l' },
       { g: null, c: 2935, w: 34, d: 0.50, s: 'l' },
@@ -159,7 +164,7 @@ var MOLECULES = [
                      { 7: 'O', 8: 'OH' }),
     bands: [
       { g: 'oh_acid',   c: 3010, w: 690, d: 0.62, s: 'g', tol: [2470, 3330], t: true },
-      { g: 'co_acid',   c: 1685, w: 26, d: 0.90, s: 'l', tol: [1655, 1740], t: true },
+      { g: 'co_carbonyl', c: 1685, w: 26, d: 0.90, s: 'l', tol: [1655, 1900], t: true },
       { g: 'cc_arene',  c: 1602, w: 16, d: 0.52, s: 'l', tol: [1560, 1650], t: true },
       { g: 'co_single', c: 1290, w: 38, d: 0.72, s: 'l' },
       { g: null, c: 3070, w: 26, d: 0.34, s: 'l' },
@@ -176,7 +181,7 @@ var MOLECULES = [
                  bonds: [[0, 1, 1], [1, 2, 2], [1, 3, 1], [3, 4, 1], [4, 5, 1]],
                  labels: { 2: 'O', 3: 'O' } },
     bands: [
-      { g: 'co_ester',  c: 1742, w: 22, d: 0.92, s: 'l', tol: [1700, 1790], t: true },
+      { g: 'co_carbonyl', c: 1742, w: 22, d: 0.92, s: 'l', tol: [1620, 1900], t: true },
       { g: 'ch_sp3',    c: 2985, w: 30, d: 0.52, s: 'l', tol: [2840, 3000], t: true },
       { g: 'co_single', c: 1240, w: 38, d: 0.86, s: 'l' },
       { g: null, c: 2940, w: 32, d: 0.40, s: 'l' },
@@ -191,7 +196,7 @@ var MOLECULES = [
     structure: { pts: [[0, 0], [1, 0.5], [1, 1.35], [2, 0], [3, 0.5]],
                  bonds: [[0, 1, 1], [1, 2, 2], [1, 3, 1], [3, 4, 1]], labels: { 2: 'O' } },
     bands: [
-      { g: 'co_ketone', c: 1715, w: 24, d: 0.91, s: 'l', tol: [1680, 1760], t: true },
+      { g: 'co_carbonyl', c: 1715, w: 24, d: 0.91, s: 'l', tol: [1620, 1900], t: true },
       { g: 'ch_sp3',    c: 2980, w: 32, d: 0.55, s: 'l', tol: [2840, 3000], t: true },
       { g: null, c: 2940, w: 32, d: 0.45, s: 'l' },
       { g: null, c: 1415, w: 26, d: 0.42, s: 'l' },
@@ -207,7 +212,7 @@ var MOLECULES = [
                  bonds: [[0, 1, 1], [1, 2, 1], [2, 3, 1], [3, 4, 2], [3, 5, 1]],
                  labels: { 4: 'O', 5: 'H' } },
     bands: [
-      { g: 'co_aldehyde', c: 1727, w: 24, d: 0.90, s: 'l', tol: [1690, 1765], t: true },
+      { g: 'co_carbonyl', c: 1727, w: 24, d: 0.90, s: 'l', tol: [1620, 1900], t: true },
       { g: 'ch_aldehyde', c: 2820, w: 26, d: 0.40, s: 'l', tol: [2680, 2838], t: true },
       { g: 'ch_sp3',      c: 2962, w: 32, d: 0.58, s: 'l', tol: [2840, 3000], t: true },
       { g: null, c: 2718, w: 24, d: 0.42, s: 'l' },
@@ -223,7 +228,7 @@ var MOLECULES = [
     structure: arene([[1.5, 0], [1.5, 0.85], [2.4, -0.45]], [[0, 6, 1], [6, 7, 2], [6, 8, 1]],
                      { 7: 'O', 8: 'H' }),
     bands: [
-      { g: 'co_aldehyde', c: 1702, w: 24, d: 0.90, s: 'l', tol: [1670, 1760], t: true },
+      { g: 'co_carbonyl', c: 1702, w: 24, d: 0.90, s: 'l', tol: [1655, 1900], t: true },
       { g: 'ch_aldehyde', c: 2820, w: 26, d: 0.38, s: 'l', tol: [2680, 2838], t: true },
       { g: 'ch_sp2',      c: 3065, w: 24, d: 0.42, s: 'l', tol: [3000, 3140], t: true },
       { g: 'cc_arene',    c: 1598, w: 16, d: 0.58, s: 'l', tol: [1548, 1650], t: true },
@@ -242,7 +247,7 @@ var MOLECULES = [
     structure: arene([[1.5, 0], [1.5, 0.85], [2.4, -0.45]], [[0, 6, 1], [6, 7, 2], [6, 8, 1]],
                      { 7: 'O' }),
     bands: [
-      { g: 'co_ketone', c: 1685, w: 24, d: 0.91, s: 'l', tol: [1655, 1745], t: true },
+      { g: 'co_carbonyl', c: 1685, w: 24, d: 0.91, s: 'l', tol: [1655, 1900], t: true },
       { g: 'ch_sp2',    c: 3062, w: 24, d: 0.38, s: 'l', tol: [3000, 3140], t: true },
       { g: 'ch_sp3',    c: 2925, w: 30, d: 0.36, s: 'l', tol: [2840, 3000], t: true },
       { g: 'cc_arene',  c: 1598, w: 16, d: 0.60, s: 'l', tol: [1545, 1650], t: true },
@@ -260,7 +265,7 @@ var MOLECULES = [
     structure: { pts: [[0, 0], [1, 0.5], [1, 1.35], [2, 0]],
                  bonds: [[0, 1, 1], [1, 2, 2], [1, 3, 1]], labels: { 2: 'O', 3: 'Cl' } },
     bands: [
-      { g: 'co_chloride', c: 1802, w: 24, d: 0.92, s: 'l', tol: [1762, 1870], t: true },
+      { g: 'co_carbonyl', c: 1802, w: 24, d: 0.92, s: 'l', tol: [1620, 1900], t: true },
       { g: 'ch_sp3',      c: 2940, w: 32, d: 0.34, s: 'l', tol: [2840, 3000], t: true },
       { g: null, c: 1355, w: 26, d: 0.56, s: 'l' },
       { g: null, c: 1105, w: 34, d: 0.62, s: 'l' },
@@ -275,7 +280,7 @@ var MOLECULES = [
                  bonds: [[0, 1, 1], [1, 2, 2], [1, 3, 1], [3, 4, 1], [4, 5, 2], [4, 6, 1]],
                  labels: { 2: 'O', 3: 'O', 5: 'O' } },
     bands: [
-      { g: 'co_anhydride', c: 1825, w: 24, d: 0.86, s: 'l', tol: [1775, 1890], t: true },
+      { g: 'co_carbonyl', c: 1825, w: 24, d: 0.86, s: 'l', tol: [1620, 1900], t: true },
       { g: 'ch_sp3',       c: 2940, w: 32, d: 0.30, s: 'l', tol: [2840, 3000], t: true },
       { g: 'co_single',    c: 1125, w: 38, d: 0.88, s: 'l' },
       { g: null, c: 1752, w: 24, d: 0.92, s: 'l' },
@@ -292,7 +297,7 @@ var MOLECULES = [
                  labels: { 3: 'O', 4: 'NH₂' } },
     bands: [
       { g: 'nh_amide', c: 3352, w: 60, d: 0.60, s: 'l', tol: [3240, 3480], t: true },
-      { g: 'co_amide', c: 1655, w: 30, d: 0.90, s: 'l', tol: [1626, 1700], t: true },
+      { g: 'co_carbonyl', c: 1655, w: 30, d: 0.90, s: 'l', tol: [1620, 1900], t: true },
       { g: 'ch_sp3',   c: 2940, w: 32, d: 0.40, s: 'l', tol: [2840, 3000], t: true },
       { g: null, c: 3180, w: 70, d: 0.50, s: 'l' },
       { g: null, c: 1620, w: 34, d: 0.72, s: 'l' },
@@ -308,7 +313,7 @@ var MOLECULES = [
                  labels: { 2: 'O', 3: 'NH' } },
     bands: [
       { g: 'nh_amide', c: 3300, w: 70, d: 0.58, s: 'l', tol: [3180, 3470], t: true },
-      { g: 'co_amide', c: 1655, w: 30, d: 0.90, s: 'l', tol: [1600, 1700], t: true },
+      { g: 'co_carbonyl', c: 1655, w: 30, d: 0.90, s: 'l', tol: [1620, 1900], t: true },
       { g: 'ch_sp3',   c: 2940, w: 32, d: 0.38, s: 'l', tol: [2840, 3000], t: true },
       { g: null, c: 1560, w: 30, d: 0.78, s: 'l' },
       { g: null, c: 1410, w: 28, d: 0.42, s: 'l' }

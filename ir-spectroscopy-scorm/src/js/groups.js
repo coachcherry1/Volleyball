@@ -6,9 +6,12 @@
  * Two flags change how a group is used:
  *
  *   atomic      the family label is too coarse to be a fair question, so this
- *               group is asked for by name at BOTH levels. All four C-H groups
- *               are atomic: "C-H" alone would make the sp2 and sp3 peaks
- *               interchangeable, which is exactly the distinction being taught.
+ *               group is asked for by name at BOTH levels. The four C-H groups
+ *               are atomic because "C-H" alone would make the peaks either side
+ *               of 3000 interchangeable; the three N-H groups are atomic so a
+ *               student can see 1 amine, 2 amine and amide as separate labels.
+ *               Both distinctions are structural - how many N-H bonds, which
+ *               side of 3000 - not small shifts in wavenumber.
  *
  *   fingerprint the band lies below 1500 cm-1, outside the diagnostic region.
  *               It is drawn and it appears in the correlation table, but it is
@@ -40,16 +43,16 @@ var GROUPS = {
     hint: 'Enormously broad — it swallows the C–H peaks and runs down past 2600. Only a carboxylic acid does that.'
   },
   nh_amine1: {
-    family: 'nh', label: 'N–H (1° amine)', range: '3300–3400',
-    hint: 'Two sharp-ish spikes means TWO N–H bonds — a primary amine.'
+    family: 'nh', label: 'N–H (1° amine)', range: '3300–3400', atomic: true,
+    hint: 'COUNT THE SPIKES — two of them means two N–H bonds, so a primary amine. Weak and fairly sharp.'
   },
   nh_amine2: {
-    family: 'nh', label: 'N–H (2° amine)', range: '3280–3350',
-    hint: 'A single weak N–H spike means one N–H bond — a secondary amine.'
+    family: 'nh', label: 'N–H (2° amine)', range: '3280–3350', atomic: true,
+    hint: 'COUNT THE SPIKES — one weak N–H means a single N–H bond, so a secondary amine.'
   },
   nh_amide: {
-    family: 'nh', label: 'N–H (amide)', range: '3150–3400',
-    hint: 'N–H stretch sitting above a carbonyl near 1650 — that pairing is an amide.'
+    family: 'nh', label: 'N–H (amide)', range: '3150–3400', atomic: true,
+    hint: 'An N–H stretch sitting above a carbonyl — N–H plus C=O in the same spectrum is an amide.'
   },
   ch_sp3: {
     family: 'ch', label: 'C–H (sp³ alkyl)', range: '2850–3000', atomic: true,
@@ -60,8 +63,8 @@ var GROUPS = {
     hint: 'LEFT of the 3000 line — the hydrogen is on an sp² carbon, an alkene or a ring. That side of 3000 is the whole test.'
   },
   ch_sp: {
-    family: 'ch', label: '≡C–H (terminal alkyne)', range: '3290–3320', atomic: true,
-    hint: 'A narrow, strong spike near 3300 — sp C–H. Far left of 3000, and sharper than any O–H.'
+    family: 'ch', label: '≡C–H (sp C–H, terminal alkyne)', range: '3290–3320', atomic: true,
+    hint: 'A narrow, strong spike near 3300 — an sp hybridised C–H. Far left of 3000, and much sharper than any O–H.'
   },
   ch_aldehyde: {
     family: 'ch', label: 'C–H (aldehyde)', range: '2690–2850', atomic: true,
@@ -78,34 +81,14 @@ var GROUPS = {
     hint: 'Weak and near 2120 — an alkyne. Nitriles sit higher and are stronger.'
   },
 
-  /* ---- carbonyl region, 1900–1600 ---- */
-  co_anhydride: {
-    family: 'carbonyl', label: 'C=O (anhydride)', range: '1740–1830',
-    hint: 'TWO carbonyl peaks about 60 cm⁻¹ apart — only an anhydride does that.'
-  },
-  co_chloride: {
-    family: 'carbonyl', label: 'C=O (acid chloride)', range: '1770–1820',
-    hint: 'Above 1770 — the chlorine pulls electron density in and stiffens the C=O. Acid chloride.'
-  },
-  co_ester: {
-    family: 'carbonyl', label: 'C=O (ester)', range: '1730–1760',
-    hint: 'Near 1740, higher than a ketone, and the strong C–O it pairs with shows up in the fingerprint region.'
-  },
-  co_aldehyde: {
-    family: 'carbonyl', label: 'C=O (aldehyde)', range: '1700–1740',
-    hint: 'Check near 2720 — if the aldehyde C–H doublet is there, this carbonyl is an aldehyde.'
-  },
-  co_ketone: {
-    family: 'carbonyl', label: 'C=O (ketone)', range: '1670–1725',
-    hint: 'Near 1715 with no O–H and no aldehyde C–H near 2720 — a plain ketone.'
-  },
-  co_acid: {
-    family: 'carbonyl', label: 'C=O (carboxylic acid)', range: '1680–1725',
-    hint: 'A carbonyl underneath a gigantic 2500–3300 O–H — carboxylic acid.'
-  },
-  co_amide: {
-    family: 'carbonyl', label: 'C=O (amide)', range: '1630–1690',
-    hint: 'Unusually LOW for a carbonyl (~1655) because N donates into it — amide.'
+  /* ---- carbonyl region ----
+     One label for every C=O. The ester / ketone / aldehyde / amide splits are
+     separated by only a few tens of wavenumbers, which is not the distinction
+     this activity is asking students to make. What matters is recognising the
+     band: strong, sharp and unmistakable somewhere in 1630-1830. */
+  co_carbonyl: {
+    family: 'carbonyl', label: 'C=O (carbonyl)', range: '1630–1830',
+    hint: 'Strong, sharp, and by far the deepest thing in the 1630–1830 window — nothing else in a spectrum looks like a carbonyl.'
   },
 
   /* ---- double-bond region, down to the 1500 line ---- */
@@ -131,6 +114,21 @@ var GROUPS = {
 };
 
 var GROUP_IDS = Object.keys(GROUPS);
+
+/* A family with only one scorable member adds nothing at Level 1: its tile
+   would read a bare "C=O" where the group's own label reads "C=O (carbonyl)"
+   and carries a wavenumber range. Such groups label themselves at both levels,
+   which keeps this automatic as the bank changes. */
+(function () {
+  var counts = {};
+  GROUP_IDS.forEach(function (k) {
+    if (GROUPS[k].fingerprint) return;
+    counts[GROUPS[k].family] = (counts[GROUPS[k].family] || 0) + 1;
+  });
+  GROUP_IDS.forEach(function (k) {
+    if (!GROUPS[k].fingerprint && counts[GROUPS[k].family] === 1) GROUPS[k].atomic = true;
+  });
+})();
 
 /* The key a group answers to at each level. C-H groups stay specific at both. */
 function levelKey(groupId, mode) {
