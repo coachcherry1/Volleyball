@@ -2,6 +2,9 @@
  *
  * Level 1  identify bands by family, compound named:  "there is a C=O here"
  * Level 2  identify bands by specific group, compound hidden, then name it
+ * Level 3  the same as Level 2 with the wavenumber ranges stripped off the
+ *          tiles, so the student supplies them from memory rather than reading
+ *          them off the label and matching
  *
  * The four C-H groups are asked for by name at BOTH levels (see `atomic` in
  * groups.js): "C-H" alone would make the sp2 and sp3 peaks interchangeable,
@@ -27,14 +30,17 @@ var Game = (function () {
     { n: 1, name: 'Find the band', tag: 'find', mode: 'family', items: 7, reference: true,
       blurb: 'The compound is named for you. Drag each bond onto the peak it produced.' },
     { n: 2, name: 'Name the group', tag: 'name', mode: 'group', items: 7, identify: true,
-      blurb: 'The compound is hidden. Label every marked peak with the specific functional group, then name the compound.' }
+      blurb: 'The compound is hidden. Label every marked peak with the specific functional group, then name the compound.' },
+    { n: 3, name: 'From memory', tag: 'name', mode: 'group', items: 7, identify: true,
+      hideRanges: true,
+      blurb: 'Same task, but the labels no longer carry their wavenumbers. You supply those.' }
   ];
 
   /* Bumped whenever the shape of a saved run changes - the level list, the
      draw, or the group vocabulary. A save from an older build is discarded
      rather than resumed, otherwise a student carries an out-of-date lineup of
      spectra forward and never sees the new one. */
-  var SCHEMA = 3;
+  var SCHEMA = 4;
 
   var el = {};
   var state = null;
@@ -70,20 +76,34 @@ var Game = (function () {
 
   /* ------------------------------------------------------------ item set-up */
 
-  function pickMolecules(tag, count, rand) {
+  function pickMolecules(tag, count, rand, used) {
     var pool = MOLECULES.filter(function (m) { return m.tags.indexOf(tag) >= 0; });
     var chosen = [];
 
+    /* Levels 2 and 3 share a pool, so prefer compounds the earlier level did
+       not already use. Falls back to reusing one rather than leaving a theme
+       unrepresented - the theme guarantee matters more than the repeat. */
+    function take(candidates) {
+      var fresh = candidates.filter(function (m) { return !used || used.indexOf(m.id) < 0; });
+      var from = fresh.length ? fresh : candidates;
+      return from.length ? shuffle(from, rand)[0] : null;
+    }
+
     CORE_THEMES.forEach(function (theme) {
       if (chosen.length >= count) return;
-      var candidates = pool.filter(function (m) {
+      var pick = take(pool.filter(function (m) {
         return m.theme === theme && chosen.indexOf(m) < 0;
-      });
-      if (candidates.length) chosen.push(shuffle(candidates, rand)[0]);
+      }));
+      if (pick) chosen.push(pick);
     });
 
-    /* fill any remaining places from whatever is left, themes included */
+    /* fill any remaining places from whatever is left, unused ones first */
     var rest = shuffle(pool.filter(function (m) { return chosen.indexOf(m) < 0; }), rand);
+    rest.sort(function (a, b) {
+      var au = used && used.indexOf(a.id) >= 0 ? 1 : 0;
+      var bu = used && used.indexOf(b.id) >= 0 ? 1 : 0;
+      return au - bu;
+    });
     while (chosen.length < count && rest.length) chosen.push(rest.shift());
 
     return shuffle(chosen, rand);
@@ -93,8 +113,12 @@ var Game = (function () {
     var seed = (Date.now() ^ Math.floor(Math.random() * 0x7fffffff)) >>> 0;
     var rand = IR.rng(seed);
     var plan = {};
+    var usedByTag = {};
     LEVELS.forEach(function (L) {
-      plan[L.n] = pickMolecules(L.tag, L.items, rand).map(function (m) { return m.id; });
+      var used = usedByTag[L.tag] || (usedByTag[L.tag] = []);
+      var ids = pickMolecules(L.tag, L.items, rand, used).map(function (m) { return m.id; });
+      plan[L.n] = ids;
+      usedByTag[L.tag] = used.concat(ids);
     });
     return {
       seed: seed, unlocked: 1, level: 1, index: 0, done: [],
@@ -167,7 +191,11 @@ var Game = (function () {
       .slice(0, cfg.mode === 'family' ? 2 : 3);
 
     var tiles = shuffle(wanted.concat(distractors), rand).map(function (k) {
-      return { key: k, label: keyLabel(k), sub: keySub(k), used: false, distractor: !needed[k] };
+      return {
+        key: k, label: keyLabel(k),
+        sub: cfg.hideRanges ? '' : keySub(k),
+        used: false, distractor: !needed[k]
+      };
     });
 
     /* the multiple-choice compound question that closes out Level 2 */
@@ -190,34 +218,71 @@ var Game = (function () {
     if (rect) layoutSlots(rect);
   }
 
-  /* Stagger chips that would otherwise sit on top of each other. */
+  /* Place each marker clear of the trace and clear of the markers already
+     placed. The nodes are built and measured first, because a filled chip is
+     several times wider than an unfilled 40px circle and guessing a width gets
+     the collision test wrong. Each marker then takes the first candidate slot -
+     stepping away from its peak, preferred direction first - that is inside the
+     plot and overlaps nothing; if every candidate collides it takes the least
+     bad one rather than leaving the marker off the plot. */
   function layoutSlots(rect) {
     el.overlay.innerHTML = '';
-    var placed = [];
 
-    item.slots.forEach(function (s) {
-      var x = IR.xOfV(s.v, rect);
-      var yPeak = IR.yOfT(s.t, rect);
-      /* The unfilled targets are 40px circles, so they need more clearance from
-         each other and from the trace than the old chips did. */
-      var below = yPeak + 28 < rect.y + rect.h - 22;
-      var row = 0;
-      placed.forEach(function (p) { if (Math.abs(p.x - x) < 130 && p.row === row) row++; });
-      placed.push({ x: x, row: row });
-
-      var y = below ? yPeak + 28 + row * 34 : yPeak - 30 - row * 34;
-      y = Math.max(rect.y + 22, Math.min(rect.y + rect.h - 22, y));
-
+    var nodes = item.slots.map(function (s) {
       var node = make('button', 'slot' + (s.filled ? ' ok' : ''));
       node.type = 'button';
-      node.style.left = x + 'px';
-      node.style.top = y + 'px';
       node.dataset.slot = String(s.i);
       node.setAttribute('aria-label', s.filled
         ? s.filledLabel + ' at ' + Math.round(s.v) + ' wavenumbers'
         : 'Unlabelled peak at ' + Math.round(s.v) + ' wavenumbers');
       node.textContent = s.filled ? s.filledLabel : String(s.i + 1);
+      node.style.visibility = 'hidden';
       el.overlay.appendChild(node);
+      return node;
+    });
+
+    function penetration(a, b) {
+      var ox = Math.min(a.r, b.r) - Math.max(a.l, b.l);
+      var oy = Math.min(a.b, b.b) - Math.max(a.t, b.t);
+      return (ox > 0 && oy > 0) ? Math.min(ox, oy) : 0;
+    }
+
+    var placed = [];
+
+    item.slots.forEach(function (s, i) {
+      var node = nodes[i];
+      var w = node.offsetWidth || 40;
+      var h = node.offsetHeight || 40;
+      var x = IR.xOfV(s.v, rect);
+      var yPeak = IR.yOfT(s.t, rect);
+      var step = h + 6;
+
+      /* below the trough first when there is room, otherwise above */
+      var prefer = yPeak + h / 2 + 10 < rect.y + rect.h - 4 ? 1 : -1;
+      var offsets = [];
+      for (var k = 0; k < 6; k++) offsets.push(prefer * (h / 2 + 10 + k * step));
+      for (var k2 = 0; k2 < 6; k2++) offsets.push(-prefer * (h / 2 + 10 + k2 * step));
+
+      var best = null, bestCost = Infinity;
+      offsets.forEach(function (dy) {
+        var cy = yPeak + dy;
+        if (cy - h / 2 < rect.y + 3 || cy + h / 2 > rect.y + rect.h - 3) return;
+        var box = { l: x - w / 2, r: x + w / 2, t: cy - h / 2, b: cy + h / 2 };
+        var cost = 0;
+        placed.forEach(function (p) { cost += penetration(box, p); });
+        if (cost < bestCost) { bestCost = cost; best = cy; }
+        return cost === 0;
+      });
+
+      if (best === null) {
+        best = Math.max(rect.y + h / 2 + 3,
+                        Math.min(rect.y + rect.h - h / 2 - 3, yPeak + prefer * (h / 2 + 10)));
+      }
+
+      placed.push({ l: x - w / 2, r: x + w / 2, t: best - h / 2, b: best + h / 2 });
+      node.style.left = x + 'px';
+      node.style.top = best + 'px';
+      node.style.visibility = '';
     });
   }
 
@@ -240,7 +305,7 @@ var Game = (function () {
       node.type = 'button';
       node.dataset.tile = String(item.tiles.indexOf(t));
       node.appendChild(make('span', 'tile-label', t.label));
-      node.appendChild(make('span', 'tile-sub', t.sub));
+      if (t.sub) node.appendChild(make('span', 'tile-sub', t.sub));
       el.tray.appendChild(node);
     });
   }
@@ -327,6 +392,10 @@ var Game = (function () {
   function wrongNote(slot, tile) {
     if (tile.distractor) {
       var g = GROUPS[tile.key];
+      if (item.cfg.hideRanges) {
+        return 'This compound has no ' + tile.label + ' — work out where that band would ' +
+               'fall, look there, and you will find nothing.';
+      }
       var where = g ? 'at ' + g.range + ' cm⁻¹' : 'anywhere in this spectrum';
       return 'This compound has no ' + tile.label + ' — you would be looking for it ' +
              where + ', and nothing is there.';
@@ -489,7 +558,7 @@ var Game = (function () {
       box.appendChild(go);
 
     } else {
-      box.appendChild(make('h2', null, 'Both levels complete'));
+      box.appendChild(make('h2', null, 'All three levels complete'));
       box.appendChild(make('p', null, accuracyLine()));
       box.appendChild(make('p', 'screen-note', SCORM.isConnected()
         ? 'Your completion has been sent to the gradebook. You may close this window.'
@@ -665,7 +734,7 @@ var Game = (function () {
       state = newRun();
       state.pin = pin;
       state.unlocked = LEVELS.length;
-      state.level = (startLevel >= 1 && startLevel <= LEVELS.length) ? startLevel : 2;
+      state.level = (startLevel >= 1 && startLevel <= LEVELS.length) ? startLevel : 3;
     } else {
       state = restore(SCORM.loadState()) || newRun();
       if (!state.plan || !state.plan[1] || !byId(state.plan[1][0])) state = newRun();

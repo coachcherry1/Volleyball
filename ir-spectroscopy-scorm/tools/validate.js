@@ -91,17 +91,26 @@ for (const m of MOLECULES) {
    run cannot miss a whole compound class - an activity with no alcohol in it is
    the bug this check exists to prevent */
 const CORE_THEMES = ['oh', 'acid', 'co', 'nh', 'hc', 'triple'];
-const NEEDED = { find: 7, name: 7 };
-for (const tag of Object.keys(NEEDED)) {
+/* how many spectra each tag has to supply, and across how many levels: 'name'
+   serves Levels 2 and 3, which try to draw disjoint sets */
+const TAGS = { find: { perLevel: 7, levels: [1] }, name: { perLevel: 7, levels: [2, 3] } };
+for (const [tag, cfg] of Object.entries(TAGS)) {
   const pool = MOLECULES.filter(m => m.tags.includes(tag));
-  if (pool.length < NEEDED[tag]) {
-    problems.push('only ' + pool.length + ' molecules tagged ' + tag + ', need ' + NEEDED[tag]);
+  const total = cfg.perLevel * cfg.levels.length;
+  if (pool.length < total) {
+    problems.push('only ' + pool.length + ' molecules tagged ' + tag + ', but Level' +
+                  (cfg.levels.length > 1 ? 's ' : ' ') + cfg.levels.join(' and ') +
+                  ' need ' + total + ' between them');
   }
   for (const theme of CORE_THEMES) {
-    if (!pool.some(m => m.theme === theme)) {
+    const n = pool.filter(m => m.theme === theme).length;
+    if (!n) {
       problems.push('no molecule tagged ' + tag + ' has theme "' + theme + '", so that ' +
-                    'compound class can never appear in a Level ' +
-                    (tag === 'find' ? 1 : 2) + ' run');
+                    'compound class can never appear in Level ' + cfg.levels.join('/') + ' runs');
+    } else if (n < cfg.levels.length) {
+      warn.push('theme "' + theme + '" has only ' + n + ' molecule(s) tagged ' + tag +
+                ' for ' + cfg.levels.length + ' levels, so one will repeat across Level ' +
+                cfg.levels.join(' and '));
     }
   }
 }

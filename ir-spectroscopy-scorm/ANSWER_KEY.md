@@ -52,7 +52,7 @@ Supporting bands (drawn, not scored): 2928, 2870, 1462, 1378 cm⁻¹.
 
 ## 1-Hexene
 
-`hexene` · Alkene · C₆H₁₂ · theme `hc` · appears in Level 1 and Level 2
+`hexene` · Alkene · C₆H₁₂ · theme `hc` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -64,7 +64,7 @@ Supporting bands (drawn, not scored): 2928, 2870, 1462, 1378, 993, 910 cm⁻¹.
 
 ## 1-Hexyne
 
-`hexyne` · Terminal alkyne · C₆H₁₀ · theme `triple` · appears in Level 1 and Level 2
+`hexyne` · Terminal alkyne · C₆H₁₀ · theme `triple` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -76,7 +76,7 @@ Supporting bands (drawn, not scored): 2928, 2870, 1462, 1378, 630 cm⁻¹.
 
 ## Toluene
 
-`toluene` · Aromatic hydrocarbon · C₇H₈ · theme `hc` · appears in Level 1 and Level 2
+`toluene` · Aromatic hydrocarbon · C₇H₈ · theme `hc` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -88,7 +88,7 @@ Supporting bands (drawn, not scored): 3028, 2870, 1496, 1460, 729, 695 cm⁻¹.
 
 ## 1-Butanol
 
-`butanol` · Alcohol · C₄H₁₀O · theme `oh` · appears in Level 1 and Level 2
+`butanol` · Alcohol · C₄H₁₀O · theme `oh` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -101,7 +101,7 @@ Supporting bands (drawn, not scored): 2928, 2870, 1462, 1380, 1378 cm⁻¹.
 
 ## Phenol
 
-`phenol` · Phenol · C₆H₆O · theme `oh` · appears in Level 1 and Level 2
+`phenol` · Phenol · C₆H₆O · theme `oh` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -115,7 +115,7 @@ Supporting bands (drawn, not scored): 1498, 1360, 810, 750 cm⁻¹.
 
 ## Butanoic acid
 
-`butanoicacid` · Carboxylic acid · C₄H₈O₂ · theme `acid` · appears in Level 1 and Level 2
+`butanoicacid` · Carboxylic acid · C₄H₈O₂ · theme `acid` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -128,7 +128,7 @@ Supporting bands (drawn, not scored): 2960, 2935, 1415, 935 cm⁻¹.
 
 ## Benzoic acid
 
-`benzoicacid` · Aromatic carboxylic acid · C₇H₆O₂ · theme `acid` · appears in Level 1 and Level 2
+`benzoicacid` · Aromatic carboxylic acid · C₇H₆O₂ · theme `acid` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -142,7 +142,7 @@ Supporting bands (drawn, not scored): 3070, 1452, 930, 710 cm⁻¹.
 
 ## Ethyl acetate
 
-`ethylacetate` · Ester · C₄H₈O₂ · theme `co` · appears in Level 1 and Level 2
+`ethylacetate` · Ester · C₄H₈O₂ · theme `co` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -155,7 +155,7 @@ Supporting bands (drawn, not scored): 2940, 1372, 1045 cm⁻¹.
 
 ## 2-Butanone
 
-`butanone` · Ketone · C₄H₈O · theme `co` · appears in Level 1 and Level 2
+`butanone` · Ketone · C₄H₈O · theme `co` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -166,7 +166,7 @@ Supporting bands (drawn, not scored): 2940, 1415, 1360, 1170 cm⁻¹.
 
 ## Butanal
 
-`butanal` · Aldehyde · C₄H₈O · theme `co` · appears in Level 1 and Level 2
+`butanal` · Aldehyde · C₄H₈O · theme `co` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -178,7 +178,7 @@ Supporting bands (drawn, not scored): 2930, 2718, 1460, 1125 cm⁻¹.
 
 ## Benzaldehyde
 
-`benzaldehyde` · Aromatic aldehyde · C₇H₆O · theme `co` · appears in Level 2
+`benzaldehyde` · Aromatic aldehyde · C₇H₆O · theme `co` · appears in Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -191,7 +191,7 @@ Supporting bands (drawn, not scored): 2738, 1585, 1455, 1205, 745, 688 cm⁻¹.
 
 ## Acetophenone
 
-`acetophenone` · Aryl ketone · C₈H₈O · theme `co` · appears in Level 2
+`acetophenone` · Aryl ketone · C₈H₈O · theme `co` · appears in Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -204,7 +204,7 @@ Supporting bands (drawn, not scored): 1580, 1450, 1265, 760, 690 cm⁻¹.
 
 ## Acetyl chloride
 
-`acetylchloride` · Acid chloride · C₂H₃ClO · theme `co` · appears in Level 2
+`acetylchloride` · Acid chloride · C₂H₃ClO · theme `co` · appears in Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -215,7 +215,7 @@ Supporting bands (drawn, not scored): 1355, 1105, 605 cm⁻¹.
 
 ## Acetic anhydride
 
-`aceticanhydride` · Anhydride · C₄H₆O₃ · theme `co` · appears in Level 2
+`aceticanhydride` · Anhydride · C₄H₆O₃ · theme `co` · appears in Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -228,7 +228,7 @@ Supporting bands (drawn, not scored): 1752, 1370, 1000 cm⁻¹.
 
 ## Propanamide
 
-`propanamide` · Primary amide · C₃H₇NO · theme `nh` · appears in Level 1 and Level 2
+`propanamide` · Primary amide · C₃H₇NO · theme `nh` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -240,7 +240,7 @@ Supporting bands (drawn, not scored): 3180, 1620, 1425 cm⁻¹.
 
 ## N-Methylacetamide
 
-`nmethylacetamide` · Secondary amide · C₃H₇NO · theme `nh` · appears in Level 2
+`nmethylacetamide` · Secondary amide · C₃H₇NO · theme `nh` · appears in Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -252,7 +252,7 @@ Supporting bands (drawn, not scored): 1560, 1410 cm⁻¹.
 
 ## 1-Butanamine
 
-`butylamine` · Primary amine · C₄H₁₁N · theme `nh` · appears in Level 1 and Level 2
+`butylamine` · Primary amine · C₄H₁₁N · theme `nh` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -263,7 +263,7 @@ Supporting bands (drawn, not scored): 3290, 2930, 2860, 1612, 1070, 810 cm⁻¹.
 
 ## N-Methylbutan-1-amine
 
-`nmethylbutylamine` · Secondary amine · C₅H₁₃N · theme `nh` · appears in Level 2
+`nmethylbutylamine` · Secondary amine · C₅H₁₃N · theme `nh` · appears in Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -274,7 +274,7 @@ Supporting bands (drawn, not scored): 2930, 2860, 2790, 1465, 1130 cm⁻¹.
 
 ## Butanenitrile
 
-`butyronitrile` · Nitrile · C₄H₇N · theme `triple` · appears in Level 1 and Level 2
+`butyronitrile` · Nitrile · C₄H₇N · theme `triple` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -285,7 +285,7 @@ Supporting bands (drawn, not scored): 2935, 1460, 1425 cm⁻¹.
 
 ## Nitrobenzene
 
-`nitrobenzene` · Nitro compound · C₆H₅NO₂ · theme `other` · appears in Level 1 and Level 2
+`nitrobenzene` · Nitro compound · C₆H₅NO₂ · theme `other` · appears in Level 1 and Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -297,7 +297,7 @@ Supporting bands (drawn, not scored): 1480, 1348, 852, 705 cm⁻¹.
 
 ## Diethyl ether
 
-`diethylether` · Ether · C₄H₁₀O · theme `other` · appears in Level 2
+`diethylether` · Ether · C₄H₁₀O · theme `other` · appears in Levels 2 and 3
 
 | Scored band | Drawn (cm⁻¹) | Accepted window | Literature range | Discriminator |
 | --- | ---: | :---: | :---: | --- |
@@ -307,11 +307,17 @@ Drawn but never scored: C–O (single bond) at 1122 cm⁻¹ — below the 1500 l
 
 Supporting bands (drawn, not scored): 2930, 2870, 1450, 1380 cm⁻¹.
 
-## Level 1 vs Level 2
+## What each level asks for
 
-Level 1 asks for the **family** of each scored band, so any carbonyl is just “C=O”.
-Level 2 asks for the **specific group**, so the student has to separate ester from
-ketone from acid from amide using the discriminator column above.
+**Level 1** asks for the family of each scored band, with the compound named and the
+correlation table available.
+
+**Level 2** asks for the specific group, with the compound hidden and the correlation
+table withdrawn. Tiles still carry their wavenumber range.
+
+**Level 3** is Level 2 with the wavenumber ranges stripped off the tiles, so the
+student places each label from memory. Levels 2 and 3 draw from the same pool but
+avoid reusing a compound, so a student normally meets fourteen different spectra.
 
 The four C–H groups are the exception: they are asked for by name at **both** levels.
 A single “C–H” tile would make the sp² and sp³ peaks interchangeable, which is the

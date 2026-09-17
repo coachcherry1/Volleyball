@@ -42,7 +42,7 @@ out.push('');
 for (const m of MOLECULES) {
   out.push('## ' + m.name);
   out.push('');
-  const levelOf = { find: 'Level 1', name: 'Level 2' };
+  const levelOf = { find: 'Level 1', name: 'Levels 2 and 3' };
   out.push('`' + m.id + '` · ' + m.cls + ' · ' + m.formula +
            ' · theme `' + m.theme + '` · appears in ' +
            m.tags.map(t => levelOf[t] || t).join(' and '));
@@ -70,11 +70,17 @@ for (const m of MOLECULES) {
   out.push('');
 }
 
-out.push('## Level 1 vs Level 2');
+out.push('## What each level asks for');
 out.push('');
-out.push('Level 1 asks for the **family** of each scored band, so any carbonyl is just “C=O”.');
-out.push('Level 2 asks for the **specific group**, so the student has to separate ester from');
-out.push('ketone from acid from amide using the discriminator column above.');
+out.push('**Level 1** asks for the family of each scored band, with the compound named and the');
+out.push('correlation table available.');
+out.push('');
+out.push('**Level 2** asks for the specific group, with the compound hidden and the correlation');
+out.push('table withdrawn. Tiles still carry their wavenumber range.');
+out.push('');
+out.push('**Level 3** is Level 2 with the wavenumber ranges stripped off the tiles, so the');
+out.push('student places each label from memory. Levels 2 and 3 draw from the same pool but');
+out.push('avoid reusing a compound, so a student normally meets fourteen different spectra.');
 out.push('');
 out.push('The four C–H groups are the exception: they are asked for by name at **both** levels.');
 out.push('A single “C–H” tile would make the sp² and sp³ peaks interchangeable, which is the');

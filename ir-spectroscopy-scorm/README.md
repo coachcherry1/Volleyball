@@ -43,12 +43,22 @@ by hand. That path is deliberately not built yet — it is not needed for the ac
 
 ---
 
-## The two levels
+## The three levels
 
 | Level | Name | What the student does |
 | --- | --- | --- |
-| 1 | Find the band | The compound is named and drawn. The student drags each **bond family** (C=O, O–H, C≡N …) onto the peak it produced. Correlation table available. Seven spectra. |
-| 2 | Name the group | The compound is hidden. The student labels each marked peak with the **specific** group — alcohol vs acid O–H, nitrile vs alkyne, alkene vs aromatic C=C — then identifies the compound from three structures. No correlation table. Seven spectra. |
+| 1 | Find the band | The compound is named and drawn. The student drags each **bond family** (C=O, O–H, C≡N …) onto the peak it produced. Correlation table available, tiles carry their wavenumber ranges. Seven spectra. |
+| 2 | Name the group | The compound is hidden. The student labels each marked peak with the **specific** group — alcohol vs acid O–H, nitrile vs alkyne, alkene vs aromatic C=C — then identifies the compound from three structures. No correlation table; tiles still carry their ranges. Seven spectra. |
+| 3 | From memory | The same task as Level 2 with **the wavenumber ranges stripped off the tiles**. A tile reads only `C=O (carbonyl)`, so the student supplies the number rather than reading it off the label and matching. Seven spectra. |
+
+Levels 2 and 3 draw from the same pool but avoid reusing a compound, so a student normally
+meets fourteen different spectra across them. A repeat is possible in about a quarter of
+runs — at most one compound — when Level 2's free pick happens to take the second of a
+theme that only has two members. The theme guarantee wins over the repeat.
+
+Twenty-one spectra is a full class period. To shorten it, change `items` in the `LEVELS`
+table at the top of `src/js/game.js`; each level needs at least six to keep one compound
+per core theme.
 
 Levels unlock in order. Wrong answers are never penalised: the tile returns to the tray and
 the feedback line explains the discriminator, e.g. dropping *O–H (alcohol)* on butanoic
@@ -82,8 +92,12 @@ distinction worth teaching:
 - **any family with a single member**, computed automatically, so a lone "C=O" tile shows
   its own label and range rather than a bare family name.
 
-Everything else collapses at Level 1 and splits at Level 2: O–H (alcohol vs acid),
+Everything else collapses at Level 1 and splits at Levels 2 and 3: O–H (alcohol vs acid),
 C≡N vs C≡C, and alkene vs aromatic C=C.
+
+Level 3 changes no answers — the same groups, the same accepted windows. It only removes
+the wavenumber subtitle from each tile, and the "this compound has no …" feedback stops
+quoting a range so a wrong drop cannot hand the number back.
 
 ### Only the diagnostic region is scored
 
@@ -128,7 +142,7 @@ can't silently drop out of rotation.
 ## Grading
 
 **Completion only.** The SCO writes `cmi.core.lesson_status = "completed"` once a student
-finishes both levels and writes no numeric score, so the Schoology column reads
+finishes all three levels and writes no numeric score, so the Schoology column reads
 complete / incomplete rather than a percent.
 
 Students still see their own first-try accuracy on the level-complete and finish screens —
@@ -189,7 +203,7 @@ Append a query string to show a single compound, useful for a lesson demo:
 src/index.html?molecule=ethylacetate&level=3
 ```
 
-`molecule` is any `id` from `ANSWER_KEY.md`; `level` is 1 or 2 (default 2). A pinned
+`molecule` is any `id` from `ANSWER_KEY.md`; `level` is 1, 2 or 3 (default 3). A pinned
 spectrum never writes to saved progress, so demoing in class will not disturb a student's
 resume state.
 
