@@ -121,6 +121,28 @@ for (const m of MOLECULES.filter(m => m.tags.includes('name'))) {
   if (decoys < 2) problems.push(m.id + ': not enough compounds of another class to build the choices');
 }
 
+/* The compound question can only be decided from the peaks a student labelled.
+   Compounds sharing a scored signature are indistinguishable to this activity,
+   so they must never be offered against each other - pickDecoys() excludes
+   them. Report the clusters so the bank's blind spots are visible. */
+const sigOf = m => [...new Set(m.bands.filter(b => b.t).map(b => b.g))].sort().join('+');
+const clusters = {};
+for (const m of MOLECULES) (clusters[sigOf(m)] = clusters[sigOf(m)] || []).push(m);
+
+const blind = [];
+for (const [sig, group] of Object.entries(clusters)) {
+  if (group.length < 2) continue;
+  blind.push(group.map(m => m.name).join(', ') + '  [' + sig + ']');
+  /* each of them still needs two options that ARE distinguishable */
+  for (const m of group.filter(m => m.tags.includes('name'))) {
+    const usable = MOLECULES.filter(o => o.id !== m.id && sigOf(o) !== sig).length;
+    if (usable < 2) {
+      problems.push(m.id + ': only ' + usable + ' compound(s) differ from it in scored ' +
+                    'peaks, so its compound question cannot be given two fair decoys');
+    }
+  }
+}
+
 /* report repeated Level 1 keys, which is what the tile counts depend on */
 const multi = [];
 for (const m of MOLECULES) {
@@ -140,6 +162,11 @@ console.log(MOLECULES.length + ' molecules, ' + Object.keys(GROUPS).length + ' g
 if (multi.length) {
   console.log('\nLevel 1 items needing a repeated tile:');
   multi.forEach(l => console.log('  ' + l));
+}
+if (blind.length) {
+  console.log('\nCompounds with identical scored peaks (never offered against each other');
+  console.log('in the compound question, because the labelled peaks cannot separate them):');
+  blind.forEach(l => console.log('  ' + l));
 }
 if (warn.length) {
   console.log('\nnotes:');

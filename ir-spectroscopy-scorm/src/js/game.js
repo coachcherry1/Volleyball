@@ -74,6 +74,57 @@ var Game = (function () {
     return null;
   }
 
+  /* ------------------------------------------------------- compound choices
+   *
+   * A student decides the compound question from the peaks they just labelled,
+   * so those peaks are the only fair evidence. SIG is that set per molecule.
+   *
+   * DIST drops sp3 C-H from the comparison: nearly every compound here has it,
+   * so sharing it says nothing about how alike two spectra look.
+   */
+  var SIG = {}, DIST = {};
+
+  function indexSignatures() {
+    MOLECULES.forEach(function (m) {
+      var set = {};
+      m.bands.forEach(function (b) { if (b.t) set[b.g] = true; });
+      SIG[m.id] = Object.keys(set).sort();
+      DIST[m.id] = SIG[m.id].filter(function (g) { return g !== 'ch_sp3'; });
+    });
+  }
+
+  /* Decoys should force a decision, not be dismissed at a glance: the best one
+   * shares the compound's headline group and differs by a single band the
+   * student labelled. An alcohol therefore offers phenol against 1-butanol -
+   * aromatic against aliphatic, separated by the ring bands and the sp2 C-H -
+   * rather than something carrying no O-H at all.
+   *
+   * A decoy whose scored peaks match the answer's exactly is excluded: now
+   * that every carbonyl carries one label, ethyl acetate and 2-butanone look
+   * identical in everything this activity asks about, so offering one against
+   * the other is a coin toss rather than a question.
+   */
+  function pickDecoys(answer, count, rand) {
+    var aSig = SIG[answer.id].join(',');
+    var aDist = DIST[answer.id];
+
+    var ranked = MOLECULES.filter(function (m) {
+      return m.id !== answer.id && SIG[m.id].join(',') !== aSig;
+    }).map(function (m) {
+      var d = DIST[m.id];
+      var shared = d.filter(function (g) { return aDist.indexOf(g) >= 0; }).length;
+      var apart = d.length + aDist.length - 2 * shared;
+      var score = shared * 2 - apart
+        + (m.theme === answer.theme ? 4 : 0)      /* same headline group */
+        + (m.formula === answer.formula ? 3 : 0)  /* an isomer is the sharpest decoy */
+        + rand() * 2;                             /* break ties differently each run */
+      return { m: m, score: score };
+    });
+
+    ranked.sort(function (a, b) { return b.score - a.score; });
+    return ranked.slice(0, count).map(function (x) { return x.m; });
+  }
+
   /* ------------------------------------------------------------ item set-up */
 
   function pickMolecules(tag, count, rand, used) {
@@ -198,13 +249,10 @@ var Game = (function () {
       };
     });
 
-    /* the multiple-choice compound question that closes out Level 2 */
+    /* the multiple-choice compound question that closes out Levels 2 and 3 */
     var choices = null;
     if (cfg.identify) {
-      var others = shuffle(MOLECULES.filter(function (m) {
-        return m.id !== molecule.id && m.cls !== molecule.cls;
-      }), rand).slice(0, 2);
-      choices = shuffle([molecule].concat(others), rand);
+      choices = shuffle([molecule].concat(pickDecoys(molecule, 2, rand)), rand);
     }
 
     return { cfg: cfg, molecule: molecule, spec: spec, slots: slots, tiles: tiles,
@@ -462,8 +510,8 @@ var Game = (function () {
     } else {
       node.classList.add('wrong');
       node.disabled = true;
-      say('No — re-read the peaks you just labelled and ask which structure could ' +
-          'produce all of them.', 'bad');
+      say('No. Every option here fits some of what you labelled — find the one band ' +
+          'that rules this structure out, then check the others the same way.', 'bad');
     }
     persist();
   }
@@ -720,6 +768,7 @@ var Game = (function () {
 
   function start() {
     cacheDom();
+    indexSignatures();
     buildReference();
 
     var connected = SCORM.init();

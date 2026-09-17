@@ -99,6 +99,32 @@ Level 3 changes no answers — the same groups, the same accepted windows. It on
 the wavenumber subtitle from each tile, and the "this compound has no …" feedback stops
 quoting a range so a wrong drop cannot hand the number back.
 
+### The compound question
+
+Levels 2 and 3 close by asking which compound produced the spectrum. Two things govern the
+options offered alongside the right answer.
+
+**They have to be decidable.** A student can only reason from the peaks they labelled, so a
+decoy whose scored peaks match the answer's exactly is never offered. That matters more
+since the carbonyl collapse: ethyl acetate, 2-butanone, acetyl chloride and acetic
+anhydride now all produce the same scored set (`C=O` + `sp³ C–H`), so offering one against
+another would be a coin toss. `tools/validate.js` prints these indistinguishable clusters.
+
+**They have to need reasoning.** Decoys are ranked to prefer compounds that share the
+answer's headline group, then those sharing diagnostic bands, then isomers. So 1-butanol is
+offered against **phenol** — aromatic alcohol against aliphatic, separated by the ring C=C
+and the sp² C–H — and against **diethyl ether**, its C₄H₁₀O isomer with no O–H at all.
+Benzaldehyde comes up against acetophenone and butanal, where the aldehyde C–H doublet and
+the ring bands are the only things deciding it. The ranking carries a small random term, so
+the same compound does not always draw the same pair.
+
+Measured across every compound at both levels: 42 questions, none decidable by elimination
+of obviously unrelated structures, 37 offering a same-theme decoy and 40 offering a decoy
+that shares a band region. The one exception is diethyl ether, whose only scored band *is*
+sp³ C–H — it is identified by what is absent, which is a fair question of its own.
+
+`ANSWER_KEY.md` tables the usual pairings with the band that rules each decoy out.
+
 ### Only the diagnostic region is scored
 
 Every drop target is above 1500 cm⁻¹. Bands below that line — C–O single bonds, NO₂

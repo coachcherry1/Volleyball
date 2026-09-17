@@ -319,6 +319,42 @@ table withdrawn. Tiles still carry their wavenumber range.
 student places each label from memory. Levels 2 and 3 draw from the same pool but
 avoid reusing a compound, so a student normally meets fourteen different spectra.
 
+## The compound question
+
+Levels 2 and 3 end by asking which compound produced the spectrum. The two decoys are
+chosen to need reasoning rather than recognition: each one shares the headline group
+where the bank allows, and an isomer is preferred, so 1-butanol is offered against
+phenol (aromatic vs aliphatic alcohol) and diethyl ether (its C₄H₁₀O isomer, with no
+O–H at all) rather than against something obviously unrelated.
+
+A decoy whose **scored peaks match the answer exactly** is never offered — the labelled
+peaks could not separate them, so the question would be a coin toss. Below, the most
+likely pairings; the ranking is jittered, so runs vary.
+
+| Compound | Usual decoys | What separates them |
+| --- | --- | --- |
+| 1-Hexene | Toluene, Hexane | **Toluene** ruled out by C=C (alkene) being present and C=C (aromatic ring) being absent; **Hexane** ruled out by C=C (alkene) + C–H (sp² vinyl/aryl) being present |
+| 1-Hexyne | Butanenitrile, Hexane | **Butanenitrile** ruled out by C≡C (alkyne) + ≡C–H (sp C–H, terminal alkyne) being present and C≡N (nitrile) being absent; **Hexane** ruled out by C≡C (alkyne) + ≡C–H (sp C–H, terminal alkyne) being present |
+| Toluene | 1-Hexene, Phenol | **1-Hexene** ruled out by C=C (aromatic ring) being present and C=C (alkene) being absent; **Phenol** ruled out by O–H (alcohol) being absent |
+| 1-Butanol | Phenol, Diethyl ether | **Phenol** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) being absent; **Diethyl ether** ruled out by O–H (alcohol) being present |
+| Phenol | 1-Butanol, Toluene | **1-Butanol** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) being present; **Toluene** ruled out by O–H (alcohol) being present |
+| Butanoic acid | Benzoic acid, Ethyl acetate | **Benzoic acid** ruled out by C=C (aromatic ring) being absent; **Ethyl acetate** ruled out by O–H (carboxylic acid) being present |
+| Benzoic acid | Butanoic acid, Acetophenone | **Butanoic acid** ruled out by C=C (aromatic ring) being present; **Acetophenone** ruled out by O–H (carboxylic acid) being present and C–H (sp² vinyl/aryl) being absent |
+| Ethyl acetate | Butanal, Butanoic acid | **Butanal** ruled out by C–H (aldehyde) being absent; **Butanoic acid** ruled out by O–H (carboxylic acid) being absent |
+| 2-Butanone | Butanal, Acetophenone | **Butanal** ruled out by C–H (aldehyde) being absent; **Acetophenone** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) being absent |
+| Butanal | 2-Butanone, Benzaldehyde | **2-Butanone** ruled out by C–H (aldehyde) being present; **Benzaldehyde** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) being absent |
+| Benzaldehyde | Acetophenone, Butanal | **Acetophenone** ruled out by C–H (aldehyde) being present; **Butanal** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) being present |
+| Acetophenone | Benzaldehyde, Ethyl acetate | **Benzaldehyde** ruled out by C–H (aldehyde) being absent; **Ethyl acetate** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) being present |
+| Acetyl chloride | Butanal, Acetophenone | **Butanal** ruled out by C–H (aldehyde) being absent; **Acetophenone** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) being absent |
+| Acetic anhydride | Butanal, Acetophenone | **Butanal** ruled out by C–H (aldehyde) being absent; **Acetophenone** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) being absent |
+| Propanamide | Ethyl acetate, 2-Butanone | **Ethyl acetate** ruled out by N–H (amide) being present; **2-Butanone** ruled out by N–H (amide) being present |
+| N-Methylacetamide | Ethyl acetate, 2-Butanone | **Ethyl acetate** ruled out by N–H (amide) being present; **2-Butanone** ruled out by N–H (amide) being present |
+| 1-Butanamine | N-Methylbutan-1-amine, Propanamide | **N-Methylbutan-1-amine** ruled out by N–H (1° amine) being present and N–H (2° amine) being absent; **Propanamide** ruled out by N–H (1° amine) being present and C=O (carbonyl) + N–H (amide) being absent |
+| N-Methylbutan-1-amine | 1-Butanamine, Propanamide | **1-Butanamine** ruled out by N–H (2° amine) being present and N–H (1° amine) being absent; **Propanamide** ruled out by N–H (2° amine) being present and C=O (carbonyl) + N–H (amide) being absent |
+| Butanenitrile | 1-Hexyne, Hexane | **1-Hexyne** ruled out by C≡N (nitrile) being present and C≡C (alkyne) + ≡C–H (sp C–H, terminal alkyne) being absent; **Hexane** ruled out by C≡N (nitrile) being present |
+| Nitrobenzene | Toluene, Phenol | **Toluene** ruled out by N–O (nitro) being present; **Phenol** ruled out by N–O (nitro) being present and O–H (alcohol) being absent |
+| Diethyl ether | 1-Butanol, Nitrobenzene | **1-Butanol** ruled out by O–H (alcohol) being absent; **Nitrobenzene** ruled out by C=C (aromatic ring) + C–H (sp² vinyl/aryl) + N–O (nitro) being absent |
+
 The four C–H groups are the exception: they are asked for by name at **both** levels.
 A single “C–H” tile would make the sp² and sp³ peaks interchangeable, which is the
 distinction the 3000 cm⁻¹ line exists to teach.

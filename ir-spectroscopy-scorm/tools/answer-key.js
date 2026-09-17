@@ -82,6 +82,52 @@ out.push('**Level 3** is Level 2 with the wavenumber ranges stripped off the til
 out.push('student places each label from memory. Levels 2 and 3 draw from the same pool but');
 out.push('avoid reusing a compound, so a student normally meets fourteen different spectra.');
 out.push('');
+out.push('## The compound question');
+out.push('');
+out.push('Levels 2 and 3 end by asking which compound produced the spectrum. The two decoys are');
+out.push('chosen to need reasoning rather than recognition: each one shares the headline group');
+out.push('where the bank allows, and an isomer is preferred, so 1-butanol is offered against');
+out.push('phenol (aromatic vs aliphatic alcohol) and diethyl ether (its C₄H₁₀O isomer, with no');
+out.push('O–H at all) rather than against something obviously unrelated.');
+out.push('');
+out.push('A decoy whose **scored peaks match the answer exactly** is never offered — the labelled');
+out.push('peaks could not separate them, so the question would be a coin toss. Below, the most');
+out.push('likely pairings; the ranking is jittered, so runs vary.');
+out.push('');
+out.push('| Compound | Usual decoys | What separates them |');
+out.push('| --- | --- | --- |');
+
+const SIG = {}, DIST = {};
+for (const m of MOLECULES) {
+  SIG[m.id] = [...new Set(m.bands.filter(b => b.t).map(b => b.g))].sort();
+  DIST[m.id] = SIG[m.id].filter(g => g !== 'ch_sp3');
+}
+function rank(answer) {
+  const aSig = SIG[answer.id].join(','), aDist = DIST[answer.id];
+  return MOLECULES.filter(m => m.id !== answer.id && SIG[m.id].join(',') !== aSig)
+    .map(m => {
+      const d = DIST[m.id];
+      const shared = d.filter(g => aDist.includes(g)).length;
+      const apart = d.length + aDist.length - 2 * shared;
+      return { m, score: shared * 2 - apart + (m.theme === answer.theme ? 4 : 0) +
+                        (m.formula === answer.formula ? 3 : 0) };
+    }).sort((a, b) => b.score - a.score);
+}
+for (const m of MOLECULES.filter(m => m.tags.includes('name'))) {
+  const top = rank(m).slice(0, 2);
+  /* stated as what rules the DECOY out, which is how a student works it */
+  const diffs = top.map(({ m: d }) => {
+    const present = DIST[m.id].filter(g => !DIST[d.id].includes(g)).map(g => GROUPS[g].label);
+    const absent = DIST[d.id].filter(g => !DIST[m.id].includes(g)).map(g => GROUPS[g].label);
+    const bits = [];
+    if (present.length) bits.push(present.join(' + ') + ' being present');
+    if (absent.length) bits.push(absent.join(' + ') + ' being absent');
+    return '**' + d.name + '** ruled out by ' + bits.join(' and ');
+  });
+  out.push('| ' + m.name + ' | ' + top.map(t => t.m.name).join(', ') + ' | ' +
+           diffs.join('; ') + ' |');
+}
+out.push('');
 out.push('The four C–H groups are the exception: they are asked for by name at **both** levels.');
 out.push('A single “C–H” tile would make the sp² and sp³ peaks interchangeable, which is the');
 out.push('distinction the 3000 cm⁻¹ line exists to teach.');
