@@ -18,8 +18,8 @@ const out = [];
 const w = s => out.push(s);
 
 const MECH = {
-  alpha: 'α-cleavage', branch: 'branch point', benzylic: 'benzylic',
-  dehydr: 'dehydration', sigma: 'σ C–C'
+  alpha: 'breaks next to O or N', branch: 'breaks at the branch point',
+  benzylic: 'breaks next to the ring', dehydr: 'loses water', sigma: 'plain C–C'
 };
 
 const ROLE = {
@@ -51,8 +51,8 @@ for (const c of COMPOUNDS) (byTheme[c.theme] = byTheme[c.theme] || []).push(c);
 
 const THEME_NAME = {
   alcohol:  'Alcohols — α-cleavage and dehydration',
-  carbonyl: 'Carbonyls — the acylium',
-  arene:    'Arenes — benzylic cleavage and tropylium',
+  carbonyl: 'Carbonyls — the fragment that keeps the C=O',
+  arene:    'Arenes — the benzyl fragment at m/z 91',
   branch:   'Chains — the tertiary carbocation',
   hetero:   'Amines and ethers — α-cleavage again',
   halide:   'Halides — isotope patterns'
@@ -84,7 +84,7 @@ for (const theme of Object.keys(THEME_NAME)) {
     w('| Class | ' + c.cls + ' |');
     w('| Levels | ' + c.tags.join(', ') + ' |');
     w('');
-    w('| m/z | % | Loss | Ion | Mechanism | Role |');
+    w('| m/z | % | Loss | Fragment | How it breaks | Role |');
     w('| ---: | ---: | --- | --- | --- | --- |');
     for (const p of c.peaks.slice().sort((a, b) => b.mz - a.mz)) {
       const ion = p.ion ? IONS[p.ion] : null;
@@ -138,9 +138,9 @@ for (const n of Object.keys(LOSSES).map(Number).sort((a, b) => a - b)) {
 }
 w('');
 
-w('## Ions worth knowing on sight');
+w('## Fragments worth knowing on sight');
 w('');
-w('| m/z | Ion | Formula | Stability | Why |');
+w('| m/z | Fragment | Formula | Stability | Why |');
 w('| ---: | --- | --- | --- | --- |');
 for (const k of ION_IDS.filter(k => IONS[k].mz).sort((a, b) => IONS[a].mz - IONS[b].mz)) {
   const g = IONS[k];
@@ -157,7 +157,8 @@ if (twins.length) {
   w('## The ambiguous masses');
   w('');
   w('These are the masses where the arithmetic alone will not settle it, and the rest of');
-  w('the spectrum has to. Level 2 offers one against the other on purpose.');
+  w('the spectrum has to. Level 2 offers one against the other on purpose \u2014 this is what');
+  w('makes \u221229 and \u221243 worth teaching rather than just listing.');
   w('');
   w('| m/z | Candidates | Settled by |');
   w('| ---: | --- | --- |');

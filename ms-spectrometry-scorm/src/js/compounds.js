@@ -72,7 +72,7 @@ function centre(subs) {
 
 var COMPOUNDS = [
 
-  /* ==================================================== carbonyls: acylium */
+  /* ========================= carbonyls: the fragment that keeps the C=O */
   {
     id: 'acetone', name: 'Acetone', formula: 'C₃H₆O', f: 'C3H6O', cls: 'Ketone',
     theme: 'carbonyl', tags: ['loss', 'ion'],
@@ -81,11 +81,11 @@ var COMPOUNDS = [
     peaks: [
       { mz: 58, ab: 26, role: 'mplus' },
       { mz: 43, ab: 100, ion: 'ch3co', role: 'key',
-        why: 'Alpha cleavage throws off one methyl and leaves an acylium — resonance-stabilised, and the most stable cation acetone can make. Nothing else comes close, so it is the base peak.' },
+        why: 'Alpha cleavage throws off one methyl and leaves CH₃C≡O⁺. The C=O spreads the positive charge, which no plain alkyl fragment can do — so nothing else acetone can make comes close, and this is the base peak.' },
       { mz: 42, ab: 9, role: 'minor' },
       { mz: 27, ab: 6, role: 'minor' },
       { mz: 15, ab: 12, ion: 'ch3', role: 'key',
-        why: 'The other half of the same cleavage. A bare methyl cation is the worst carbocation there is, so this peak is small — the charge almost always stays with the acylium.' }
+        why: 'The other half of the same break. A bare CH₃⁺ is the worst carbocation there is, so this peak stays small — the charge almost always goes with the piece that kept the C=O.' }
     ]
   },
   {
@@ -97,10 +97,10 @@ var COMPOUNDS = [
       { mz: 72, ab: 24, role: 'mplus' },
       { mz: 57, ab: 5, ion: 'c2h5co', role: 'minor' },
       { mz: 43, ab: 100, ion: 'ch3co', role: 'key',
-        why: 'Alpha cleavage can drop either group. Dropping the ETHYL wins, because an ethyl radical is more stable than a methyl radical — so the acylium at 43 towers over the one at 57.' },
+        why: 'The break can drop either group. Dropping the ETHYL wins, because the bigger piece comes off more easily — so the C=O fragment at 43 towers over the one at 57.' },
       { mz: 42, ab: 3, role: 'minor' },
       { mz: 29, ab: 25, ion: 'c2h5', role: 'key',
-        why: 'The other half of the cleavage that gives 43: a primary ethyl cation. Real, but a long way below the acylium.' },
+        why: 'The other half of the break that gives 43: a plain ethyl fragment, primary and unhelped. Real, but a long way below the piece that kept the C=O.' },
       { mz: 27, ab: 20, role: 'cluster' }
     ]
   },
@@ -112,7 +112,7 @@ var COMPOUNDS = [
     peaks: [
       { mz: 86, ab: 24, role: 'mplus' },
       { mz: 57, ab: 100, ion: 'c2h5co', role: 'key',
-        why: 'Alpha cleavage on either side gives the same acylium, because the molecule is symmetrical. Two routes to one resonance-stabilised cation makes it overwhelming.' },
+        why: 'Alpha cleavage on either side gives the same C=O fragment, because the molecule is symmetrical. Two routes to one well-propped-up fragment makes it overwhelming.' },
       { mz: 29, ab: 56, ion: 'c2h5', role: 'key',
         why: 'The ethyl cation left behind when the charge stays on the alkyl side instead. Primary, so it loses the competition — but there are two ethyls to make it, which is why it is still tall.' },
       { mz: 27, ab: 30, role: 'cluster' },
@@ -130,7 +130,7 @@ var COMPOUNDS = [
         why: 'Alpha cleavage losing the METHYL. It works, but dropping the propyl instead gives a better radical, so this is the minor of the two routes.' },
       { mz: 58, ab: 20, role: 'mcl' },
       { mz: 43, ab: 100, ion: 'ch3co', role: 'key',
-        why: 'Alpha cleavage losing the PROPYL — the bigger, more stable radical — leaving the acetyl acylium. Resonance wins again.' },
+        why: 'Alpha cleavage losing the PROPYL — the bigger, easier piece to break off — leaving CH₃C≡O⁺. The C=O carries the charge, and that wins again.' },
       { mz: 41, ab: 12, role: 'cluster' },
       { mz: 27, ab: 15, role: 'cluster' }
     ]
@@ -143,7 +143,7 @@ var COMPOUNDS = [
     peaks: [
       { mz: 120, ab: 30, role: 'mplus' },
       { mz: 105, ab: 100, ion: 'phco', role: 'key',
-        why: 'Alpha cleavage drops the methyl and leaves a benzoyl cation: acylium resonance PLUS a benzene ring to spread the charge into. Two stabilisations on one ion — nothing in this spectrum can compete.' },
+        why: 'Alpha cleavage drops the methyl and leaves a fragment holding BOTH a C=O and a benzene ring. Two things spreading the charge over one fragment — nothing in this spectrum can compete.' },
       { mz: 77, ab: 85, ion: 'ph', role: 'key',
         why: 'The benzoyl then loses carbon monoxide to give the phenyl cation. A second-generation fragment, but so characteristic that 105 with 77 underneath it is the signature of a phenyl ketone.' },
       { mz: 51, ab: 30, ion: 'c4h3', role: 'cluster' },
@@ -183,7 +183,7 @@ var COMPOUNDS = [
       { mz: 59, ab: 25, ion: 'acetoxy', role: 'key',
         why: 'Breaking the O–CH₃ bond. It happens, but it leaves the charge on a much poorer cation than the other route does.' },
       { mz: 43, ab: 100, ion: 'ch3co', role: 'key',
-        why: 'Breaking the C–O bond on the other side of the carbonyl gives the acetyl acylium. Every acetate ester does this, which is why m/z 43 is the first thing to look for in one.' },
+        why: 'Breaking the C–O bond on the other side of the carbonyl leaves CH₃C≡O⁺. Every acetate ester does this, which is why m/z 43 is the first thing to look for in one.' },
       { mz: 42, ab: 12, role: 'cluster' },
       { mz: 15, ab: 20, ion: 'ch3', role: 'minor' }
     ]
@@ -219,7 +219,7 @@ var COMPOUNDS = [
       { mz: 56, ab: 8, ion: 'dehydr', role: 'key',
         why: 'Dehydration, −18. Present, as it is in every alcohol, but a secondary alcohol would rather cleave alpha than lose water.' },
       { mz: 45, ab: 100, ion: 'ch3choh', role: 'key',
-        why: 'Alpha cleavage losing the ETHYL — the bigger, more stable radical. The oxocarbenium left behind is resonance-stabilised AND carries an extra methyl, so this is the base peak. m/z 45 means secondary alcohol.' },
+        why: 'Alpha cleavage losing the ETHYL — the bigger, easier piece to break off. What is left keeps the oxygen AND carries an extra methyl, so this is the base peak. As the base peak, m/z 45 means a secondary alcohol.' },
       { mz: 43, ab: 18, ion: 'c3h7', role: 'cluster' },
       { mz: 41, ab: 20, ion: 'c3h5', role: 'cluster' },
       { mz: 31, ab: 25, ion: 'ch2oh', role: 'cluster',
@@ -238,7 +238,7 @@ var COMPOUNDS = [
                  bonds: [[0, 1, 1], [0, 2, 1], [0, 3, 1], [0, 4, 1]], labels: { 4: 'OH' } },
     peaks: [
       { mz: 59, ab: 100, ion: 'me2coh', role: 'key',
-        why: 'Alpha cleavage losing one of the three methyls. The oxocarbenium left behind has oxygen resonance AND two methyls donating into it — so stable that the molecular ion at 74 never survives long enough to be seen at all.' },
+        why: 'Alpha cleavage losing one of the three methyls. What is left keeps the oxygen AND has two methyls propping up the charge — so stable that the molecular ion at 74 never survives long enough to be seen at all.' },
       { mz: 57, ab: 6, role: 'minor' },
       { mz: 43, ab: 20, ion: 'c3h7', role: 'cluster' },
       { mz: 41, ab: 25, ion: 'c3h5', role: 'cluster' },
@@ -258,7 +258,7 @@ var COMPOUNDS = [
       { mz: 70, ab: 10, ion: 'dehydr', role: 'key',
         why: 'Dehydration, −18. Tertiary alcohols dehydrate readily — and since the molecular ion at 88 is gone, this is close to the highest peak you can see.' },
       { mz: 59, ab: 100, ion: 'me2coh', role: 'key',
-        why: 'Alpha cleavage losing the ETHYL. Same oxocarbenium as tert-butanol makes, and reached by dropping the more stable radical — which is exactly why this beats the 73. Comparing these two peaks IS the lesson.' },
+        why: 'Alpha cleavage losing the ETHYL. The same fragment tert-butanol makes, and reached by breaking off the bigger group — which is exactly why this beats the 73. Comparing these two peaks IS the lesson.' },
       { mz: 55, ab: 20, ion: 'c4h7', role: 'cluster' },
       { mz: 43, ab: 15, ion: 'c3h7', role: 'cluster' },
       { mz: 41, ab: 18, ion: 'c3h5', role: 'cluster' }
@@ -297,7 +297,7 @@ var COMPOUNDS = [
     ]
   },
 
-  /* ======================================== arenes: benzylic and tropylium */
+  /* ================================ arenes: breaking next to the ring, m/z 91 */
   {
     id: 'toluene', name: 'Toluene', formula: 'C₇H₈', f: 'C7H8', cls: 'Alkylbenzene',
     theme: 'arene', tags: ['loss', 'ion'],
@@ -305,7 +305,7 @@ var COMPOUNDS = [
     peaks: [
       { mz: 92, ab: 70, role: 'mplus' },
       { mz: 91, ab: 100, ion: 'c7h7', role: 'key',
-        why: 'Losing a single hydrogen gives tropylium — a flat aromatic seven-membered ring sharing the charge over all seven carbons. It is so much better than the molecular ion that M−1 outgrows M⁺.' },
+        why: 'Losing a single hydrogen leaves C₇H₇⁺, where the ring spreads the charge around itself. It is so much better off than the molecular ion that M−1 outgrows M⁺.' },
       { mz: 65, ab: 25, ion: 'c5h5', role: 'cluster' },
       { mz: 39, ab: 20, role: 'cluster' },
       { mz: 51, ab: 10, role: 'minor' }
@@ -318,7 +318,7 @@ var COMPOUNDS = [
     peaks: [
       { mz: 106, ab: 25, role: 'mplus' },
       { mz: 91, ab: 100, ion: 'c7h7', role: 'key',
-        why: 'Benzylic cleavage: the bond one carbon out from the ring breaks, the methyl leaves, and the benzyl cation expands to tropylium. This is the −15 you should expect from any ethylbenzene.' },
+        why: 'The bond one carbon out from the ring breaks, the methyl leaves, and the ring takes the charge. This is the −15 to expect from any ethylbenzene.' },
       { mz: 65, ab: 12, ion: 'c5h5', role: 'cluster' },
       { mz: 51, ab: 10, role: 'cluster' },
       { mz: 39, ab: 10, role: 'cluster' },
@@ -332,7 +332,7 @@ var COMPOUNDS = [
     peaks: [
       { mz: 120, ab: 25, role: 'mplus' },
       { mz: 91, ab: 100, ion: 'c7h7', role: 'key',
-        why: 'Benzylic cleavage again — but here the group that leaves is an ethyl, so this is a −29 rather than a −15. The ion is the same tropylium; only the arithmetic changes.' },
+        why: 'The same break next to the ring — but here the group that leaves is an ethyl, so this is a −29 rather than a −15. The fragment is the same C₇H₇⁺; only the arithmetic changes.' },
       { mz: 92, ab: 9, role: 'minor' },
       { mz: 65, ab: 12, ion: 'c5h5', role: 'cluster' },
       { mz: 39, ab: 10, role: 'cluster' },
@@ -363,7 +363,7 @@ var COMPOUNDS = [
       { mz: 134, ab: 25, role: 'mplus' },
       { mz: 92, ab: 35, role: 'mcl' },
       { mz: 91, ab: 100, ion: 'c7h7', role: 'key',
-        why: 'Benzylic cleavage losing a propyl radical — a −43 this time. However long the chain gets, the ring takes the charge and you land on tropylium at 91.' },
+        why: 'The same break next to the ring, losing a propyl — a −43 this time. However long the chain gets, the ring takes the charge and you land at m/z 91.' },
       { mz: 65, ab: 12, ion: 'c5h5', role: 'cluster' },
       { mz: 51, ab: 8, role: 'cluster' },
       { mz: 39, ab: 8, role: 'cluster' }
@@ -429,7 +429,7 @@ var COMPOUNDS = [
     peaks: [
       { mz: 59, ab: 20, role: 'mplus' },
       { mz: 30, ab: 100, ion: 'ch2nh2', role: 'key',
-        why: 'Alpha cleavage at the nitrogen. Nitrogen shares its lone pair even more readily than oxygen does, so the iminium is superbly stabilised and m/z 30 swamps everything. Note the ODD molecular ion — that is the nitrogen rule.' },
+        why: 'Alpha cleavage at the nitrogen. Nitrogen holds a positive charge even more willingly than oxygen does, so m/z 30 swamps everything. Note the ODD molecular ion — that is the nitrogen rule.' },
       { mz: 28, ab: 25, role: 'cluster' },
       { mz: 41, ab: 10, role: 'cluster' },
       { mz: 44, ab: 8, role: 'minor' },
@@ -443,7 +443,7 @@ var COMPOUNDS = [
     peaks: [
       { mz: 73, ab: 20, role: 'mplus' },
       { mz: 58, ab: 100, ion: 'etnhchme', role: 'key',
-        why: 'Alpha cleavage losing a methyl from one of the ethyls, leaving a nitrogen-stabilised iminium. Another odd molecular ion — one nitrogen.' },
+        why: 'Alpha cleavage losing a methyl from one of the ethyls, leaving the nitrogen holding the charge. Another odd molecular ion — one nitrogen.' },
       { mz: 44, ab: 12, role: 'cluster' },
       { mz: 30, ab: 30, ion: 'ch2nh2', role: 'cluster',
         note: 'CH₂=NH₂⁺ — nitrogen-stabilised and real, but reaching it from a SECONDARY amine takes more than one step. m/z 30 points to a primary amine only when it dominates; here the base peak does.' },

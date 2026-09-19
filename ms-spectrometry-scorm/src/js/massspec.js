@@ -27,6 +27,8 @@
 
 var MS = (function () {
   var THRESHOLD = 5;                 /* % of base peak */
+  var HEAD = 18;                     /* px of clear air above a 100% peak, for its label */
+  var LABEL_H = 13;                  /* px a peak's m/z label occupies above the stick */
   var MASS = { C: 12, H: 1, N: 14, O: 16, F: 19, S: 32, Cl: 35, Br: 79, I: 127 };
 
   /* Deterministic PRNG (mulberry32), so a seed always redraws the same. */
@@ -197,15 +199,20 @@ var MS = (function () {
     return spec.mzMin + (px - rect.x) / rect.w * (spec.mzMax - spec.mzMin);
   }
 
+  /* The top of the plot is held back by HEAD so the tallest peak still has
+     room for its m/z label above it. */
   function yOfAb(ab, rect) {
-    return rect.y + rect.h * (1 - ab / 100);
+    return rect.y + HEAD + (rect.h - HEAD) * (1 - ab / 100);
   }
 
-  /* A round tick spacing giving roughly eight labels across the axis. */
-  function tickStep(span) {
-    var steps = [5, 10, 20, 25, 50, 100, 200];
-    for (var i = 0; i < steps.length; i++) if (span / steps[i] <= 9) return steps[i];
-    return 500;
+  /* A round tick spacing. Denser than the default would be, because on a
+     stick plot the axis is how you place a peak, and 100-unit gaps make a
+     stick at 57 indistinguishable from one at 63. */
+  function tickStep(span, width) {
+    var room = Math.max(4, Math.floor((width || 600) / 46));
+    var steps = [5, 10, 20, 25, 50, 100];
+    for (var i = 0; i < steps.length; i++) if (span / steps[i] <= room) return steps[i];
+    return 200;
   }
 
   function tone(name, fallback) {
@@ -248,18 +255,37 @@ var MS = (function () {
       ctx.fillText(String(a), rect.x - 7, y);
     }
 
-    /* the m/z axis */
-    var step = tickStep(spec.mzMax - spec.mzMin);
+    /* the m/z axis — minor ticks to count along, major ticks labelled, and a
+       faint vertical gridline at each label so a stick can be traced down to
+       a number instead of guessed at */
+    var step = tickStep(spec.mzMax - spec.mzMin, rect.w);
+    var minor = step / (step % 4 === 0 ? 4 : 5);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
+
+    ctx.strokeStyle = grid;
+    for (var mzm = Math.ceil(spec.mzMin / minor) * minor; mzm <= spec.mzMax; mzm += minor) {
+      var xm = Math.round(xOfMz(mzm, rect, spec)) + 0.5;
+      ctx.beginPath();
+      ctx.moveTo(xm, rect.y + rect.h); ctx.lineTo(xm, rect.y + rect.h + 3);
+      ctx.stroke();
+    }
+
     for (var mz = Math.ceil(spec.mzMin / step) * step; mz <= spec.mzMax; mz += step) {
       var x = Math.round(xOfMz(mz, rect, spec)) + 0.5;
+      ctx.save();
+      ctx.globalAlpha = 0.55;
       ctx.strokeStyle = grid;
       ctx.beginPath();
-      ctx.moveTo(x, rect.y + rect.h); ctx.lineTo(x, rect.y + rect.h + 4);
+      ctx.moveTo(x, rect.y); ctx.lineTo(x, rect.y + rect.h);
+      ctx.stroke();
+      ctx.restore();
+      ctx.strokeStyle = muted;
+      ctx.beginPath();
+      ctx.moveTo(x, rect.y + rect.h); ctx.lineTo(x, rect.y + rect.h + 6);
       ctx.stroke();
       ctx.fillStyle = muted;
-      ctx.fillText(String(mz), x, rect.y + rect.h + 7);
+      ctx.fillText(String(mz), x, rect.y + rect.h + 9);
     }
 
     /* axis titles */
@@ -293,6 +319,53 @@ var MS = (function () {
       ctx.lineTo(x, top);
       ctx.stroke();
     });
+
+    /* --- the mass, printed above every peak worth reading ---
+       This is what makes a stick plot readable: you should never have to
+       trace a line down to the axis and estimate. Crowded regions (41, 43,
+       45 sitting together) are resolved tallest-first, so the peaks that
+       matter keep their labels and the chatter loses its. */
+    ctx.font = '10px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    /* Crowded neighbours STAGGER onto a second or third row rather than
+       losing their label. Dropping one would be worst exactly where it
+       matters most — an M/M+2 halogen pair sits two mass units apart, and
+       reading 122 against 124 is the entire lesson for those compounds. */
+    var boxes = [];
+    function clashes(box) {
+      for (var i = 0; i < boxes.length; i++) {
+        var o = boxes[i];
+        if (box.l < o.r && box.r > o.l && box.t < o.b && box.b > o.t) return true;
+      }
+      return false;
+    }
+
+    spec.peaks.slice()
+      .sort(function (a, b) { return b.ab - a.ab; })
+      .forEach(function (p) {
+        if (p.ab < THRESHOLD) return;
+        var text = String(p.mz);
+        var x = xOfMz(p.mz, rect, spec);
+        var half = ctx.measureText(text).width / 2 + 3;
+        if (x - half < rect.x || x + half > rect.x + rect.w) return;
+
+        var top = yOfAb(p.ab, rect) - LABEL_H;
+        for (var row = 0; row < 3; row++) {
+          var t = top - row * LABEL_H;
+          if (t < rect.y) break;
+          var box = { l: x - half, r: x + half, t: t, b: t + LABEL_H };
+          if (clashes(box)) continue;
+          boxes.push(box);
+          ctx.fillStyle = p.target ? stick : muted;
+          ctx.fillText(text, x, t + LABEL_H - 3);
+          break;
+        }
+      });
+
+    /* Handed back so the drop markers can be laid out around the numbers
+       instead of on top of them. */
+    rect.labels = boxes;
 
     /* the baseline itself, over the foot of the sticks */
     ctx.strokeStyle = muted;
@@ -352,7 +425,7 @@ var MS = (function () {
   }
 
   return {
-    THRESHOLD: THRESHOLD,
+    THRESHOLD: THRESHOLD, LABEL_H: LABEL_H,
     build: build, draw: draw, drawLeaders: drawLeaders, peakAt: peakAt, rng: rng,
     parseFormula: parseFormula, massOf: massOf,
     plotRect: plotRect, xOfMz: xOfMz, mzOfX: mzOfX, yOfAb: yOfAb

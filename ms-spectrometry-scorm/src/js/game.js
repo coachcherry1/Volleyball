@@ -3,10 +3,11 @@
  * Level 1  READ THE LOSSES      compound named. Label each marked peak with
  *                               what was lost from the molecular ion: -15,
  *                               -18, -29, -43. Arithmetic first.
- * Level 2  NAME THE ION         compound hidden. Label each marked peak with
- *                               the CATION it is, then identify the compound.
- *                               The tiles carry formulas, never m/z values,
- *                               so a student has to count rather than match.
+ * Level 2  NAME THE FRAGMENT    compound hidden. Label each marked peak with
+ *                               the FRAGMENT it is, then identify the
+ *                               compound. Tiles carry formulas, never m/z
+ *                               values, so a student adds up the formula and
+ *                               matches it to a mass on the plot.
  * Level 3  PREDICT THE BASE PEAK  spectrum hidden. From the structure alone,
  *                               choose which cleavage gives the most stable
  *                               cation, then say where it lands. The spectrum
@@ -38,8 +39,8 @@ var Game = (function () {
   var LEVELS = [
     { n: 1, name: 'Read the losses', tag: 'loss', mode: 'loss', items: 6, reference: true,
       blurb: 'The compound is named for you. Label each marked peak with what the molecule LOST to make it.' },
-    { n: 2, name: 'Name the ion', tag: 'ion', mode: 'ion', items: 6, identify: true,
-      blurb: 'The compound is hidden. Name the cation each marked peak actually is — the tiles give you formulas, not masses — then identify the compound.' },
+    { n: 2, name: 'Name the fragment', tag: 'ion', mode: 'ion', items: 6, identify: true,
+      blurb: 'The compound is hidden. Work out which fragment each marked peak is — the tiles give you formulas, so add them up — then identify the compound.' },
     { n: 3, name: 'Predict the base peak', tag: 'predict', mode: 'predict', items: 6,
       blurb: 'No spectrum yet. From the structure alone, work out which cleavage gives the most stable cation, and where it lands.' }
   ];
@@ -331,7 +332,11 @@ var Game = (function () {
       node.setAttribute('aria-label', s.filled
         ? s.filledLabel + ' at m/z ' + s.peak.mz
         : 'Unlabelled peak at m/z ' + s.peak.mz + ', ' + Math.round(s.peak.ab) + ' percent');
-      node.textContent = s.filled ? s.filledLabel : String(s.i + 1);
+      /* The plot prints every readable peak's mass, so the marker does not
+         need to repeat it — and must not, because once filled it carries the
+         answer instead and the mass would be lost. "?" just says "this is
+         one of the ones being asked about". */
+      node.textContent = s.filled ? s.filledLabel : '?';
       node.style.visibility = 'hidden';
       el.overlay.appendChild(node);
       return node;
@@ -343,28 +348,47 @@ var Game = (function () {
       return (ox > 0 && oy > 0) ? Math.min(ox, oy) : 0;
     }
 
-    var placed = [], leaders = [];
+    /* Seed the collision test with the masses the plot has already printed,
+       so a marker is never placed over the number it belongs to. */
+    var placed = (rect.labels || []).slice(), leaders = [];
 
     item.slots.forEach(function (s, i) {
       var node = nodes[i];
       var w = node.offsetWidth || 36;
       var h = node.offsetHeight || 36;
       var x0 = MS.xOfMz(s.peak.mz, rect, item.spec);
-      var yTop = MS.yOfAb(s.peak.ab, rect);
+      /* Start above the peak's printed m/z, not above the stick, so the
+         marker never sits on top of the number it belongs to. */
+      var yTop = MS.yOfAb(s.peak.ab, rect) - MS.LABEL_H;
+
+      /* Candidates in order of preference: stacked above the printed mass,
+         centre first and then either side. Failing all of those — which is
+         what happens to the base peak, since a 100% stick has no room above
+         it — beside the peak instead, offset far enough to clear its label.
+         Sitting on top of the label is never an option: the mass is the one
+         thing the student must be able to read. */
+      var cands = [];
+      for (var up = 0; up < 7; up++) {
+        var cy = yTop - h / 2 - 9 - up * (h + 4);
+        cands.push({ x: x0, y: cy });
+        cands.push({ x: x0 + w * 0.62, y: cy });
+        cands.push({ x: x0 - w * 0.62, y: cy });
+      }
+      for (var d = 0; d < 3; d++) {
+        var by = yTop + MS.LABEL_H + h / 2 + d * (h + 4);
+        cands.push({ x: x0 + w / 2 + 22, y: by });
+        cands.push({ x: x0 - w / 2 - 22, y: by });
+      }
 
       var best = null, bestCost = Infinity;
-      for (var up = 0; up < 7 && bestCost > 0; up++) {
-        for (var side = 0; side < 3 && bestCost > 0; side++) {
-          var dx = side === 0 ? 0 : (side === 1 ? w * 0.62 : -w * 0.62);
-          var cy = yTop - h / 2 - 9 - up * (h + 4);
-          var cx = x0 + dx;
-          if (cy - h / 2 < rect.y + 2) continue;
-          if (cx - w / 2 < rect.x + 2 || cx + w / 2 > rect.x + rect.w - 2) continue;
-          var box = { l: cx - w / 2, r: cx + w / 2, t: cy - h / 2, b: cy + h / 2 };
-          var cost = 0;
-          placed.forEach(function (p) { cost += overlap(box, p); });
-          if (cost < bestCost) { bestCost = cost; best = box; }
-        }
+      for (var ci = 0; ci < cands.length && bestCost > 0; ci++) {
+        var cx = cands[ci].x, cyy = cands[ci].y;
+        if (cyy - h / 2 < rect.y + 2 || cyy + h / 2 > rect.y + rect.h - 2) continue;
+        if (cx - w / 2 < rect.x + 2 || cx + w / 2 > rect.x + rect.w - 2) continue;
+        var box = { l: cx - w / 2, r: cx + w / 2, t: cyy - h / 2, b: cyy + h / 2 };
+        var cost = 0;
+        placed.forEach(function (p) { cost += overlap(box, p); });
+        if (cost < bestCost) { bestCost = cost; best = box; }
       }
 
       if (!best) {
@@ -415,7 +439,7 @@ var Game = (function () {
       el.card.appendChild(make('p', 'card-kicker', 'Unknown compound'));
       el.card.appendChild(make('p', 'card-hidden', '?'));
       el.card.appendChild(make('p', 'card-note',
-        'Name every marked peak, then identify the compound.'));
+        'Work out every marked peak, then identify the compound.'));
       return;
     }
     el.card.appendChild(make('p', 'card-kicker', item.compound.cls));
@@ -583,7 +607,7 @@ var Game = (function () {
       item.phase = 'identify';
       clearSelection();
       paintTray();
-      say('Every marked peak is named. Now — which compound is this?', 'good');
+      say('Every marked peak is worked out. Now — which compound is this?', 'good');
       window.__item = item;
       paintChoices();
     } else {
@@ -640,8 +664,8 @@ var Game = (function () {
     el.choices.hidden = false;
     el.choices.innerHTML = '';
     el.choices.appendChild(make('p', 'choices-q',
-      'Every one of these cleavages happens. Which cation is the most stable — which peak will ' +
-      'be the BASE PEAK?'));
+      'Every one of these breaks happens. Which fragment is the most stable — which peak will ' +
+      'be the TALLEST?'));
     var row = make('div', 'choices-row routes');
     item.routes.forEach(function (r, i) {
       var b = make('button', 'choice route');
@@ -656,11 +680,11 @@ var Game = (function () {
   }
 
   var MECH = {
-    alpha: 'α-cleavage, next to the heteroatom',
-    branch: 'cleavage at the branch point',
-    benzylic: 'benzylic cleavage, next to the ring',
-    dehydr: 'dehydration, loses water',
-    sigma: 'plain C–C cleavage'
+    alpha: 'breaks next to the O or N (α-cleavage)',
+    branch: 'breaks at the branch point',
+    benzylic: 'breaks next to the ring',
+    dehydr: 'loses water',
+    sigma: 'plain C–C break'
   };
 
   function chooseRoute(index, node) {
@@ -754,14 +778,14 @@ var Game = (function () {
   }
 
   var STABILITY = {
-    resonance: 'resonance-stabilised — the charge is shared over more than one atom',
-    tertiary:  'a tertiary carbocation',
+    resonance: 'held together by the O, N or ring next to it sharing the charge',
+    tertiary:  'a tertiary carbocation — three groups propping up the charge',
     secondary: 'a secondary carbocation',
-    primary:   'a primary carbocation',
-    allylic:   'allylic, so resonance-stabilised',
+    primary:   'a primary carbocation, with only one group helping',
+    allylic:   'helped by the double bond next to it',
     methyl:    'a bare methyl cation, the least stable there is',
-    aryl:      'an aryl cation, which the ring cannot actually stabilise',
-    radical:   'a radical cation rather than a clean carbocation'
+    aryl:      'a bare ring, which cannot help the charge at all',
+    radical:   'what is left of the molecule after a small neutral walked off'
   };
 
   /* ------------------------------------------------------------ progression */
@@ -831,9 +855,10 @@ var Game = (function () {
       box.appendChild(make('h2', null, 'Reading a mass spectrum'));
       box.appendChild(make('p', null,
         'A molecule is hit with an electron beam, loses one electron, and the wreckage is ' +
-        'sorted by mass. Most of the peaks you see are wreckage of no interest. The few that ' +
-        'matter are the ones where the molecule broke to leave the MOST STABLE CATION it could ' +
-        'make — and carbocation stability is something you already know.'));
+        'sorted by mass. Most of the peaks are wreckage of no interest. The tall ones are ' +
+        'where the molecule broke to leave the MOST STABLE CARBOCATION it could make — and ' +
+        'carbocation stability is something you already know: 3° beats 2° beats 1°, and a ' +
+        'nearby O, N or ring beats all of them.'));
       box.appendChild(make('p', null,
         'Two rules carry most of the work. A dotted line is drawn across every spectrum at 5% ' +
         'of the base peak: below it, do not read anything. And above it, a peak still has to be ' +
@@ -1068,7 +1093,7 @@ var Game = (function () {
 
     var ionTable = make('table', 'ref-table');
     var h2 = make('tr');
-    ['m/z', 'Ion', 'Why it is stable'].forEach(function (h) {
+    ['m/z', 'Fragment', 'Why it survived'].forEach(function (h) {
       h2.appendChild(make('th', null, h));
     });
     ionTable.appendChild(h2);
@@ -1082,7 +1107,31 @@ var Game = (function () {
         tr.appendChild(make('td', 'note', g.hint));
         ionTable.appendChild(tr);
       });
-    el.refbody.appendChild(make('h4', 'ref-head', 'Ions worth knowing on sight'));
+    /* The alkyl series is a pattern, not a list to memorise: once a student
+       sees that 15, 29, 43, 57, 71 are each one CH2 apart, a whole family of
+       peaks stops being noise. */
+    el.refbody.appendChild(make('h4', 'ref-head', 'The alkyl series — each one 14 more than the last'));
+    var alkyl = make('table', 'ref-table');
+    var h0 = make('tr');
+    ['m/z', 'Fragment', 'Carbons'].forEach(function (h) { h0.appendChild(make('th', null, h)); });
+    alkyl.appendChild(h0);
+    [[15, 'CH₃⁺', 1], [29, 'C₂H₅⁺', 2], [43, 'C₃H₇⁺', 3], [57, 'C₄H₉⁺', 4], [71, 'C₅H₁₁⁺', 5]]
+      .forEach(function (row) {
+        var tr = make('tr');
+        tr.appendChild(make('td', 'num', String(row[0])));
+        tr.appendChild(make('td', null, row[1]));
+        tr.appendChild(make('td', 'note', String(row[2])));
+        alkyl.appendChild(tr);
+      });
+    el.refbody.appendChild(alkyl);
+    el.refbody.appendChild(make('p', 'ref-foot',
+      'A run of peaks 14 apart means a chain breaking up at every C–C bond. Which one is ' +
+      'TALLEST is the useful part: the tallest is the most stable carbocation, so a big m/z 57 ' +
+      'usually means a tert-butyl and a branch point, while an even run with no clear winner ' +
+      'means a straight chain. Watch out — 29, 43, 57 and 71 each share their mass with a ' +
+      'fragment that kept a C=O, so check the structure for an oxygen before you commit.'));
+
+    el.refbody.appendChild(make('h4', 'ref-head', 'Fragments worth knowing on sight'));
     el.refbody.appendChild(ionTable);
     el.refbody.appendChild(make('p', 'ref-foot',
       'The reading threshold is 5% of the base peak. Below it, leave a peak alone. Above it, ' +

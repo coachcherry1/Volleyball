@@ -19,18 +19,18 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₄H₁₀O |
 | Molecular ion | **74**  — *only 1%: drawn, but too weak to measure a loss from, so this compound is kept out of Level 1* |
-| Base peak | **m/z 31**  CH₂=OH⁺, oxocarbenium (from a 1° alcohol) |
+| Base peak | **m/z 31**  CH₂=OH⁺, keeps the oxygen |
 | Class | Primary alcohol |
 | Levels | ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 74 | 1 | — | — | — | drawn; below the reading line |
-| 56 | 60 | −18 (H₂O) | [M − H₂O]⁺·  | dehydration | **scored** |
+| 56 | 60 | −18 (H₂O) | [M − H₂O]⁺  | loses water | **scored** |
 | 55 | 25 | — | — | — | drawn; above the line but not diagnostic |
-| 43 | 45 | — | C₃H₇⁺ `C3H7` | branch point | drawn; above the line but not diagnostic |
-| 41 | 60 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
-| 31 | 100 | −43 (•C₃H₇ / CH₃CO•) | CH₂=OH⁺ `CH3O` | α-cleavage | **scored** |
+| 43 | 45 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 60 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
+| 31 | 100 | −43 (•C₃H₇ / CH₃CO•) | CH₂=OH⁺ `CH3O` | breaks next to O or N | **scored** |
 | 28 | 30 | — | — | — | drawn; above the line but not diagnostic |
 | 27 | 40 | — | — | — | drawn; above the line but not diagnostic |
 
@@ -45,25 +45,25 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₄H₁₀O |
 | Molecular ion | **74**  — *only 1%: drawn, but too weak to measure a loss from, so this compound is kept out of Level 1* |
-| Base peak | **m/z 45**  CH₃CH=OH⁺, oxocarbenium (from a 2° alcohol) |
+| Base peak | **m/z 45**  CH₃CH=OH⁺, keeps the oxygen |
 | Class | Secondary alcohol |
 | Levels | ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 74 | 1 | — | — | — | drawn; below the reading line |
-| 59 | 10 | −15 (•CH₃) | CH₃CH₂CH=OH⁺ `C3H7O` | α-cleavage | **scored** |
-| 56 | 8 | −18 (H₂O) | [M − H₂O]⁺·  | dehydration | **scored** |
-| 45 | 100 | −29 (•C₂H₅ / •CHO) | CH₃CH=OH⁺ `C2H5O` | α-cleavage | **scored** |
-| 43 | 18 | — | C₃H₇⁺ `C3H7` | branch point | drawn; above the line but not diagnostic |
-| 41 | 20 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
-| 31 | 25 | — | CH₂=OH⁺ `CH3O` | α-cleavage | drawn; above the line but not diagnostic |
+| 59 | 10 | −15 (•CH₃) | CH₃CH₂CH=OH⁺ `C3H7O` | breaks next to O or N | **scored** |
+| 56 | 8 | −18 (H₂O) | [M − H₂O]⁺  | loses water | **scored** |
+| 45 | 100 | −29 (•C₂H₅ / •CHO) | CH₃CH=OH⁺ `C2H5O` | breaks next to O or N | **scored** |
+| 43 | 18 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 20 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
+| 31 | 25 | — | CH₂=OH⁺ `CH3O` | breaks next to O or N | drawn; above the line but not diagnostic |
 | 29 | 25 | — | — | — | drawn; above the line but not diagnostic |
 | 27 | 25 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 45** (100%) — Alpha cleavage losing the ETHYL — the bigger, more stable radical. The oxocarbenium left behind is resonance-stabilised AND carries an extra methyl, so this is the base peak. m/z 45 means secondary alcohol.
+- **m/z 45** (100%) — Alpha cleavage losing the ETHYL — the bigger, easier piece to break off. What is left keeps the oxygen AND carries an extra methyl, so this is the base peak. As the base peak, m/z 45 means a secondary alcohol.
 - **m/z 59** (10%) — Alpha cleavage losing the METHYL. Same oxygen resonance as the other route, but a methyl radical is the worse leaving radical, so this peak stays short.
 - **m/z 56** (8%) — Dehydration, −18. Present, as it is in every alcohol, but a secondary alcohol would rather cleave alpha than lose water.
 
@@ -77,22 +77,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₄H₁₀O |
 | Molecular ion | **74**  — *not observed at all; the molecule falls apart on ionisation* |
-| Base peak | **m/z 59**  (CH₃)₂C=OH⁺, oxocarbenium (from a 3° alcohol) |
+| Base peak | **m/z 59**  (CH₃)₂C=OH⁺, keeps the oxygen |
 | Class | Tertiary alcohol |
 | Levels | ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
-| 59 | 100 | −15 (•CH₃) | (CH₃)₂C=OH⁺ `C3H7O` | α-cleavage | **scored** |
+| 59 | 100 | −15 (•CH₃) | (CH₃)₂C=OH⁺ `C3H7O` | breaks next to O or N | **scored** |
 | 57 | 6 | — | — | — | drawn; below the reading line |
-| 43 | 20 | — | C₃H₇⁺ `C3H7` | branch point | drawn; above the line but not diagnostic |
-| 41 | 25 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
-| 31 | 25 | — | CH₂=OH⁺ `CH3O` | α-cleavage | drawn; above the line but not diagnostic |
+| 43 | 20 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 25 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
+| 31 | 25 | — | CH₂=OH⁺ `CH3O` | breaks next to O or N | drawn; above the line but not diagnostic |
 | 29 | 12 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 59** (100%) — Alpha cleavage losing one of the three methyls. The oxocarbenium left behind has oxygen resonance AND two methyls donating into it — so stable that the molecular ion at 74 never survives long enough to be seen at all.
+- **m/z 59** (100%) — Alpha cleavage losing one of the three methyls. What is left keeps the oxygen AND has two methyls propping up the charge — so stable that the molecular ion at 74 never survives long enough to be seen at all.
 
 **Peaks that need a caveat in class**
 
@@ -104,22 +104,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₅H₁₂O |
 | Molecular ion | **88**  — *not observed at all; the molecule falls apart on ionisation* |
-| Base peak | **m/z 59**  (CH₃)₂C=OH⁺, oxocarbenium (from a 3° alcohol) |
+| Base peak | **m/z 59**  (CH₃)₂C=OH⁺, keeps the oxygen |
 | Class | Tertiary alcohol |
 | Levels | ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
-| 73 | 15 | −15 (•CH₃) | CH₃CH₂(CH₃)C=OH⁺ `C4H9O` | α-cleavage | **scored** |
-| 70 | 10 | −18 (H₂O) | [M − H₂O]⁺·  | dehydration | **scored** |
-| 59 | 100 | −29 (•C₂H₅ / •CHO) | (CH₃)₂C=OH⁺ `C3H7O` | α-cleavage | **scored** |
-| 55 | 20 | — | C₄H₇⁺ `C4H7` | σ C–C | drawn; above the line but not diagnostic |
-| 43 | 15 | — | C₃H₇⁺ `C3H7` | branch point | drawn; above the line but not diagnostic |
-| 41 | 18 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
+| 73 | 15 | −15 (•CH₃) | CH₃CH₂(CH₃)C=OH⁺ `C4H9O` | breaks next to O or N | **scored** |
+| 70 | 10 | −18 (H₂O) | [M − H₂O]⁺  | loses water | **scored** |
+| 59 | 100 | −29 (•C₂H₅ / •CHO) | (CH₃)₂C=OH⁺ `C3H7O` | breaks next to O or N | **scored** |
+| 55 | 20 | — | C₄H₇⁺ `C4H7` | plain C–C | drawn; above the line but not diagnostic |
+| 43 | 15 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 18 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 59** (100%) — Alpha cleavage losing the ETHYL. Same oxocarbenium as tert-butanol makes, and reached by dropping the more stable radical — which is exactly why this beats the 73. Comparing these two peaks IS the lesson.
+- **m/z 59** (100%) — Alpha cleavage losing the ETHYL. The same fragment tert-butanol makes, and reached by breaking off the bigger group — which is exactly why this beats the 73. Comparing these two peaks IS the lesson.
 - **m/z 73** (15%) — Alpha cleavage losing a METHYL. Perfectly good chemistry, but a methyl radical is the least stable radical on offer, so this route runs second.
 - **m/z 70** (10%) — Dehydration, −18. Tertiary alcohols dehydrate readily — and since the molecular ion at 88 is gone, this is close to the highest peak you can see.
 
@@ -133,14 +133,14 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Class | Secondary alcohol |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 100 | 10 | — | — | — | molecular ion — **scored** |
-| 82 | 50 | −18 (H₂O) | [M − H₂O]⁺·  | dehydration | **scored** |
+| 82 | 50 | −18 (H₂O) | [M − H₂O]⁺  | loses water | **scored** |
 | 67 | 30 | — | — | — | drawn; above the line but not diagnostic |
 | 57 | 100 | — | — | — | drawn; above the line but not diagnostic |
 | 44 | 45 | — | — | — | drawn; above the line but not diagnostic |
-| 41 | 40 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
+| 41 | 40 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
@@ -152,18 +152,18 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₈H₁₀O |
 | Molecular ion | **122**  — 25%, scored |
-| Base peak | **m/z 107**  C₆H₅CH=OH⁺, benzylic oxocarbenium |
+| Base peak | **m/z 107**  C₆H₅CH=OH⁺, keeps the oxygen |
 | Class | Benzylic alcohol |
 | Levels | loss, ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 122 | 25 | — | — | — | molecular ion — **scored** |
-| 107 | 100 | −15 (•CH₃) | C₆H₅CH=OH⁺ `C7H7O` | α-cleavage | **scored** |
-| 104 | 12 | −18 (H₂O) | [M − H₂O]⁺·  | dehydration | **scored** |
+| 107 | 100 | −15 (•CH₃) | C₆H₅CH=OH⁺ `C7H7O` | breaks next to O or N | **scored** |
+| 104 | 12 | −18 (H₂O) | [M − H₂O]⁺  | loses water | **scored** |
 | 79 | 75 | — | — | — | drawn; above the line but not diagnostic |
-| 77 | 50 | −45 (•OC₂H₅) | C₆H₅⁺ `C6H5` | σ C–C | **scored** |
-| 51 | 20 | — | C₄H₃⁺ `C4H3` | σ C–C | drawn; above the line but not diagnostic |
+| 77 | 50 | −45 (•OC₂H₅) | C₆H₅⁺ `C6H5` | plain C–C | **scored** |
+| 51 | 20 | — | C₄H₃⁺ `C4H3` | plain C–C | drawn; above the line but not diagnostic |
 | 43 | 30 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
@@ -172,7 +172,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 - **m/z 77** (50%) — The phenyl cation. m/z 77 under a taller peak 28 mass units above it is the standard sign of a monosubstituted ring.
 - **m/z 104** (12%) — Dehydration, −18. Small here: the alpha cleavage route is so much better that water loss barely gets a look in.
 
-## Carbonyls — the acylium
+## Carbonyls — the fragment that keeps the C=O
 
 ### Acetone  ·  `acetone`
 
@@ -180,22 +180,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₃H₆O |
 | Molecular ion | **58**  — 26%, scored |
-| Base peak | **m/z 43**  CH₃C≡O⁺, acylium (acetyl) |
+| Base peak | **m/z 43**  CH₃C≡O⁺, keeps the C=O |
 | Class | Ketone |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 58 | 26 | — | — | — | molecular ion — **scored** |
-| 43 | 100 | −15 (•CH₃) | CH₃C≡O⁺ `C2H3O` | α-cleavage | **scored** |
+| 43 | 100 | −15 (•CH₃) | CH₃C≡O⁺ `C2H3O` | breaks next to O or N | **scored** |
 | 42 | 9 | — | — | — | drawn; below the reading line |
 | 27 | 6 | — | — | — | drawn; below the reading line |
-| 15 | 12 | −43 (•C₃H₇ / CH₃CO•) | CH₃⁺ `CH3` | σ C–C | **scored** |
+| 15 | 12 | −43 (•C₃H₇ / CH₃CO•) | CH₃⁺ `CH3` | plain C–C | **scored** |
 
 **Why each scored peak is where it is**
 
-- **m/z 43** (100%) — Alpha cleavage throws off one methyl and leaves an acylium — resonance-stabilised, and the most stable cation acetone can make. Nothing else comes close, so it is the base peak.
-- **m/z 15** (12%) — The other half of the same cleavage. A bare methyl cation is the worst carbocation there is, so this peak is small — the charge almost always stays with the acylium.
+- **m/z 43** (100%) — Alpha cleavage throws off one methyl and leaves CH₃C≡O⁺. The C=O spreads the positive charge, which no plain alkyl fragment can do — so nothing else acetone can make comes close, and this is the base peak.
+- **m/z 15** (12%) — The other half of the same break. A bare CH₃⁺ is the worst carbocation there is, so this peak stays small — the charge almost always goes with the piece that kept the C=O.
 
 ### 2-Butanone  ·  `butanone`
 
@@ -203,23 +203,23 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₄H₈O |
 | Molecular ion | **72**  — 24%, scored |
-| Base peak | **m/z 43**  CH₃C≡O⁺, acylium (acetyl) |
+| Base peak | **m/z 43**  CH₃C≡O⁺, keeps the C=O |
 | Class | Ketone |
 | Levels | loss, ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 72 | 24 | — | — | — | molecular ion — **scored** |
-| 57 | 5 | — | CH₃CH₂C≡O⁺ `C3H5O` | α-cleavage | drawn; below the reading line |
-| 43 | 100 | −29 (•C₂H₅ / •CHO) | CH₃C≡O⁺ `C2H3O` | α-cleavage | **scored** |
+| 57 | 5 | — | CH₃CH₂C≡O⁺ `C3H5O` | breaks next to O or N | drawn; below the reading line |
+| 43 | 100 | −29 (•C₂H₅ / •CHO) | CH₃C≡O⁺ `C2H3O` | breaks next to O or N | **scored** |
 | 42 | 3 | — | — | — | drawn; below the reading line |
-| 29 | 25 | −43 (•C₃H₇ / CH₃CO•) | C₂H₅⁺ `C2H5` | σ C–C | **scored** |
+| 29 | 25 | −43 (•C₃H₇ / CH₃CO•) | C₂H₅⁺ `C2H5` | plain C–C | **scored** |
 | 27 | 20 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 43** (100%) — Alpha cleavage can drop either group. Dropping the ETHYL wins, because an ethyl radical is more stable than a methyl radical — so the acylium at 43 towers over the one at 57.
-- **m/z 29** (25%) — The other half of the cleavage that gives 43: a primary ethyl cation. Real, but a long way below the acylium.
+- **m/z 43** (100%) — The break can drop either group. Dropping the ETHYL wins, because the bigger piece comes off more easily — so the C=O fragment at 43 towers over the one at 57.
+- **m/z 29** (25%) — The other half of the break that gives 43: a plain ethyl fragment, primary and unhelped. Real, but a long way below the piece that kept the C=O.
 
 ### 3-Pentanone  ·  `pentan3one`
 
@@ -227,21 +227,21 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₅H₁₀O |
 | Molecular ion | **86**  — 24%, scored |
-| Base peak | **m/z 57**  CH₃CH₂C≡O⁺, acylium (propanoyl) |
+| Base peak | **m/z 57**  CH₃CH₂C≡O⁺, keeps the C=O |
 | Class | Ketone |
 | Levels | loss, ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 86 | 24 | — | — | — | molecular ion — **scored** |
-| 57 | 100 | −29 (•C₂H₅ / •CHO) | CH₃CH₂C≡O⁺ `C3H5O` | α-cleavage | **scored** |
-| 29 | 56 | −57 (•C₄H₉ / •COC₂H₅) | C₂H₅⁺ `C2H5` | σ C–C | **scored** |
+| 57 | 100 | −29 (•C₂H₅ / •CHO) | CH₃CH₂C≡O⁺ `C3H5O` | breaks next to O or N | **scored** |
+| 29 | 56 | −57 (•C₄H₉ / •COC₂H₅) | C₂H₅⁺ `C2H5` | plain C–C | **scored** |
 | 28 | 9 | — | — | — | drawn; below the reading line |
 | 27 | 30 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 57** (100%) — Alpha cleavage on either side gives the same acylium, because the molecule is symmetrical. Two routes to one resonance-stabilised cation makes it overwhelming.
+- **m/z 57** (100%) — Alpha cleavage on either side gives the same C=O fragment, because the molecule is symmetrical. Two routes to one well-propped-up fragment makes it overwhelming.
 - **m/z 29** (56%) — The ethyl cation left behind when the charge stays on the alkyl side instead. Primary, so it loses the competition — but there are two ethyls to make it, which is why it is still tall.
 
 ### 2-Pentanone  ·  `pentan2one`
@@ -250,22 +250,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₅H₁₀O |
 | Molecular ion | **86**  — 25%, scored |
-| Base peak | **m/z 43**  CH₃C≡O⁺, acylium (acetyl) |
+| Base peak | **m/z 43**  CH₃C≡O⁺, keeps the C=O |
 | Class | Ketone |
 | Levels | loss, ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 86 | 25 | — | — | — | molecular ion — **scored** |
-| 71 | 8 | −15 (•CH₃) | CH₃CH₂CH₂C≡O⁺ `C4H7O` | α-cleavage | **scored** |
+| 71 | 8 | −15 (•CH₃) | CH₃CH₂CH₂C≡O⁺ `C4H7O` | breaks next to O or N | **scored** |
 | 58 | 20 | — | — | — | drawn; McLafferty rearrangement — never scored |
-| 43 | 100 | −43 (•C₃H₇ / CH₃CO•) | CH₃C≡O⁺ `C2H3O` | α-cleavage | **scored** |
+| 43 | 100 | −43 (•C₃H₇ / CH₃CO•) | CH₃C≡O⁺ `C2H3O` | breaks next to O or N | **scored** |
 | 41 | 12 | — | — | — | drawn; above the line but not diagnostic |
 | 27 | 15 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 43** (100%) — Alpha cleavage losing the PROPYL — the bigger, more stable radical — leaving the acetyl acylium. Resonance wins again.
+- **m/z 43** (100%) — Alpha cleavage losing the PROPYL — the bigger, easier piece to break off — leaving CH₃C≡O⁺. The C=O carries the charge, and that wins again.
 - **m/z 71** (8%) — Alpha cleavage losing the METHYL. It works, but dropping the propyl instead gives a better radical, so this is the minor of the two routes.
 
 > **m/z 58 is a McLafferty rearrangement peak.** It is drawn because it is really there, but it can never be scored, and clicking it tells the student it comes from a rearrangement this unit does not cover.
@@ -276,22 +276,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₈H₈O |
 | Molecular ion | **120**  — 30%, scored |
-| Base peak | **m/z 105**  C₆H₅C≡O⁺, benzoyl cation |
+| Base peak | **m/z 105**  C₆H₅C≡O⁺, keeps the C=O and the ring |
 | Class | Aryl ketone |
 | Levels | loss, ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 120 | 30 | — | — | — | molecular ion — **scored** |
-| 105 | 100 | −15 (•CH₃) | C₆H₅C≡O⁺ `C7H5O` | α-cleavage | **scored** |
-| 77 | 85 | −43 (•C₃H₇ / CH₃CO•) | C₆H₅⁺ `C6H5` | σ C–C | **scored** |
-| 51 | 30 | — | C₄H₃⁺ `C4H3` | σ C–C | drawn; above the line but not diagnostic |
+| 105 | 100 | −15 (•CH₃) | C₆H₅C≡O⁺ `C7H5O` | breaks next to O or N | **scored** |
+| 77 | 85 | −43 (•C₃H₇ / CH₃CO•) | C₆H₅⁺ `C6H5` | plain C–C | **scored** |
+| 51 | 30 | — | C₄H₃⁺ `C4H3` | plain C–C | drawn; above the line but not diagnostic |
 | 50 | 15 | — | — | — | drawn; below the reading line |
-| 43 | 8 | — | CH₃C≡O⁺ `C2H3O` | α-cleavage | drawn; below the reading line |
+| 43 | 8 | — | CH₃C≡O⁺ `C2H3O` | breaks next to O or N | drawn; below the reading line |
 
 **Why each scored peak is where it is**
 
-- **m/z 105** (100%) — Alpha cleavage drops the methyl and leaves a benzoyl cation: acylium resonance PLUS a benzene ring to spread the charge into. Two stabilisations on one ion — nothing in this spectrum can compete.
+- **m/z 105** (100%) — Alpha cleavage drops the methyl and leaves a fragment holding BOTH a C=O and a benzene ring. Two things spreading the charge over one fragment — nothing in this spectrum can compete.
 - **m/z 77** (85%) — The benzoyl then loses carbon monoxide to give the phenyl cation. A second-generation fragment, but so characteristic that 105 with 77 underneath it is the signature of a phenyl ketone.
 
 ### Benzaldehyde  ·  `benzaldehyde`
@@ -304,15 +304,15 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Class | Aromatic aldehyde |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 106 | 100 | — | — | — | molecular ion — **scored** |
-| 105 | 95 | −1 (•H) | C₆H₅C≡O⁺ `C7H5O` | α-cleavage | **scored** |
+| 105 | 95 | −1 (•H) | C₆H₅C≡O⁺ `C7H5O` | breaks next to O or N | **scored** |
 | 78 | 10 | — | — | — | drawn; below the reading line |
-| 77 | 85 | −29 (•C₂H₅ / •CHO) | C₆H₅⁺ `C6H5` | σ C–C | **scored** |
-| 51 | 30 | — | C₄H₃⁺ `C4H3` | σ C–C | drawn; above the line but not diagnostic |
+| 77 | 85 | −29 (•C₂H₅ / •CHO) | C₆H₅⁺ `C6H5` | plain C–C | **scored** |
+| 51 | 30 | — | C₄H₃⁺ `C4H3` | plain C–C | drawn; above the line but not diagnostic |
 | 50 | 15 | — | — | — | drawn; below the reading line |
-| 29 | 10 | — | CHO⁺ `CHO` | α-cleavage | drawn; above the line but not diagnostic |
+| 29 | 10 | — | CHO⁺ `CHO` | breaks next to O or N | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
@@ -325,24 +325,24 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₃H₆O₂ |
 | Molecular ion | **74**  — 25%, scored |
-| Base peak | **m/z 43**  CH₃C≡O⁺, acylium (acetyl) |
+| Base peak | **m/z 43**  CH₃C≡O⁺, keeps the C=O |
 | Class | Ester |
 | Levels | loss, ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 74 | 25 | — | — | — | molecular ion — **scored** |
-| 59 | 25 | −15 (•CH₃) | CH₃CO–O⁺ `C2H3O2` | α-cleavage | **scored** |
-| 43 | 100 | −31 (•OCH₃ / •CH₂OH) | CH₃C≡O⁺ `C2H3O` | α-cleavage | **scored** |
+| 59 | 25 | −15 (•CH₃) | CH₃CO–O⁺ `C2H3O2` | breaks next to O or N | **scored** |
+| 43 | 100 | −31 (•OCH₃ / •CH₂OH) | CH₃C≡O⁺ `C2H3O` | breaks next to O or N | **scored** |
 | 42 | 12 | — | — | — | drawn; above the line but not diagnostic |
-| 15 | 20 | — | CH₃⁺ `CH3` | σ C–C | drawn; below the reading line |
+| 15 | 20 | — | CH₃⁺ `CH3` | plain C–C | drawn; below the reading line |
 
 **Why each scored peak is where it is**
 
-- **m/z 43** (100%) — Breaking the C–O bond on the other side of the carbonyl gives the acetyl acylium. Every acetate ester does this, which is why m/z 43 is the first thing to look for in one.
+- **m/z 43** (100%) — Breaking the C–O bond on the other side of the carbonyl leaves CH₃C≡O⁺. Every acetate ester does this, which is why m/z 43 is the first thing to look for in one.
 - **m/z 59** (25%) — Breaking the O–CH₃ bond. It happens, but it leaves the charge on a much poorer cation than the other route does.
 
-## Arenes — benzylic cleavage and tropylium
+## Arenes — the benzyl fragment at m/z 91
 
 ### Toluene  ·  `toluene`
 
@@ -350,21 +350,21 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₇H₈ |
 | Molecular ion | **92**  — 70%, scored |
-| Base peak | **m/z 91**  C₇H₇⁺, tropylium |
+| Base peak | **m/z 91**  C₇H₇⁺, benzyl fragment |
 | Class | Alkylbenzene |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 92 | 70 | — | — | — | molecular ion — **scored** |
-| 91 | 100 | −1 (•H) | C₇H₇⁺ `C7H7` | benzylic | **scored** |
-| 65 | 25 | — | C₅H₅⁺ `C5H5` | σ C–C | drawn; above the line but not diagnostic |
+| 91 | 100 | −1 (•H) | C₇H₇⁺ `C7H7` | breaks next to the ring | **scored** |
+| 65 | 25 | — | C₅H₅⁺ `C5H5` | plain C–C | drawn; above the line but not diagnostic |
 | 51 | 10 | — | — | — | drawn; below the reading line |
 | 39 | 20 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 91** (100%) — Losing a single hydrogen gives tropylium — a flat aromatic seven-membered ring sharing the charge over all seven carbons. It is so much better than the molecular ion that M−1 outgrows M⁺.
+- **m/z 91** (100%) — Losing a single hydrogen leaves C₇H₇⁺, where the ring spreads the charge around itself. It is so much better off than the molecular ion that M−1 outgrows M⁺.
 
 ### Ethylbenzene  ·  `ethylbenzene`
 
@@ -372,22 +372,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₈H₁₀ |
 | Molecular ion | **106**  — 25%, scored |
-| Base peak | **m/z 91**  C₇H₇⁺, tropylium |
+| Base peak | **m/z 91**  C₇H₇⁺, benzyl fragment |
 | Class | Alkylbenzene |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 106 | 25 | — | — | — | molecular ion — **scored** |
-| 91 | 100 | −15 (•CH₃) | C₇H₇⁺ `C7H7` | benzylic | **scored** |
-| 77 | 5 | — | C₆H₅⁺ `C6H5` | σ C–C | drawn; below the reading line |
-| 65 | 12 | — | C₅H₅⁺ `C5H5` | σ C–C | drawn; above the line but not diagnostic |
+| 91 | 100 | −15 (•CH₃) | C₇H₇⁺ `C7H7` | breaks next to the ring | **scored** |
+| 77 | 5 | — | C₆H₅⁺ `C6H5` | plain C–C | drawn; below the reading line |
+| 65 | 12 | — | C₅H₅⁺ `C5H5` | plain C–C | drawn; above the line but not diagnostic |
 | 51 | 10 | — | — | — | drawn; above the line but not diagnostic |
 | 39 | 10 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 91** (100%) — Benzylic cleavage: the bond one carbon out from the ring breaks, the methyl leaves, and the benzyl cation expands to tropylium. This is the −15 you should expect from any ethylbenzene.
+- **m/z 91** (100%) — The bond one carbon out from the ring breaks, the methyl leaves, and the ring takes the charge. This is the −15 to expect from any ethylbenzene.
 
 ### Propylbenzene  ·  `propylbenzene`
 
@@ -395,22 +395,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₉H₁₂ |
 | Molecular ion | **120**  — 25%, scored |
-| Base peak | **m/z 91**  C₇H₇⁺, tropylium |
+| Base peak | **m/z 91**  C₇H₇⁺, benzyl fragment |
 | Class | Alkylbenzene |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 120 | 25 | — | — | — | molecular ion — **scored** |
 | 92 | 9 | — | — | — | drawn; below the reading line |
-| 91 | 100 | −29 (•C₂H₅ / •CHO) | C₇H₇⁺ `C7H7` | benzylic | **scored** |
-| 65 | 12 | — | C₅H₅⁺ `C5H5` | σ C–C | drawn; above the line but not diagnostic |
+| 91 | 100 | −29 (•C₂H₅ / •CHO) | C₇H₇⁺ `C7H7` | breaks next to the ring | **scored** |
+| 65 | 12 | — | C₅H₅⁺ `C5H5` | plain C–C | drawn; above the line but not diagnostic |
 | 51 | 6 | — | — | — | drawn; below the reading line |
 | 39 | 10 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 91** (100%) — Benzylic cleavage again — but here the group that leaves is an ethyl, so this is a −29 rather than a −15. The ion is the same tropylium; only the arithmetic changes.
+- **m/z 91** (100%) — The same break next to the ring — but here the group that leaves is an ethyl, so this is a −29 rather than a −15. The fragment is the same C₇H₇⁺; only the arithmetic changes.
 
 ### Isopropylbenzene (cumene)  ·  `cumene`
 
@@ -418,18 +418,18 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₉H₁₂ |
 | Molecular ion | **120**  — 25%, scored |
-| Base peak | **m/z 105**  C₆H₅CH⁺CH₃, methylbenzyl cation |
+| Base peak | **m/z 105**  C₆H₅CH⁺CH₃, benzyl fragment (+CH₃) |
 | Class | Alkylbenzene |
 | Levels | loss, ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 120 | 25 | — | — | — | molecular ion — **scored** |
-| 105 | 100 | −15 (•CH₃) | C₆H₅CH⁺CH₃ `C8H9` | benzylic | **scored** |
+| 105 | 100 | −15 (•CH₃) | C₆H₅CH⁺CH₃ `C8H9` | breaks next to the ring | **scored** |
 | 103 | 10 | — | — | — | drawn; below the reading line |
 | 79 | 15 | — | — | — | drawn; above the line but not diagnostic |
-| 77 | 20 | −43 (•C₃H₇ / CH₃CO•) | C₆H₅⁺ `C6H5` | σ C–C | **scored** |
-| 51 | 12 | — | C₄H₃⁺ `C4H3` | σ C–C | drawn; above the line but not diagnostic |
+| 77 | 20 | −43 (•C₃H₇ / CH₃CO•) | C₆H₅⁺ `C6H5` | plain C–C | **scored** |
+| 51 | 12 | — | C₄H₃⁺ `C4H3` | plain C–C | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
@@ -442,22 +442,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₁₀H₁₄ |
 | Molecular ion | **134**  — 25%, scored |
-| Base peak | **m/z 91**  C₇H₇⁺, tropylium |
+| Base peak | **m/z 91**  C₇H₇⁺, benzyl fragment |
 | Class | Alkylbenzene |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 134 | 25 | — | — | — | molecular ion — **scored** |
 | 92 | 35 | — | — | — | drawn; McLafferty rearrangement — never scored |
-| 91 | 100 | −43 (•C₃H₇ / CH₃CO•) | C₇H₇⁺ `C7H7` | benzylic | **scored** |
-| 65 | 12 | — | C₅H₅⁺ `C5H5` | σ C–C | drawn; above the line but not diagnostic |
+| 91 | 100 | −43 (•C₃H₇ / CH₃CO•) | C₇H₇⁺ `C7H7` | breaks next to the ring | **scored** |
+| 65 | 12 | — | C₅H₅⁺ `C5H5` | plain C–C | drawn; above the line but not diagnostic |
 | 51 | 8 | — | — | — | drawn; above the line but not diagnostic |
 | 39 | 8 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 91** (100%) — Benzylic cleavage losing a propyl radical — a −43 this time. However long the chain gets, the ring takes the charge and you land on tropylium at 91.
+- **m/z 91** (100%) — The same break next to the ring, losing a propyl — a −43 this time. However long the chain gets, the ring takes the charge and you land at m/z 91.
 
 > **m/z 92 is a McLafferty rearrangement peak.** It is drawn because it is really there, but it can never be scored, and clicking it tells the student it comes from a rearrangement this unit does not cover.
 
@@ -469,18 +469,18 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₆H₁₄ |
 | Molecular ion | **86**  — 12%, scored |
-| Base peak | **m/z 43**  C₃H₇⁺, propyl / isopropyl cation |
+| Base peak | **m/z 43**  C₃H₇⁺, alkyl fragment |
 | Class | Straight-chain alkane |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 86 | 12 | — | — | — | molecular ion — **scored** |
 | 71 | 10 | — | — | — | drawn; above the line but not diagnostic |
-| 57 | 45 | −29 (•C₂H₅ / •CHO) | (CH₃)₃C⁺ `C4H9` | branch point | **scored** |
-| 43 | 100 | −43 (•C₃H₇ / CH₃CO•) | C₃H₇⁺ `C3H7` | branch point | **scored** |
-| 41 | 40 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
-| 29 | 35 | — | C₂H₅⁺ `C2H5` | σ C–C | drawn; above the line but not diagnostic |
+| 57 | 45 | −29 (•C₂H₅ / •CHO) | (CH₃)₃C⁺ `C4H9` | breaks at the branch point | **scored** |
+| 43 | 100 | −43 (•C₃H₇ / CH₃CO•) | C₃H₇⁺ `C3H7` | breaks at the branch point | **scored** |
+| 41 | 40 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
+| 29 | 35 | — | C₂H₅⁺ `C2H5` | plain C–C | drawn; above the line but not diagnostic |
 | 27 | 30 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
@@ -494,17 +494,17 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₆H₁₄ |
 | Molecular ion | **86**  — *only 1%: drawn, but too weak to measure a loss from, so this compound is kept out of Level 1* |
-| Base peak | **m/z 57**  (CH₃)₃C⁺, tert-butyl cation |
+| Base peak | **m/z 57**  (CH₃)₃C⁺, alkyl fragment (3°) |
 | Class | Branched alkane |
 | Levels | ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 86 | 1 | — | — | — | drawn; below the reading line |
-| 71 | 12 | −15 (•CH₃) | C₅H₁₁⁺ `C5H11` | branch point | **scored** |
-| 57 | 100 | −29 (•C₂H₅ / •CHO) | (CH₃)₃C⁺ `C4H9` | branch point | **scored** |
-| 43 | 25 | — | C₃H₇⁺ `C3H7` | branch point | drawn; above the line but not diagnostic |
-| 41 | 30 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
+| 71 | 12 | −15 (•CH₃) | C₅H₁₁⁺ `C5H11` | breaks at the branch point | **scored** |
+| 57 | 100 | −29 (•C₂H₅ / •CHO) | (CH₃)₃C⁺ `C4H9` | breaks at the branch point | **scored** |
+| 43 | 25 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 30 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
 | 29 | 25 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
@@ -518,17 +518,17 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₈H₁₈ |
 | Molecular ion | **114**  — *not observed at all; the molecule falls apart on ionisation* |
-| Base peak | **m/z 57**  (CH₃)₃C⁺, tert-butyl cation |
+| Base peak | **m/z 57**  (CH₃)₃C⁺, alkyl fragment (3°) |
 | Class | Branched alkane |
 | Levels | ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
-| 99 | 8 | −15 (•CH₃) | C₇H₁₅⁺ `C7H15` | branch point | **scored** |
-| 57 | 100 | −57 (•C₄H₉ / •COC₂H₅) | (CH₃)₃C⁺ `C4H9` | branch point | **scored** |
+| 99 | 8 | −15 (•CH₃) | C₇H₁₅⁺ `C7H15` | breaks at the branch point | **scored** |
+| 57 | 100 | −57 (•C₄H₉ / •COC₂H₅) | (CH₃)₃C⁺ `C4H9` | breaks at the branch point | **scored** |
 | 56 | 25 | — | — | — | drawn; above the line but not diagnostic |
-| 43 | 35 | — | C₃H₇⁺ `C3H7` | branch point | drawn; above the line but not diagnostic |
-| 41 | 45 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
+| 43 | 35 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 45 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
 | 29 | 20 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
@@ -544,22 +544,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₃H₉N |
 | Molecular ion | **59**  — 20%, scored |
-| Base peak | **m/z 30**  CH₂=NH₂⁺, iminium (from a 1° amine) |
+| Base peak | **m/z 30**  CH₂=NH₂⁺, keeps the nitrogen |
 | Class | Primary amine |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 59 | 20 | — | — | — | molecular ion — **scored** |
 | 44 | 8 | — | — | — | drawn; below the reading line |
 | 41 | 10 | — | — | — | drawn; above the line but not diagnostic |
-| 30 | 100 | −29 (•C₂H₅ / •CHO) | CH₂=NH₂⁺ `CH4N` | α-cleavage | **scored** |
+| 30 | 100 | −29 (•C₂H₅ / •CHO) | CH₂=NH₂⁺ `CH4N` | breaks next to O or N | **scored** |
 | 28 | 25 | — | — | — | drawn; above the line but not diagnostic |
 | 27 | 15 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 30** (100%) — Alpha cleavage at the nitrogen. Nitrogen shares its lone pair even more readily than oxygen does, so the iminium is superbly stabilised and m/z 30 swamps everything. Note the ODD molecular ion — that is the nitrogen rule.
+- **m/z 30** (100%) — Alpha cleavage at the nitrogen. Nitrogen holds a positive charge even more willingly than oxygen does, so m/z 30 swamps everything. Note the ODD molecular ion — that is the nitrogen rule.
 
 ### Diethylamine  ·  `diethylamine`
 
@@ -567,22 +567,22 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₄H₁₁N |
 | Molecular ion | **73**  — 20%, scored |
-| Base peak | **m/z 58**  CH₃CH=NH⁺C₂H₅, iminium (from a 2° amine) |
+| Base peak | **m/z 58**  CH₃CH=NH⁺C₂H₅, keeps the nitrogen |
 | Class | Secondary amine |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 73 | 20 | — | — | — | molecular ion — **scored** |
-| 58 | 100 | −15 (•CH₃) | CH₃CH=NH⁺C₂H₅ `C3H8N` | α-cleavage | **scored** |
+| 58 | 100 | −15 (•CH₃) | CH₃CH=NH⁺C₂H₅ `C3H8N` | breaks next to O or N | **scored** |
 | 56 | 10 | — | — | — | drawn; below the reading line |
 | 44 | 12 | — | — | — | drawn; above the line but not diagnostic |
-| 30 | 30 | — | CH₂=NH₂⁺ `CH4N` | α-cleavage | drawn; above the line but not diagnostic |
+| 30 | 30 | — | CH₂=NH₂⁺ `CH4N` | breaks next to O or N | drawn; above the line but not diagnostic |
 | 28 | 20 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
 
-- **m/z 58** (100%) — Alpha cleavage losing a methyl from one of the ethyls, leaving a nitrogen-stabilised iminium. Another odd molecular ion — one nitrogen.
+- **m/z 58** (100%) — Alpha cleavage losing a methyl from one of the ethyls, leaving the nitrogen holding the charge. Another odd molecular ion — one nitrogen.
 
 **Peaks that need a caveat in class**
 
@@ -594,17 +594,17 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₄H₁₀O |
 | Molecular ion | **74**  — 30%, scored |
-| Base peak | **m/z 59**  CH₃CH₂O⁺=CH₂, oxocarbenium (from an ether) |
+| Base peak | **m/z 59**  CH₃CH₂O⁺=CH₂, keeps the oxygen |
 | Class | Ether |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 74 | 30 | — | — | — | molecular ion — **scored** |
-| 59 | 100 | −15 (•CH₃) | CH₃CH₂O⁺=CH₂ `C3H7O` | α-cleavage | **scored** |
-| 45 | 40 | — | CH₃CH=OH⁺ `C2H5O` | α-cleavage | drawn; above the line but not diagnostic |
-| 31 | 25 | — | CH₂=OH⁺ `CH3O` | α-cleavage | drawn; above the line but not diagnostic |
-| 29 | 30 | — | C₂H₅⁺ `C2H5` | σ C–C | drawn; above the line but not diagnostic |
+| 59 | 100 | −15 (•CH₃) | CH₃CH₂O⁺=CH₂ `C3H7O` | breaks next to O or N | **scored** |
+| 45 | 40 | — | CH₃CH=OH⁺ `C2H5O` | breaks next to O or N | drawn; above the line but not diagnostic |
+| 31 | 25 | — | CH₂=OH⁺ `CH3O` | breaks next to O or N | drawn; above the line but not diagnostic |
+| 29 | 30 | — | C₂H₅⁺ `C2H5` | plain C–C | drawn; above the line but not diagnostic |
 | 27 | 15 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
@@ -622,17 +622,17 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₅H₁₂O |
 | Molecular ion | **88**  — *only 2%: drawn, but too weak to measure a loss from, so this compound is kept out of Level 1* |
-| Base peak | **m/z 73**  (CH₃)₂C=O⁺CH₃, oxocarbenium (from an ether) |
+| Base peak | **m/z 73**  (CH₃)₂C=O⁺CH₃, keeps the oxygen |
 | Class | Ether |
 | Levels | ion, predict |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 88 | 2 | — | — | — | drawn; below the reading line |
-| 73 | 100 | −15 (•CH₃) | (CH₃)₂C=O⁺CH₃ `C4H9O` | α-cleavage | **scored** |
-| 57 | 30 | −31 (•OCH₃ / •CH₂OH) | (CH₃)₃C⁺ `C4H9` | branch point | **scored** |
-| 43 | 15 | — | C₃H₇⁺ `C3H7` | branch point | drawn; above the line but not diagnostic |
-| 41 | 25 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
+| 73 | 100 | −15 (•CH₃) | (CH₃)₂C=O⁺CH₃ `C4H9O` | breaks next to O or N | **scored** |
+| 57 | 30 | −31 (•OCH₃ / •CH₂OH) | (CH₃)₃C⁺ `C4H9` | breaks at the branch point | **scored** |
+| 43 | 15 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 25 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
 | 29 | 20 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
@@ -648,15 +648,15 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₃H₇Br |
 | Molecular ion | **122**  — 30%, scored |
-| Base peak | **m/z 43**  C₃H₇⁺, propyl / isopropyl cation |
+| Base peak | **m/z 43**  C₃H₇⁺, alkyl fragment |
 | Class | Alkyl bromide |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 122 | 30 | — | — | — | molecular ion — **scored** |
-| 43 | 100 | −79 (•Br) | C₃H₇⁺ `C3H7` | branch point | **scored** |
-| 41 | 30 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
+| 43 | 100 | −79 (•Br) | C₃H₇⁺ `C3H7` | breaks at the branch point | **scored** |
+| 41 | 30 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
 | 39 | 12 | — | — | — | drawn; above the line but not diagnostic |
 | 27 | 30 | — | — | — | drawn; above the line but not diagnostic |
 
@@ -670,16 +670,16 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | --- | --- |
 | Formula | C₄H₉Cl |
 | Molecular ion | **92**  — 12%, scored |
-| Base peak | **m/z 41**  C₃H₅⁺, allyl cation |
+| Base peak | **m/z 41**  C₃H₅⁺, alkyl fragment |
 | Class | Alkyl chloride |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 92 | 12 | — | — | — | molecular ion — **scored** |
-| 56 | 75 | −36 (HCl) | [M − HX]⁺·  | σ C–C | **scored** |
-| 43 | 30 | — | C₃H₇⁺ `C3H7` | branch point | drawn; above the line but not diagnostic |
-| 41 | 100 | — | C₃H₅⁺ `C3H5` | σ C–C | drawn; above the line but not diagnostic |
+| 56 | 75 | −36 (HCl) | [M − HCl]⁺  | plain C–C | **scored** |
+| 43 | 30 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 100 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
 | 29 | 20 | — | — | — | drawn; above the line but not diagnostic |
 | 27 | 45 | — | — | — | drawn; above the line but not diagnostic |
 
@@ -697,12 +697,12 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Class | Aryl chloride |
 | Levels | loss, ion |
 
-| m/z | % | Loss | Ion | Mechanism | Role |
+| m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 112 | 100 | — | — | — | molecular ion — **scored** |
-| 77 | 55 | −35 (•Cl) | C₆H₅⁺ `C6H5` | σ C–C | **scored** |
+| 77 | 55 | −35 (•Cl) | C₆H₅⁺ `C6H5` | plain C–C | **scored** |
 | 75 | 8 | — | — | — | drawn; below the reading line |
-| 51 | 25 | — | C₄H₃⁺ `C4H3` | σ C–C | drawn; above the line but not diagnostic |
+| 51 | 25 | — | C₄H₃⁺ `C4H3` | plain C–C | drawn; above the line but not diagnostic |
 | 50 | 15 | — | — | — | drawn; above the line but not diagnostic |
 
 **Why each scored peak is where it is**
@@ -713,7 +713,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 
 | Loss | Neutral | What it means |
 | ---: | --- | --- |
-| −1 | •H | Loss of a single hydrogen atom. Small, but when M−1 is TALLER than M⁺ it means the cation left behind is unusually stable — tropylium from toluene, benzoyl from benzaldehyde. |
+| −1 | •H | Loss of a single hydrogen atom. Small, but when M−1 is TALLER than M⁺ it means the fragment left behind is unusually stable — C₇H₇⁺ from toluene, the ring-plus-C=O fragment from benzaldehyde. |
 | −15 | •CH₃ | Loss of a methyl radical. Look for a methyl sitting on a branch point or right next to a C=O — those are the two places a methyl leaves from. |
 | −17 | •OH | Loss of a hydroxyl radical. An alcohol or an acid. Usually much weaker than the −18 next to it. |
 | −18 | H₂O | Loss of water — dehydration. This is an alcohol. M⁺ and M−18 together are the signature; in a tertiary alcohol the M⁺ may be gone entirely and only the −18 survives. |
@@ -726,56 +726,57 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | −57 | •C₄H₉  **or**  •COC₂H₅ | Loss of 57 runs the same trap as −29 and −43: a butyl radical, usually tert-butyl leaving a branch point, or an acyl radical from a ketone. Same question, bigger numbers. |
 | −79 | •Br | Loss of a bromine atom. Check the M/M+2 pair first: if it was 1:1 there was a Br to lose. |
 
-## Ions worth knowing on sight
+## Fragments worth knowing on sight
 
-| m/z | Ion | Formula | Stability | Why |
+| m/z | Fragment | Formula | Stability | Why |
 | ---: | --- | --- | --- | --- |
-| 15 | CH₃⁺ — methyl cation | `CH3` | methyl | A bare methyl cation — the least stable carbocation there is. It shows up, but it is never the base peak of anything. |
-| 29 | C₂H₅⁺ — ethyl cation | `C2H5` | primary | A primary ethyl cation. At m/z 29 it is easy to confuse with the formyl ion CHO⁺ — if there is no carbonyl anywhere else in the spectrum, it is the ethyl. |
-| 29 | CHO⁺ — formyl cation | `CHO` | resonance | The formyl ion from an aldehyde, and the reason −29 is ambiguous. C≡O⁺ with the charge on carbon — resonance-stabilised, unlike the ethyl cation sitting at the same mass. |
-| 30 | CH₂=NH₂⁺ — iminium (from a 1° amine) | `CH4N` | resonance | ALPHA CLEAVAGE at an amine — the nitrogen lone pair does exactly what an oxygen lone pair does, only better, because nitrogen is less electronegative. As the BASE PEAK, m/z 30 means a primary amine. |
-| 31 | CH₂=OH⁺ — oxocarbenium (from a 1° alcohol) | `CH3O` | resonance | ALPHA CLEAVAGE at a primary alcohol. The oxygen lone pair pushes in to make a C=O double bond, so the positive charge is shared between carbon and oxygen. As the BASE PEAK, m/z 31 means a primary alcohol. |
-| 41 | C₃H₅⁺ — allyl cation | `C3H5` | allylic | Resonance-stabilised allyl. Almost every chain longer than three carbons throws one off, so it corroborates nothing on its own. |
-| 43 | C₃H₇⁺ — propyl / isopropyl cation | `C3H7` | secondary | A three-carbon alkyl cation. At m/z 43 its twin is the acylium CH₃CO⁺ — the acylium is resonance-stabilised and needs a carbonyl in the structure; this one only needs three carbons in a row. |
-| 43 | CH₃C≡O⁺ — acylium (acetyl) | `C2H3O` | resonance | ALPHA CLEAVAGE at a carbonyl gives an ACYLIUM: the oxygen lone pair makes a triple bond and the charge is fully delocalised. This is the most stable cation in this unit, which is why m/z 43 is the base peak of almost every methyl ketone and acetate. |
-| 45 | CH₃CH=OH⁺ — oxocarbenium (from a 2° alcohol) | `C2H5O` | resonance | ALPHA CLEAVAGE at a secondary alcohol — same resonance, one more carbon. As the BASE PEAK, m/z 45 means a secondary alcohol. |
-| 45 | CH₃O=CH₂⁺ — oxocarbenium (from a methyl ether) | `C2H5O` | resonance | ALPHA CLEAVAGE next to a methyl ether oxygen. |
-| 51 | C₄H₃⁺ — ring fragment | `C4H3` | aryl | What is left when a phenyl cation itself breaks up. m/z 51 under m/z 77 corroborates a ring, and nothing more. |
-| 55 | C₄H₇⁺ — butenyl cation | `C4H7` | allylic | A four-carbon allylic cation, very often what is left after an alcohol loses water and then a methyl. |
-| 57 | (CH₃)₃C⁺ — tert-butyl cation | `C4H9` | tertiary | THE tertiary carbocation. Three alkyl groups donating into an empty p orbital — so stable that a molecule containing a tert-butyl group will often show almost no molecular ion at all, because it falls apart the instant it ionises. |
-| 57 | CH₃CH₂C≡O⁺ — acylium (propanoyl) | `C3H5O` | resonance | A propanoyl acylium — same resonance as acetyl, one carbon longer. At m/z 57 its twin is the tert-butyl cation; only one of them needs a C=O in the structure. |
-| 58 | CH₃CH=NH⁺C₂H₅ — iminium (from a 2° amine) | `C3H8N` | resonance | ALPHA CLEAVAGE at a secondary amine. Losing the methyl from the ethyl group leaves a nitrogen-stabilised cation. |
-| 59 | (CH₃)₂C=OH⁺ — oxocarbenium (from a 3° alcohol) | `C3H7O` | resonance | ALPHA CLEAVAGE at a tertiary alcohol. Resonance stabilisation AND two methyls donating — As the BASE PEAK, m/z 59 means a tertiary alcohol. |
-| 59 | CH₃CH₂O⁺=CH₂ — oxocarbenium (from an ether) | `C3H7O` | resonance | ALPHA CLEAVAGE in an ether: the bond next to the oxygen breaks and the lone pair stabilises what is left. Ethers behave exactly like alcohols here — the oxygen is doing the same job. |
-| 59 | CH₃CH₂CH=OH⁺ — oxocarbenium (from a 2° alcohol) | `C3H7O` | resonance | ALPHA CLEAVAGE the OTHER way round: this time the methyl left and the ethyl stayed. Same resonance stabilisation, but a methyl radical is the less stable of the two leaving groups, so this is the shorter of the pair. |
-| 59 | CH₃CO–O⁺ — ester acylium-oxygen cation | `C2H3O2` | resonance | The ester has lost the methyl off its oxygen. Real, but much weaker than the acylium at 43 — breaking the other C–O bond is the better deal. |
-| 65 | C₅H₅⁺ — cyclopentadienyl cation | `C5H5` | aryl | Tropylium losing acetylene. m/z 65 sitting under m/z 91 confirms the 91 really is tropylium. |
-| 71 | C₅H₁₁⁺ — tertiary pentyl cation | `C5H11` | tertiary | A methyl has left the branch point and what remains is still a tertiary carbocation. Good — but at m/z 71 its twin is an acylium, which is better again, so check whether the molecule has a C=O before you commit. |
-| 71 | CH₃CH₂CH₂C≡O⁺ — acylium (butanoyl) | `C4H7O` | resonance | A butanoyl acylium — the same resonance as every other acylium, four carbons long. At m/z 71 its twin is a tertiary alkyl cation; only this one needs a carbonyl. |
-| 73 | CH₃CH₂(CH₃)C=OH⁺ — oxocarbenium | `C4H9O` | resonance | ALPHA CLEAVAGE the other way round — this time the methyl left and the ethyl stayed. Same resonance stabilisation, but losing the SMALLER group is the less favourable of the two, so this peak is the shorter one. |
-| 73 | (CH₃)₂C=O⁺CH₃ — oxocarbenium (from an ether) | `C4H9O` | resonance | ALPHA CLEAVAGE next to the ether oxygen. A methyl leaves the quaternary carbon and the oxygen lone pair stabilises what is left — the same move an alcohol makes. |
-| 77 | C₆H₅⁺ — phenyl cation | `C6H5` | aryl | A bare phenyl cation. It is not especially stable — the empty orbital is in the ring plane and cannot conjugate — but m/z 77 is so characteristic that it is worth knowing on sight as "there is a benzene ring here". |
-| 91 | C₇H₇⁺ — tropylium | `C7H7` | resonance | BENZYLIC CLEAVAGE. The bond one carbon out from the ring breaks, and the benzyl cation immediately expands into TROPYLIUM — a flat, aromatic seven-membered ring sharing the charge over all seven carbons. m/z 91 is the single most recognisable peak in organic mass spectrometry: it means a monosubstituted benzene ring with at least one carbon on it. |
-| 99 | C₇H₁₅⁺ — tertiary heptyl cation | `C7H15` | tertiary | One methyl gone from the branch point, leaving a tertiary carbocation with most of the molecule still attached. In a heavily branched alkane this is often the highest peak you can see at all. |
-| 105 | C₆H₅C≡O⁺ — benzoyl cation | `C7H5O` | resonance | A benzoyl acylium: acylium resonance PLUS a benzene ring to spread the charge into. m/z 105 with m/z 77 underneath it is the fingerprint of a phenyl ketone or a benzaldehyde. |
-| 105 | C₆H₅CH⁺CH₃ — methylbenzyl cation | `C8H9` | resonance | A SECONDARY benzylic cation — the ring stabilises it and a methyl donates into it as well. At m/z 105 its twin is the benzoyl acylium; the benzoyl needs an oxygen in the molecule and this one does not. |
-| 107 | C₆H₅CH=OH⁺ — benzylic oxocarbenium | `C7H7O` | resonance | The best of both: ALPHA CLEAVAGE gives the oxygen resonance, and the benzene ring is right there to spread the charge as well. Two stabilisations on one cation, so this peak dominates. |
+| 15 | CH₃⁺ — alkyl fragment | `CH3` | methyl | The smallest alkyl fragment, and the first of the series 15, 29, 43, 57. A lone CH₃⁺ is the least stable carbocation there is, so this peak is always small — but seeing it means there was a methyl to lose. |
+| 29 | C₂H₅⁺ — alkyl fragment | `C2H5` | primary | An ethyl fragment — second in the alkyl series, 14 more than CH₃⁺. Careful at m/z 29: CHO from an aldehyde weighs the same. Check whether the structure has a C=O before you decide which one this is. |
+| 29 | CHO⁺ — keeps the C=O | `CHO` | resonance | The CHO fragment from an aldehyde, and the reason −29 is ambiguous. The C=O spreads the charge, so this is a better fragment than the ethyl sitting at the same mass — but only an aldehyde can make it. |
+| 30 | CH₂=NH₂⁺ — keeps the nitrogen | `CH4N` | resonance | ALPHA CLEAVAGE at the nitrogen. Nitrogen carries a positive charge even more willingly than oxygen does, so this fragment usually swamps the spectrum. As the BASE PEAK, m/z 30 means a primary amine. |
+| 31 | CH₂=OH⁺ — keeps the oxygen | `CH3O` | resonance | ALPHA CLEAVAGE: the C–C bond next to the OH breaks, and the oxygen helps carry the positive charge — which is why this fragment beats a plain alkyl one. As the BASE PEAK, m/z 31 means a primary alcohol. |
+| 41 | C₃H₅⁺ — alkyl fragment | `C3H5` | allylic | m/z 41 turns up under almost any chain longer than three carbons. It is a real peak, but it narrows nothing down. |
+| 43 | C₃H₇⁺ — alkyl fragment | `C3H7` | secondary | A three-carbon alkyl fragment — third in the series 15, 29, 43, 57. Careful at m/z 43: CH₃CO from a methyl ketone weighs the same. A C=O in the structure is what tells them apart. |
+| 43 | CH₃C≡O⁺ — keeps the C=O | `C2H3O` | resonance | ALPHA CLEAVAGE at a carbonyl: the C=O spreads the positive charge better than anything else in this unit, which is why m/z 43 is the base peak of almost every methyl ketone and acetate. Careful — a propyl fragment weighs the same. |
+| 45 | CH₃CH=OH⁺ — keeps the oxygen | `C2H5O` | resonance | ALPHA CLEAVAGE next to the OH — same idea as m/z 31, one carbon bigger. As the BASE PEAK, m/z 45 means a secondary alcohol. |
+| 45 | CH₃O⁺=CH₂ — keeps the oxygen | `C2H5O` | resonance | ALPHA CLEAVAGE next to a methyl ether oxygen. |
+| 51 | C₄H₃⁺ — ring fragment | `C4H3` | aryl | What is left when the bare ring itself breaks up. m/z 51 under m/z 77 corroborates a ring, and nothing more. |
+| 55 | C₄H₇⁺ — alkyl fragment | `C4H7` | allylic | A four-carbon fragment with a double bond in it — very often what is left after an alcohol loses water and then a methyl. |
+| 57 | (CH₃)₃C⁺ — alkyl fragment (3°) | `C4H9` | tertiary | THE tertiary carbocation. Three methyls propping up the positive charge make it far more stable than a straight-chain C₄H₉⁺ — so stable that a molecule containing a tert-butyl group often shows almost no molecular ion at all. A big m/z 57 means a branch point. |
+| 57 | CH₃CH₂C≡O⁺ — keeps the C=O | `C3H5O` | resonance | A C=O fragment one carbon longer than CH₃C≡O⁺. Careful at m/z 57: a tert-butyl fragment weighs the same, and only this one needs a C=O in the structure. |
+| 58 | CH₃CH=NH⁺C₂H₅ — keeps the nitrogen | `C3H8N` | resonance | ALPHA CLEAVAGE at a secondary amine: a methyl leaves one of the ethyls, and the nitrogen carries the charge. |
+| 59 | (CH₃)₂C=OH⁺ — keeps the oxygen | `C3H7O` | resonance | ALPHA CLEAVAGE next to the OH, with two methyls helping as well. As the BASE PEAK, m/z 59 means a tertiary alcohol. |
+| 59 | CH₃CH₂CH=OH⁺ — keeps the oxygen | `C3H7O` | resonance | ALPHA CLEAVAGE the other way round: this time the methyl left and the ethyl stayed. Same oxygen help, but a methyl is the harder of the two to break off, so this peak stays short. |
+| 59 | CH₃CH₂O⁺=CH₂ — keeps the oxygen | `C3H7O` | resonance | ALPHA CLEAVAGE in an ether — the bond next to the oxygen breaks and the oxygen carries the charge. An ether does exactly what an alcohol does here. |
+| 59 | CH₃CO–O⁺ — keeps both oxygens | `C2H3O2` | resonance | The ester has lost the methyl off its oxygen. Real, but much weaker than m/z 43 — breaking the other C–O bond is the better deal. |
+| 65 | C₅H₅⁺ — ring fragment | `C5H5` | aryl | What the benzyl fragment turns into when it breaks up further. m/z 65 sitting under m/z 91 confirms the 91 really is a benzyl fragment. |
+| 71 | C₅H₁₁⁺ — alkyl fragment (3°) | `C5H11` | tertiary | A methyl has left the branch point, and what remains is still a tertiary carbocation. Careful at m/z 71: a four-carbon C=O fragment weighs the same. |
+| 71 | CH₃CH₂CH₂C≡O⁺ — keeps the C=O | `C4H7O` | resonance | A four-carbon C=O fragment. Careful at m/z 71: a tertiary alkyl fragment weighs the same. |
+| 73 | CH₃CH₂(CH₃)C=OH⁺ — keeps the oxygen | `C4H9O` | resonance | ALPHA CLEAVAGE losing the methyl rather than the ethyl. Perfectly good, but losing the SMALLER group is the less favourable of the two routes, so this is the shorter peak. |
+| 73 | (CH₃)₂C=O⁺CH₃ — keeps the oxygen | `C4H9O` | resonance | ALPHA CLEAVAGE losing a methyl off the branch point, with the ether oxygen carrying the charge. Oxygen help beats the bare tert-butyl route, even though that one is good too. |
+| 77 | C₆H₅⁺ — the bare ring | `C6H5` | aryl | The bare benzene ring. It is not especially stable — the ring cannot help this one — but m/z 77 is so characteristic that it is worth knowing on sight as “there is a benzene ring here”. |
+| 91 | C₇H₇⁺ — benzyl fragment | `C7H7` | resonance | BENZYLIC CLEAVAGE: the bond one carbon out from the ring breaks, and the ring spreads the charge around itself. m/z 91 is the most recognisable peak in organic mass spectrometry — it means a benzene ring with at least one carbon attached. |
+| 99 | C₇H₁₅⁺ — alkyl fragment (3°) | `C7H15` | tertiary | One methyl gone from the branch point, leaving a tertiary carbocation with most of the molecule still attached. In a heavily branched alkane this is often the highest peak you can see at all. |
+| 105 | C₆H₅C≡O⁺ — keeps the C=O and the ring | `C7H5O` | resonance | A C=O fragment with a benzene ring attached — the charge is spread over both. m/z 105 with m/z 77 underneath it is the standard sign of a ring next to a carbonyl. |
+| 105 | C₆H₅CH⁺CH₃ — benzyl fragment (+CH₃) | `C8H9` | resonance | A benzyl fragment with a methyl still on it — the ring spreads the charge and the methyl helps too. Careful at m/z 105: a ring-plus-C=O fragment weighs the same, and that one needs an oxygen. |
+| 107 | C₆H₅CH=OH⁺ — keeps the oxygen | `C7H7O` | resonance | The best of both: ALPHA CLEAVAGE gives the oxygen’s help, and the benzene ring spreads the charge as well. Two things propping up one fragment, so this peak dominates. |
 
 ## The ambiguous masses
 
 These are the masses where the arithmetic alone will not settle it, and the rest of
-the spectrum has to. Level 2 offers one against the other on purpose.
+the spectrum has to. Level 2 offers one against the other on purpose — this is what
+makes −29 and −43 worth teaching rather than just listing.
 
 | m/z | Candidates | Settled by |
 | ---: | --- | --- |
-| 29 | C₂H₅⁺ (ethyl cation)  **vs**  CHO⁺ (formyl cation) | whether the molecule contains oxygen at all: only CHO⁺ needs a C=O or an O–H. |
-| 43 | C₃H₇⁺ (propyl / isopropyl cation)  **vs**  CH₃C≡O⁺ (acylium (acetyl)) | whether the molecule contains oxygen at all: only CH₃C≡O⁺ needs a C=O or an O–H. |
-| 45 | CH₃CH=OH⁺ (oxocarbenium (from a 2° alcohol))  **vs**  CH₃O=CH₂⁺ (oxocarbenium (from a methyl ether)) | **nothing at this mass can** — identical formulas. Only the rest of the pattern, and the structures on offer, decide it. |
-| 57 | (CH₃)₃C⁺ (tert-butyl cation)  **vs**  CH₃CH₂C≡O⁺ (acylium (propanoyl)) | whether the molecule contains oxygen at all: only CH₃CH₂C≡O⁺ needs a C=O or an O–H. |
-| 59 | (CH₃)₂C=OH⁺ (oxocarbenium (from a 3° alcohol))  **vs**  CH₃CH₂O⁺=CH₂ (oxocarbenium (from an ether))  **vs**  CH₃CH₂CH=OH⁺ (oxocarbenium (from a 2° alcohol))  **vs**  CH₃CO–O⁺ (ester acylium-oxygen cation) | how many oxygens: (CH₃)₂C=OH⁺ has 1, CH₃CH₂O⁺=CH₂ has 1, CH₃CH₂CH=OH⁺ has 1, CH₃CO–O⁺ has 2. |
-| 71 | C₅H₁₁⁺ (tertiary pentyl cation)  **vs**  CH₃CH₂CH₂C≡O⁺ (acylium (butanoyl)) | whether the molecule contains oxygen at all: only CH₃CH₂CH₂C≡O⁺ needs a C=O or an O–H. |
-| 73 | CH₃CH₂(CH₃)C=OH⁺ (oxocarbenium)  **vs**  (CH₃)₂C=O⁺CH₃ (oxocarbenium (from an ether)) | **nothing at this mass can** — identical formulas. Only the rest of the pattern, and the structures on offer, decide it. |
-| 105 | C₆H₅C≡O⁺ (benzoyl cation)  **vs**  C₆H₅CH⁺CH₃ (methylbenzyl cation) | whether the molecule contains oxygen at all: only C₆H₅C≡O⁺ needs a C=O or an O–H. |
+| 29 | C₂H₅⁺ (alkyl fragment)  **vs**  CHO⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CHO⁺ needs a C=O or an O–H. |
+| 43 | C₃H₇⁺ (alkyl fragment)  **vs**  CH₃C≡O⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CH₃C≡O⁺ needs a C=O or an O–H. |
+| 45 | CH₃CH=OH⁺ (keeps the oxygen)  **vs**  CH₃O⁺=CH₂ (keeps the oxygen) | **nothing at this mass can** — identical formulas. Only the rest of the pattern, and the structures on offer, decide it. |
+| 57 | (CH₃)₃C⁺ (alkyl fragment (3°))  **vs**  CH₃CH₂C≡O⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CH₃CH₂C≡O⁺ needs a C=O or an O–H. |
+| 59 | (CH₃)₂C=OH⁺ (keeps the oxygen)  **vs**  CH₃CH₂CH=OH⁺ (keeps the oxygen)  **vs**  CH₃CH₂O⁺=CH₂ (keeps the oxygen)  **vs**  CH₃CO–O⁺ (keeps both oxygens) | how many oxygens: (CH₃)₂C=OH⁺ has 1, CH₃CH₂CH=OH⁺ has 1, CH₃CH₂O⁺=CH₂ has 1, CH₃CO–O⁺ has 2. |
+| 71 | C₅H₁₁⁺ (alkyl fragment (3°))  **vs**  CH₃CH₂CH₂C≡O⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CH₃CH₂CH₂C≡O⁺ needs a C=O or an O–H. |
+| 73 | CH₃CH₂(CH₃)C=OH⁺ (keeps the oxygen)  **vs**  (CH₃)₂C=O⁺CH₃ (keeps the oxygen) | **nothing at this mass can** — identical formulas. Only the rest of the pattern, and the structures on offer, decide it. |
+| 105 | C₆H₅C≡O⁺ (keeps the C=O and the ring)  **vs**  C₆H₅CH⁺CH₃ (benzyl fragment (+CH₃)) | whether the molecule contains oxygen at all: only C₆H₅C≡O⁺ needs a C=O or an O–H. |
 
 ## Compounds that cannot be told apart here
 
@@ -795,10 +796,10 @@ one giving the most stable cation, then works out its m/z.
 - **2-Pentanone** (M = 86) → CH₃C≡O⁺ at 43 **(wins)**  ·  CH₃CH₂CH₂C≡O⁺ at 71
 - **Acetophenone** (M = 120) → C₆H₅C≡O⁺ at 105 **(wins)**  ·  C₆H₅⁺ at 77
 - **Methyl acetate** (M = 74) → CH₃C≡O⁺ at 43 **(wins)**  ·  CH₃CO–O⁺ at 59
-- **1-Butanol** (M = 74) → CH₂=OH⁺ at 31 **(wins)**  ·  [M − H₂O]⁺· at 56
-- **2-Butanol** (M = 74) → CH₃CH=OH⁺ at 45 **(wins)**  ·  CH₃CH₂CH=OH⁺ at 59  ·  [M − H₂O]⁺· at 56
-- **2-Methyl-2-butanol** (M = 88) → (CH₃)₂C=OH⁺ at 59 **(wins)**  ·  CH₃CH₂(CH₃)C=OH⁺ at 73  ·  [M − H₂O]⁺· at 70
-- **1-Phenylethanol** (M = 122) → C₆H₅CH=OH⁺ at 107 **(wins)**  ·  C₆H₅⁺ at 77  ·  [M − H₂O]⁺· at 104
+- **1-Butanol** (M = 74) → CH₂=OH⁺ at 31 **(wins)**  ·  [M − H₂O]⁺ at 56
+- **2-Butanol** (M = 74) → CH₃CH=OH⁺ at 45 **(wins)**  ·  CH₃CH₂CH=OH⁺ at 59  ·  [M − H₂O]⁺ at 56
+- **2-Methyl-2-butanol** (M = 88) → (CH₃)₂C=OH⁺ at 59 **(wins)**  ·  CH₃CH₂(CH₃)C=OH⁺ at 73  ·  [M − H₂O]⁺ at 70
+- **1-Phenylethanol** (M = 122) → C₆H₅CH=OH⁺ at 107 **(wins)**  ·  C₆H₅⁺ at 77  ·  [M − H₂O]⁺ at 104
 - **Isopropylbenzene (cumene)** (M = 120) → C₆H₅CH⁺CH₃ at 105 **(wins)**  ·  C₆H₅⁺ at 77
 - **2,2-Dimethylbutane** (M = 86) → (CH₃)₃C⁺ at 57 **(wins)**  ·  C₅H₁₁⁺ at 71
 - **2,2,4-Trimethylpentane** (M = 114) → (CH₃)₃C⁺ at 57 **(wins)**  ·  C₇H₁₅⁺ at 99

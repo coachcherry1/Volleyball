@@ -20,10 +20,10 @@ Four mechanisms, and no more:
 
 | Mechanism | What breaks | Why the cation survives |
 | --- | --- | --- |
-| **α-cleavage** | the bond next to a heteroatom | the lone pair pushes in and shares the charge — an oxocarbenium, an acylium, an iminium |
+| **α-cleavage** | the bond next to an O or an N | the O or N next door helps hold the charge |
 | **Dehydration** | an alcohol throws off water | −18, the alcohol flag |
 | **Branch-point cleavage** | the bond at the most substituted carbon | 3° > 2° > 1°; *tert*-butyl at m/z 57 is the showcase |
-| **Benzylic cleavage** | the bond one carbon out from a ring | benzyl expands to tropylium, m/z 91 |
+| **Benzylic cleavage** | the bond one carbon out from a ring | the ring spreads the charge, m/z 91 |
 
 The McLafferty rearrangement is deliberately not taught. See
 [The McLafferty decision](#the-mclafferty-decision) below for how the bank stays honest
@@ -36,7 +36,7 @@ about it anyway.
 A peak can be named two ways, and they are not the same question:
 
 - the **loss** view — *"that peak is M minus 43"* — is arithmetic
-- the **ion** view — *"that 43 is an acylium, CH₃C≡O⁺"* — is chemistry
+- the **fragment** view — *"that 43 is CH₃C≡O⁺, the piece that kept the C=O"* — is chemistry
 
 The gap between them is where the teaching happens. **CH₃CO⁺ sits at m/z 43 in both
 acetone and 2-butanone** — but it is a loss of 15 from one and a loss of 29 from the
@@ -44,10 +44,37 @@ other. A loss is therefore computed per compound at run time rather than stored 
 ion; only the ion id lives in the bank.
 
 This is also what makes −29 and −43 worth an entire unit. At Level 1 a peak is "−43". At
-Level 2 the student has to decide *which* 43: a propyl cation, which needs three carbons
-in a row, or an acylium, which needs a C=O. Four masses in this bank carry that
-ambiguity — 29, 43, 57 and 105 — and `ANSWER_KEY.md` tables all of them with what
-settles each one.
+Level 2 the student has to decide *which* 43: a propyl fragment, which needs three carbons
+in a row, or the piece that kept a C=O, which needs an oxygen in the structure. Four masses
+in this bank carry that ambiguity — 29, 43, 57 and 105 — and `ANSWER_KEY.md` tables all of
+them with what settles each one.
+
+### How deep the naming goes
+
+Students are **not** asked to memorise the words *acylium*, *oxocarbenium*, *iminium* or
+*tropylium*. A fragment is named by its formula and by what it kept:
+
+| Tile reads | Meaning |
+| --- | --- |
+| `C₃H₇⁺` · alkyl fragment | a plain piece of chain |
+| `(CH₃)₃C⁺` · alkyl fragment (3°) | a chain piece off a branch point |
+| `CH₃C≡O⁺` · keeps the C=O | the carbonyl end held the charge |
+| `CH₂=OH⁺` · keeps the oxygen | broke next to the OH |
+| `CH₂=NH₂⁺` · keeps the nitrogen | broke next to the N |
+| `C₇H₇⁺` · benzyl fragment | the ring took the charge |
+| `[M − H₂O]⁺` · after losing water | dehydration |
+
+The stability reasoning is all still there — *3° beats 2° beats 1°, and an O, N or ring
+next door beats all of them* — it just never depends on knowing a name for the ion class.
+
+### The alkyl series
+
+15, 29, 43, 57, 71 — each one CH₂ (14) bigger than the last. The reference table shows the
+run, and the point is made explicitly: a ladder of peaks 14 apart means a chain coming
+apart at every C–C bond, and **which one is tallest** is the useful part. A big m/z 57
+means a *tert*-butyl and a branch point; an even run with no clear winner means a straight
+chain. Every member from 29 upwards shares its mass with a fragment that kept a C=O, which
+is the −29 / −43 lesson again in a different costume.
 
 ---
 
@@ -56,7 +83,7 @@ settles each one.
 | Level | Name | What the student does |
 | --- | --- | --- |
 | 1 | **Read the losses** | The compound is named and drawn. Label each marked peak with what the molecule lost: −15, −18, −29, −43. Reference table available. Six spectra. |
-| 2 | **Name the ion** | The compound is hidden. Name the cation each marked peak actually is, then identify the compound from three structures. **Tiles carry formulas, never m/z values**, so a student must count the formula rather than match a number to the axis. Six spectra. |
+| 2 | **Name the fragment** | The compound is hidden. Work out which fragment each marked peak is, then identify the compound from three structures. **Tiles carry formulas, never m/z values**, so a student adds up the formula and matches it to a mass on the plot. Six spectra. |
 | 3 | **Predict the base peak** | **No spectrum.** From the structure alone, choose which cleavage gives the most stable cation, then work out where it lands. The spectrum is revealed afterwards, annotated, as the answer. Six compounds. |
 
 Levels unlock in order. Wrong answers are never penalised: the tile returns to the tray
@@ -106,10 +133,10 @@ not one of the answers. There are five different reasons, and they are not inter
 - *an isotope peak* — M+1, M+2, or a ¹³C satellite, with the carbon-counting lesson attached
 - *a rearrangement* — the McLafferty peaks, below
 
-**3. Real ions that are simply not the marked peak.** The second reason above would be a lie
-about benzaldehyde's m/z 29, which genuinely *is* the formyl cation. So a cluster peak whose
-ion is resonance-stabilised or tertiary gets a different message — "it really is CHO⁺, it is
-genuine chemistry, it is just not one of the peaks marked for you here."
+**3. Real fragments that are simply not the marked peak.** The second reason above would be a
+lie about benzaldehyde's m/z 29, which genuinely *is* CHO⁺. So a cluster peak whose fragment
+is well stabilised or tertiary gets a different message — "it really is CHO⁺, it is genuine
+chemistry, it is just not one of the peaks marked for you here."
 
 A few peaks carry a hand-written `note` that overrides all of the above, because the stock
 wording would mislead. CH₂=OH⁺ turning up at 25% in *2-butanol* is the clearest case: the
@@ -118,6 +145,18 @@ in a secondary alcohol. Those peaks say instead that reaching m/z 31 there takes
 shift, and that the landmark only holds when m/z 31 is the **base peak**.
 
 ---
+
+## Reading the plot
+
+Every peak above the 5% line has **its mass printed directly above it**, the way real
+instrument software does it — so a student never has to trace a stick down to the axis and
+estimate whether it landed on 43 or 45. The axis carries minor ticks between labels and a
+faint vertical gridline at each label as a second check.
+
+Peaks the student is being asked about carry a **?** marker; their printed mass is drawn in
+the darker ink. Once a marker is answered it shows the answer instead, and the mass stays
+printed on the plot underneath. Where a peak is too tall for its marker to sit above it, the
+marker moves to the side rather than covering the number.
 
 ## Where the spectra come from
 
@@ -222,8 +261,8 @@ and a halide.
 | Theme | Compounds | Teaches |
 | --- | --- | --- |
 | **alcohol** | 1-butanol, 2-butanol, *tert*-butanol, 2-methyl-2-butanol, cyclohexanol, 1-phenylethanol | α-cleavage at 1°/2°/3°, and −18 |
-| **carbonyl** | acetone, 2-butanone, 3-pentanone, 2-pentanone, acetophenone, benzaldehyde, methyl acetate | the acylium |
-| **arene** | toluene, ethyl-, propyl-, isopropyl- and butylbenzene | tropylium at 91, benzylic cleavage |
+| **carbonyl** | acetone, 2-butanone, 3-pentanone, 2-pentanone, acetophenone, benzaldehyde, methyl acetate | the fragment that keeps the C=O — m/z 43, 57, 105 |
+| **arene** | toluene, ethyl-, propyl-, isopropyl- and butylbenzene | m/z 91, and breaking next to a ring |
 | **branch** | hexane, 2,2-dimethylbutane, 2,2,4-trimethylpentane | the tertiary carbocation at 57 |
 | **hetero** | 1-propanamine, diethylamine, diethyl ether, MTBE | α-cleavage at N and at ether O |
 | **halide** | 1-bromopropane, 1-chlorobutane, chlorobenzene | M/M+2 isotope patterns |
@@ -238,7 +277,7 @@ coverage per level accordingly.
   M = 74, base peaks **31 / 45 / 59 / 59**. Primary, secondary and tertiary α-cleavage in
   one family.
 - **propylbenzene / cumene / acetophenone** — all M = 120, base peaks **91 / 105 / 105**.
-  A −29 against a −15, tropylium against acylium against benzylic.
+  A −29 against a −15, and at 105 a ring-plus-methyl fragment against a ring-plus-C=O one.
 - **hexane / 2,2-dimethylbutane** — both C₆H₁₄, M = 86, base **43 vs 57**. One has a visible
   molecular ion and a smooth run of clusters; the other has essentially no M⁺ and one
   dominant peak. That contrast *is* the evidence for a branch point.
@@ -262,11 +301,11 @@ not always draw the same pair.
 
 ### Distractor tiles are the confusable twin
 
-At Level 2 the wrong tile offered against a m/z 43 acylium is the **m/z 43 propyl cation** —
-not something absurd. Each ion declares its `twin`, the ion of the same mass it is routinely
-confused with, and those are drawn first, then ions of the same stability class, then at
-random. A Level 2 tray is a set of genuine alternatives rather than a lineup of obvious
-rejects.
+At Level 2 the wrong tile offered against the m/z 43 that kept a C=O is the **m/z 43 propyl
+fragment** — not something absurd. Each fragment declares its `twin`, the one of the same
+mass it is routinely confused with, and those are drawn first, then fragments of the same
+stability class, then at random. A Level 2 tray is a set of genuine alternatives rather than
+a lineup of obvious rejects.
 
 ---
 

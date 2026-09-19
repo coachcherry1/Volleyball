@@ -4,7 +4,8 @@
  * teaches them in that order:
  *
  *   LEVEL 1, the LOSS view      "that peak is M minus 43"
- *   LEVEL 2, the ION view       "that 43 is an acylium, CH3-C=O+"
+ *   LEVEL 2, the FRAGMENT view  "that 43 is CH3CO+, the piece that kept
+ *                               the C=O" 
  *
  * The loss is arithmetic: M - m/z. The ion is chemistry. They are not the
  * same question, and the gap between them is where the teaching happens -
@@ -26,7 +27,7 @@
  *   branch      the bond at the most substituted carbon breaks, because the
  *               carbocation left behind is 3 > 2 > 1 > methyl
  *   benzylic    a bond one carbon from a ring breaks; the cation delocalises
- *               into the ring (and, for C7H7+, expands to tropylium)
+ *               into the ring, giving the m/z 91 fragment
  *   sigma       a plain C-C break with nothing special stabilising it
  */
 
@@ -35,7 +36,7 @@
 /* `also` names the second neutral that fits the same arithmetic. -29 and -43
    are the two that matter: they are why Level 1 is not the whole story. */
 var LOSSES = {
-  1:  { neutral: '•H',      hint: 'Loss of a single hydrogen atom. Small, but when M−1 is TALLER than M⁺ it means the cation left behind is unusually stable — tropylium from toluene, benzoyl from benzaldehyde.' },
+  1:  { neutral: '•H',      hint: 'Loss of a single hydrogen atom. Small, but when M−1 is TALLER than M⁺ it means the fragment left behind is unusually stable — C₇H₇⁺ from toluene, the ring-plus-C=O fragment from benzaldehyde.' },
   15: { neutral: '•CH₃', hint: 'Loss of a methyl radical. Look for a methyl sitting on a branch point or right next to a C=O — those are the two places a methyl leaves from.' },
   17: { neutral: '•OH',     hint: 'Loss of a hydroxyl radical. An alcohol or an acid. Usually much weaker than the −18 next to it.' },
   18: { neutral: 'H₂O',     hint: 'Loss of water — dehydration. This is an alcohol. M⁺ and M−18 together are the signature; in a tertiary alcohol the M⁺ may be gone entirely and only the −18 survives.' },
@@ -71,7 +72,12 @@ var LANDMARKS = {
   }
 };
 
-/* ------------------------------------------------------------------- ions
+/* -------------------------------------------------------------- fragments
+ *
+ * Fragments are named by their FORMULA and by what they kept — "keeps the
+ * C=O", "alkyl fragment" — not by ion class. Students are not asked to
+ * memorise the words acylium, oxocarbenium, iminium or tropylium; they are
+ * asked to recognise a fragment and say why it was stable enough to survive.
  *
  * `f`    the ion's own formula, so tools/validate.js can check the arithmetic
  * `lost`  for an ion whose mass depends on the molecule, the NEUTRAL formula
@@ -84,145 +90,146 @@ var LANDMARKS = {
  *        a m/z 43 acylium is the m/z 43 propyl cation, not something absurd.
  */
 var IONS = {
-  /* --- alkyl cations: the stability ladder, bare --- */
+  /* --- the alkyl series: 15, 29, 43, 57, 71 — each one CH2 (14) bigger --- */
   ch3: {
-    f: 'CH3', mz: 15, cls: 'methyl', mech: 'sigma', label: 'CH₃⁺', name: 'methyl cation',
-    hint: 'A bare methyl cation — the least stable carbocation there is. It shows up, but it is never the base peak of anything.'
+    f: 'CH3', mz: 15, cls: 'methyl', mech: 'sigma', label: 'CH₃⁺', name: 'alkyl fragment',
+    hint: 'The smallest alkyl fragment, and the first of the series 15, 29, 43, 57. A lone CH₃⁺ is the least stable carbocation there is, so this peak is always small — but seeing it means there was a methyl to lose.'
   },
   c2h5: {
-    f: 'C2H5', mz: 29, cls: 'primary', mech: 'sigma', label: 'C₂H₅⁺', name: 'ethyl cation', twin: 'cho',
-    hint: 'A primary ethyl cation. At m/z 29 it is easy to confuse with the formyl ion CHO⁺ — if there is no carbonyl anywhere else in the spectrum, it is the ethyl.'
+    f: 'C2H5', mz: 29, cls: 'primary', mech: 'sigma', label: 'C₂H₅⁺', name: 'alkyl fragment', twin: 'cho',
+    hint: 'An ethyl fragment — second in the alkyl series, 14 more than CH₃⁺. Careful at m/z 29: CHO from an aldehyde weighs the same. Check whether the structure has a C=O before you decide which one this is.'
   },
   c3h5: {
-    f: 'C3H5', mz: 41, cls: 'allylic', mech: 'sigma', label: 'C₃H₅⁺', name: 'allyl cation',
-    hint: 'Resonance-stabilised allyl. Almost every chain longer than three carbons throws one off, so it corroborates nothing on its own.'
+    f: 'C3H5', mz: 41, cls: 'allylic', mech: 'sigma', label: 'C₃H₅⁺', name: 'alkyl fragment',
+    hint: 'm/z 41 turns up under almost any chain longer than three carbons. It is a real peak, but it narrows nothing down.'
   },
   c3h7: {
-    f: 'C3H7', mz: 43, cls: 'secondary', mech: 'branch', label: 'C₃H₇⁺', name: 'propyl / isopropyl cation', twin: 'ch3co',
-    hint: 'A three-carbon alkyl cation. At m/z 43 its twin is the acylium CH₃CO⁺ — the acylium is resonance-stabilised and needs a carbonyl in the structure; this one only needs three carbons in a row.'
+    f: 'C3H7', mz: 43, cls: 'secondary', mech: 'branch', label: 'C₃H₇⁺', name: 'alkyl fragment', twin: 'ch3co',
+    hint: 'A three-carbon alkyl fragment — third in the series 15, 29, 43, 57. Careful at m/z 43: CH₃CO from a methyl ketone weighs the same. A C=O in the structure is what tells them apart.'
   },
   c4h7: {
-    f: 'C4H7', mz: 55, cls: 'allylic', mech: 'sigma', label: 'C₄H₇⁺', name: 'butenyl cation',
-    hint: 'A four-carbon allylic cation, very often what is left after an alcohol loses water and then a methyl.'
-  },
-  c5h11: {
-    f: 'C5H11', mz: 71, cls: 'tertiary', mech: 'branch', label: 'C₅H₁₁⁺', name: 'tertiary pentyl cation', twin: 'c3h7co',
-    hint: 'A methyl has left the branch point and what remains is still a tertiary carbocation. Good — but at m/z 71 its twin is an acylium, which is better again, so check whether the molecule has a C=O before you commit.'
+    f: 'C4H7', mz: 55, cls: 'allylic', mech: 'sigma', label: 'C₄H₇⁺', name: 'alkyl fragment',
+    hint: 'A four-carbon fragment with a double bond in it — very often what is left after an alcohol loses water and then a methyl.'
   },
   c4h9: {
-    f: 'C4H9', mz: 57, cls: 'tertiary', mech: 'branch', label: '(CH₃)₃C⁺', name: 'tert-butyl cation', twin: 'c2h5co',
-    hint: 'THE tertiary carbocation. Three alkyl groups donating into an empty p orbital — so stable that a molecule containing a tert-butyl group will often show almost no molecular ion at all, because it falls apart the instant it ionises.'
+    f: 'C4H9', mz: 57, cls: 'tertiary', mech: 'branch', label: '(CH₃)₃C⁺', name: 'alkyl fragment (3°)', twin: 'c2h5co',
+    hint: 'THE tertiary carbocation. Three methyls propping up the positive charge make it far more stable than a straight-chain C₄H₉⁺ — so stable that a molecule containing a tert-butyl group often shows almost no molecular ion at all. A big m/z 57 means a branch point.'
   },
-
-  /* --- oxocarbenium: alcohol and ether alpha cleavage, 1 / 2 / 3 --- */
-  ch2oh: {
-    f: 'CH3O', mz: 31, cls: 'resonance', mech: 'alpha', label: 'CH₂=OH⁺', name: 'oxocarbenium (from a 1° alcohol)',
-    hint: 'ALPHA CLEAVAGE at a primary alcohol. The oxygen lone pair pushes in to make a C=O double bond, so the positive charge is shared between carbon and oxygen. As the BASE PEAK, m/z 31 means a primary alcohol.'
-  },
-  ch3choh: {
-    f: 'C2H5O', mz: 45, cls: 'resonance', mech: 'alpha', label: 'CH₃CH=OH⁺', name: 'oxocarbenium (from a 2° alcohol)',
-    hint: 'ALPHA CLEAVAGE at a secondary alcohol — same resonance, one more carbon. As the BASE PEAK, m/z 45 means a secondary alcohol.'
-  },
-  me2coh: {
-    f: 'C3H7O', mz: 59, cls: 'resonance', mech: 'alpha', label: '(CH₃)₂C=OH⁺', name: 'oxocarbenium (from a 3° alcohol)',
-    hint: 'ALPHA CLEAVAGE at a tertiary alcohol. Resonance stabilisation AND two methyls donating — As the BASE PEAK, m/z 59 means a tertiary alcohol.'
-  },
-  etmecoh: {
-    f: 'C4H9O', mz: 73, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂(CH₃)C=OH⁺', name: 'oxocarbenium',
-    hint: 'ALPHA CLEAVAGE the other way round — this time the methyl left and the ethyl stayed. Same resonance stabilisation, but losing the SMALLER group is the less favourable of the two, so this peak is the shorter one.'
-  },
-  etoch2: {
-    f: 'C3H7O', mz: 59, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂O⁺=CH₂', name: 'oxocarbenium (from an ether)',
-    hint: 'ALPHA CLEAVAGE in an ether: the bond next to the oxygen breaks and the lone pair stabilises what is left. Ethers behave exactly like alcohols here — the oxygen is doing the same job.'
-  },
-  ch2ome: {
-    f: 'C2H5O', mz: 45, cls: 'resonance', mech: 'alpha', label: 'CH₃O=CH₂⁺', name: 'oxocarbenium (from a methyl ether)',
-    hint: 'ALPHA CLEAVAGE next to a methyl ether oxygen.'
-  },
-
-  /* --- acylium: the strongest resonance stabilisation in the unit --- */
-  cho: {
-    f: 'CHO', mz: 29, cls: 'resonance', mech: 'alpha', label: 'CHO⁺', name: 'formyl cation', twin: 'c2h5',
-    hint: 'The formyl ion from an aldehyde, and the reason −29 is ambiguous. C≡O⁺ with the charge on carbon — resonance-stabilised, unlike the ethyl cation sitting at the same mass.'
-  },
-  ch3co: {
-    f: 'C2H3O', mz: 43, cls: 'resonance', mech: 'alpha', label: 'CH₃C≡O⁺', name: 'acylium (acetyl)', twin: 'c3h7',
-    hint: 'ALPHA CLEAVAGE at a carbonyl gives an ACYLIUM: the oxygen lone pair makes a triple bond and the charge is fully delocalised. This is the most stable cation in this unit, which is why m/z 43 is the base peak of almost every methyl ketone and acetate.'
-  },
-  c2h5co: {
-    f: 'C3H5O', mz: 57, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂C≡O⁺', name: 'acylium (propanoyl)', twin: 'c4h9',
-    hint: 'A propanoyl acylium — same resonance as acetyl, one carbon longer. At m/z 57 its twin is the tert-butyl cation; only one of them needs a C=O in the structure.'
-  },
-  c3h7co: {
-    f: 'C4H7O', mz: 71, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂CH₂C≡O⁺', name: 'acylium (butanoyl)', twin: 'c5h11',
-    hint: 'A butanoyl acylium — the same resonance as every other acylium, four carbons long. At m/z 71 its twin is a tertiary alkyl cation; only this one needs a carbonyl.'
-  },
-  phco: {
-    f: 'C7H5O', mz: 105, cls: 'resonance', mech: 'alpha', label: 'C₆H₅C≡O⁺', name: 'benzoyl cation', twin: 'phchch3',
-    hint: 'A benzoyl acylium: acylium resonance PLUS a benzene ring to spread the charge into. m/z 105 with m/z 77 underneath it is the fingerprint of a phenyl ketone or a benzaldehyde.'
-  },
-
-  /* --- iminium: amine alpha cleavage --- */
-  ch2nh2: {
-    f: 'CH4N', mz: 30, cls: 'resonance', mech: 'alpha', label: 'CH₂=NH₂⁺', name: 'iminium (from a 1° amine)',
-    hint: 'ALPHA CLEAVAGE at an amine — the nitrogen lone pair does exactly what an oxygen lone pair does, only better, because nitrogen is less electronegative. As the BASE PEAK, m/z 30 means a primary amine.'
-  },
-  etnhchme: {
-    f: 'C3H8N', mz: 58, cls: 'resonance', mech: 'alpha', label: 'CH₃CH=NH⁺C₂H₅', name: 'iminium (from a 2° amine)',
-    hint: 'ALPHA CLEAVAGE at a secondary amine. Losing the methyl from the ethyl group leaves a nitrogen-stabilised cation.'
-  },
-
-  /* --- benzylic: the ring does the stabilising --- */
-  c7h7: {
-    f: 'C7H7', mz: 91, cls: 'resonance', mech: 'benzylic', label: 'C₇H₇⁺', name: 'tropylium',
-    hint: 'BENZYLIC CLEAVAGE. The bond one carbon out from the ring breaks, and the benzyl cation immediately expands into TROPYLIUM — a flat, aromatic seven-membered ring sharing the charge over all seven carbons. m/z 91 is the single most recognisable peak in organic mass spectrometry: it means a monosubstituted benzene ring with at least one carbon on it.'
-  },
-  phchch3: {
-    f: 'C8H9', mz: 105, cls: 'resonance', mech: 'benzylic', label: 'C₆H₅CH⁺CH₃', name: 'methylbenzyl cation', twin: 'phco',
-    hint: 'A SECONDARY benzylic cation — the ring stabilises it and a methyl donates into it as well. At m/z 105 its twin is the benzoyl acylium; the benzoyl needs an oxygen in the molecule and this one does not.'
+  c5h11: {
+    f: 'C5H11', mz: 71, cls: 'tertiary', mech: 'branch', label: 'C₅H₁₁⁺', name: 'alkyl fragment (3°)', twin: 'c3h7co',
+    hint: 'A methyl has left the branch point, and what remains is still a tertiary carbocation. Careful at m/z 71: a four-carbon C=O fragment weighs the same.'
   },
   c7h15: {
-    f: 'C7H15', mz: 99, cls: 'tertiary', mech: 'branch', label: 'C₇H₁₅⁺', name: 'tertiary heptyl cation',
+    f: 'C7H15', mz: 99, cls: 'tertiary', mech: 'branch', label: 'C₇H₁₅⁺', name: 'alkyl fragment (3°)',
     hint: 'One methyl gone from the branch point, leaving a tertiary carbocation with most of the molecule still attached. In a heavily branched alkane this is often the highest peak you can see at all.'
   },
+
+  /* --- fragments that keep the oxygen: cleavage next to O --- */
+  ch2oh: {
+    f: 'CH3O', mz: 31, cls: 'resonance', mech: 'alpha', label: 'CH₂=OH⁺', name: 'keeps the oxygen',
+    hint: 'ALPHA CLEAVAGE: the C–C bond next to the OH breaks, and the oxygen helps carry the positive charge — which is why this fragment beats a plain alkyl one. As the BASE PEAK, m/z 31 means a primary alcohol.'
+  },
+  ch3choh: {
+    f: 'C2H5O', mz: 45, cls: 'resonance', mech: 'alpha', label: 'CH₃CH=OH⁺', name: 'keeps the oxygen',
+    hint: 'ALPHA CLEAVAGE next to the OH — same idea as m/z 31, one carbon bigger. As the BASE PEAK, m/z 45 means a secondary alcohol.'
+  },
+  me2coh: {
+    f: 'C3H7O', mz: 59, cls: 'resonance', mech: 'alpha', label: '(CH₃)₂C=OH⁺', name: 'keeps the oxygen',
+    hint: 'ALPHA CLEAVAGE next to the OH, with two methyls helping as well. As the BASE PEAK, m/z 59 means a tertiary alcohol.'
+  },
+  c2h5choh: {
+    f: 'C3H7O', mz: 59, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂CH=OH⁺', name: 'keeps the oxygen',
+    hint: 'ALPHA CLEAVAGE the other way round: this time the methyl left and the ethyl stayed. Same oxygen help, but a methyl is the harder of the two to break off, so this peak stays short.'
+  },
+  etmecoh: {
+    f: 'C4H9O', mz: 73, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂(CH₃)C=OH⁺', name: 'keeps the oxygen',
+    hint: 'ALPHA CLEAVAGE losing the methyl rather than the ethyl. Perfectly good, but losing the SMALLER group is the less favourable of the two routes, so this is the shorter peak.'
+  },
+  etoch2: {
+    f: 'C3H7O', mz: 59, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂O⁺=CH₂', name: 'keeps the oxygen',
+    hint: 'ALPHA CLEAVAGE in an ether — the bond next to the oxygen breaks and the oxygen carries the charge. An ether does exactly what an alcohol does here.'
+  },
+  ch2ome: {
+    f: 'C2H5O', mz: 45, cls: 'resonance', mech: 'alpha', label: 'CH₃O⁺=CH₂', name: 'keeps the oxygen',
+    hint: 'ALPHA CLEAVAGE next to a methyl ether oxygen.'
+  },
+  me2coome: {
+    f: 'C4H9O', mz: 73, cls: 'resonance', mech: 'alpha', label: '(CH₃)₂C=O⁺CH₃', name: 'keeps the oxygen',
+    hint: 'ALPHA CLEAVAGE losing a methyl off the branch point, with the ether oxygen carrying the charge. Oxygen help beats the bare tert-butyl route, even though that one is good too.'
+  },
+  phchoh: {
+    f: 'C7H7O', mz: 107, cls: 'resonance', mech: 'alpha', label: 'C₆H₅CH=OH⁺', name: 'keeps the oxygen',
+    hint: 'The best of both: ALPHA CLEAVAGE gives the oxygen’s help, and the benzene ring spreads the charge as well. Two things propping up one fragment, so this peak dominates.'
+  },
+
+  /* --- fragments that keep the C=O --- */
+  cho: {
+    f: 'CHO', mz: 29, cls: 'resonance', mech: 'alpha', label: 'CHO⁺', name: 'keeps the C=O', twin: 'c2h5',
+    hint: 'The CHO fragment from an aldehyde, and the reason −29 is ambiguous. The C=O spreads the charge, so this is a better fragment than the ethyl sitting at the same mass — but only an aldehyde can make it.'
+  },
+  ch3co: {
+    f: 'C2H3O', mz: 43, cls: 'resonance', mech: 'alpha', label: 'CH₃C≡O⁺', name: 'keeps the C=O', twin: 'c3h7',
+    hint: 'ALPHA CLEAVAGE at a carbonyl: the C=O spreads the positive charge better than anything else in this unit, which is why m/z 43 is the base peak of almost every methyl ketone and acetate. Careful — a propyl fragment weighs the same.'
+  },
+  c2h5co: {
+    f: 'C3H5O', mz: 57, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂C≡O⁺', name: 'keeps the C=O', twin: 'c4h9',
+    hint: 'A C=O fragment one carbon longer than CH₃C≡O⁺. Careful at m/z 57: a tert-butyl fragment weighs the same, and only this one needs a C=O in the structure.'
+  },
+  c3h7co: {
+    f: 'C4H7O', mz: 71, cls: 'resonance', mech: 'alpha', label: 'CH₃CH₂CH₂C≡O⁺', name: 'keeps the C=O', twin: 'c5h11',
+    hint: 'A four-carbon C=O fragment. Careful at m/z 71: a tertiary alkyl fragment weighs the same.'
+  },
+  phco: {
+    f: 'C7H5O', mz: 105, cls: 'resonance', mech: 'alpha', label: 'C₆H₅C≡O⁺', name: 'keeps the C=O and the ring', twin: 'phchch3',
+    hint: 'A C=O fragment with a benzene ring attached — the charge is spread over both. m/z 105 with m/z 77 underneath it is the standard sign of a ring next to a carbonyl.'
+  },
+  acetoxy: {
+    f: 'C2H3O2', mz: 59, cls: 'resonance', mech: 'alpha', label: 'CH₃CO–O⁺', name: 'keeps both oxygens',
+    hint: 'The ester has lost the methyl off its oxygen. Real, but much weaker than m/z 43 — breaking the other C–O bond is the better deal.'
+  },
+
+  /* --- fragments that keep the nitrogen --- */
+  ch2nh2: {
+    f: 'CH4N', mz: 30, cls: 'resonance', mech: 'alpha', label: 'CH₂=NH₂⁺', name: 'keeps the nitrogen',
+    hint: 'ALPHA CLEAVAGE at the nitrogen. Nitrogen carries a positive charge even more willingly than oxygen does, so this fragment usually swamps the spectrum. As the BASE PEAK, m/z 30 means a primary amine.'
+  },
+  etnhchme: {
+    f: 'C3H8N', mz: 58, cls: 'resonance', mech: 'alpha', label: 'CH₃CH=NH⁺C₂H₅', name: 'keeps the nitrogen',
+    hint: 'ALPHA CLEAVAGE at a secondary amine: a methyl leaves one of the ethyls, and the nitrogen carries the charge.'
+  },
+
+  /* --- fragments built on the ring --- */
+  c7h7: {
+    f: 'C7H7', mz: 91, cls: 'resonance', mech: 'benzylic', label: 'C₇H₇⁺', name: 'benzyl fragment',
+    hint: 'BENZYLIC CLEAVAGE: the bond one carbon out from the ring breaks, and the ring spreads the charge around itself. m/z 91 is the most recognisable peak in organic mass spectrometry — it means a benzene ring with at least one carbon attached.'
+  },
+  phchch3: {
+    f: 'C8H9', mz: 105, cls: 'resonance', mech: 'benzylic', label: 'C₆H₅CH⁺CH₃', name: 'benzyl fragment (+CH₃)', twin: 'phco',
+    hint: 'A benzyl fragment with a methyl still on it — the ring spreads the charge and the methyl helps too. Careful at m/z 105: a ring-plus-C=O fragment weighs the same, and that one needs an oxygen.'
+  },
   ph: {
-    f: 'C6H5', mz: 77, cls: 'aryl', mech: 'sigma', label: 'C₆H₅⁺', name: 'phenyl cation',
-    hint: 'A bare phenyl cation. It is not especially stable — the empty orbital is in the ring plane and cannot conjugate — but m/z 77 is so characteristic that it is worth knowing on sight as "there is a benzene ring here".'
+    f: 'C6H5', mz: 77, cls: 'aryl', mech: 'sigma', label: 'C₆H₅⁺', name: 'the bare ring',
+    hint: 'The bare benzene ring. It is not especially stable — the ring cannot help this one — but m/z 77 is so characteristic that it is worth knowing on sight as “there is a benzene ring here”.'
   },
   c4h3: {
     f: 'C4H3', mz: 51, cls: 'aryl', mech: 'sigma', label: 'C₄H₃⁺', name: 'ring fragment',
-    hint: 'What is left when a phenyl cation itself breaks up. m/z 51 under m/z 77 corroborates a ring, and nothing more.'
+    hint: 'What is left when the bare ring itself breaks up. m/z 51 under m/z 77 corroborates a ring, and nothing more.'
   },
   c5h5: {
-    f: 'C5H5', mz: 65, cls: 'aryl', mech: 'sigma', label: 'C₅H₅⁺', name: 'cyclopentadienyl cation',
-    hint: 'Tropylium losing acetylene. m/z 65 sitting under m/z 91 confirms the 91 really is tropylium.'
+    f: 'C5H5', mz: 65, cls: 'aryl', mech: 'sigma', label: 'C₅H₅⁺', name: 'ring fragment',
+    hint: 'What the benzyl fragment turns into when it breaks up further. m/z 65 sitting under m/z 91 confirms the 91 really is a benzyl fragment.'
   },
 
-  c2h5choh: {
-    f: 'C3H7O', mz: 59, cls: 'resonance', mech: 'alpha', label: 'CH\u2083CH\u2082CH=OH\u207a', name: 'oxocarbenium (from a 2\u00b0 alcohol)',
-    hint: 'ALPHA CLEAVAGE the OTHER way round: this time the methyl left and the ethyl stayed. Same resonance stabilisation, but a methyl radical is the less stable of the two leaving groups, so this is the shorter of the pair.'
-  },
-  me2coome: {
-    f: 'C4H9O', mz: 73, cls: 'resonance', mech: 'alpha', label: '(CH\u2083)\u2082C=O\u207aCH\u2083', name: 'oxocarbenium (from an ether)',
-    hint: 'ALPHA CLEAVAGE next to the ether oxygen. A methyl leaves the quaternary carbon and the oxygen lone pair stabilises what is left \u2014 the same move an alcohol makes.'
-  },
-  phchoh: {
-    f: 'C7H7O', mz: 107, cls: 'resonance', mech: 'alpha', label: 'C\u2086H\u2085CH=OH\u207a', name: 'benzylic oxocarbenium',
-    hint: 'The best of both: ALPHA CLEAVAGE gives the oxygen resonance, and the benzene ring is right there to spread the charge as well. Two stabilisations on one cation, so this peak dominates.'
-  },
-  acetoxy: {
-    f: 'C2H3O2', mz: 59, cls: 'resonance', mech: 'alpha', label: 'CH\u2083CO\u2013O\u207a', name: 'ester acylium-oxygen cation',
-    hint: 'The ester has lost the methyl off its oxygen. Real, but much weaker than the acylium at 43 \u2014 breaking the other C\u2013O bond is the better deal.'
-  },
-
-  /* --- whole-molecule ions, mass set by the molecule --- */
+  /* --- whole-molecule fragments, mass set by the molecule --- */
   dehydr: {
-    lost: 'H2O', f: null, mz: null, cls: 'radical', mech: 'dehydr', label: '[M − H₂O]⁺·', name: 'alkene radical cation',
-    hint: 'DEHYDRATION. The alcohol throws off water and what is left is an alkene radical cation. M⁺ and M−18 together say alcohol; in a tertiary alcohol the M⁺ can vanish and leave M−18 as the highest peak you can see.'
+    lost: 'H2O', f: null, mz: null, cls: 'radical', mech: 'dehydr',
+    label: '[M − H₂O]⁺', name: 'after losing water',
+    hint: 'DEHYDRATION. The alcohol throws off water, −18, and what is left is the rest of the molecule. M⁺ and M−18 together say alcohol; in a tertiary alcohol the M⁺ can vanish and leave M−18 as the highest peak you can see.'
   },
   dehydrohalo: {
-    lost: 'HX', f: null, mz: null, cls: 'radical', mech: 'sigma', label: '[M − HX]⁺·', name: 'alkene radical cation',
-    hint: 'The halogen leaves with a neighbouring hydrogen, exactly the way an alcohol loses water.'
+    lost: 'HX', f: null, mz: null, cls: 'radical', mech: 'sigma',
+    label: '[M − HCl]⁺', name: 'after losing HCl',
+    hint: 'The chlorine leaves with a neighbouring hydrogen, −36 — exactly the way an alcohol loses water.'
   }
 };
 
