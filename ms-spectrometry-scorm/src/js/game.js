@@ -113,8 +113,14 @@ var Game = (function () {
      one shares most of the answer's peaks and differs by one the student
      labelled - so 1-butanol is offered against 2-butanol, separated only by
      31 against 45, which is exactly the primary/secondary distinction. */
+  function halogenOf(c) {
+    var m = MS.parseFormula(c.f) || {};
+    return m.Br ? 'Br' : m.Cl ? 'Cl' : null;
+  }
+
   function pickDecoys(answer, count, rand) {
     var aSig = SIG[answer.id], aKey = aSig.join(',');
+    var aHal = halogenOf(answer);
 
     var ranked = COMPOUNDS.filter(function (c) {
       return c.id !== answer.id && SIG[c.id].join(',') !== aKey;
@@ -126,12 +132,24 @@ var Game = (function () {
         + (c.theme === answer.theme ? 4 : 0)
         + (c.f === answer.f ? 5 : 0)                    /* an isomer is the sharpest decoy */
         + (SIG[c.id].M === aSig.M ? 3 : 0)              /* same molecular weight is sharper still */
+        + (aHal && halogenOf(c) ? (halogenOf(c) === aHal ? 9 : 6) : 0)
         + rand() * 2;
       return { c: c, score: score };
     });
 
     ranked.sort(function (a, b) { return b.score - a.score; });
-    return ranked.slice(0, count).map(function (x) { return x.c; });
+    var picked = ranked.slice(0, count).map(function (x) { return x.c; });
+
+    /* An M+2 doublet is visible from across the room. If the answer is a
+       halide and none of its rivals is, the question answers itself without
+       any chemistry — so force at least one halide rival in, preferring the
+       SAME halogen, which makes the student read the 3:1 against the 1:1
+       rather than just spotting that a doublet is there at all. */
+    if (aHal && !picked.some(halogenOf)) {
+      var rival = ranked.filter(function (x) { return halogenOf(x.c); })[0];
+      if (rival) picked[picked.length - 1] = rival.c;
+    }
+    return picked;
   }
 
   /* ------------------------------------------------------------ the draw */
@@ -426,6 +444,62 @@ var Game = (function () {
     });
   }
 
+  /* A picture of what is left after each loss, built up as the student goes.
+   *
+   * Seeing the ethyl walk off and the charge land on the carbon next to the
+   * C=O is the thing that makes Level 3 answerable later — the stability
+   * argument is about a structure, not a number, and until now the structure
+   * was never drawn.
+   *
+   * At Level 2 it waits until the compound has been identified: drawing the
+   * right skeleton mid-item would answer the question the level is asking.
+   */
+  function paintFragments() {
+    var slots = (item.slots || []).filter(function (s) { return s.filled; });
+    var allowed = item.cfg.mode !== 'predict' &&
+                  (!item.cfg.candidates || item.phase === 'done');
+
+    if (!allowed || !slots.length) {
+      el.fragments.hidden = true;
+      el.fragments.innerHTML = '';
+      return;
+    }
+
+    el.fragments.hidden = false;
+    el.fragments.innerHTML = '';
+    el.fragments.appendChild(make('p', 'frag-head',
+      'What is left after each loss. The solid part kept the charge; the dashed part ' +
+      'walked off as a neutral.'));
+
+    var row = make('div', 'frag-row');
+    slots.slice().sort(function (a, b) { return b.peak.mz - a.peak.mz; }).forEach(function (s) {
+      var view = MS.fragmentView(item.compound, s.peak);
+      var cell = make('div', 'frag-cell');
+      cell.appendChild(make('span', 'frag-mz', 'm/z ' + s.peak.mz));
+      if (view) {
+        cell.appendChild(Structure.render(item.compound.structure, {
+          keeps: view.keeps, charge: view.charge, scale: 22,
+          alt: 'The fragment at m/z ' + s.peak.mz + ', with the lost piece dashed'
+        }));
+      }
+      var neutral;
+      if (view && view.kind === 'whole') {
+        neutral = 'the whole molecule';
+      } else {
+        neutral = 'lost ' + (MS.neutralOf(item.spec, s.peak) || '?');
+        /* Only the O or the halogen can be drawn leaving; the hydrogen that
+           goes with it comes off a neighbouring carbon, and a skeletal
+           drawing has no hydrogens to ghost. Say so rather than let the
+           picture imply the OH left on its own. */
+        if (view && view.kind === 'ghost') neutral += ' — the H comes off the carbon next door';
+        if (view && view.kind === 'hydrogen') neutral += ' — nothing heavy left, so nothing is dashed';
+      }
+      cell.appendChild(make('span', 'frag-lost', neutral));
+      row.appendChild(cell);
+    });
+    el.fragments.appendChild(row);
+  }
+
   function paintCard() {
     el.card.innerHTML = '';
     if (item.cfg.candidates) {
@@ -480,6 +554,7 @@ var Game = (function () {
     paintCard();
     paintTray();
     paintSpectrum();
+    paintFragments();
     el.choices.hidden = true;
     el.next.hidden = true;
     if (item.phase === 'predict') paintRoutes();
@@ -505,6 +580,7 @@ var Game = (function () {
       say('Correct — m/z ' + slot.peak.mz + '. ' + keyHint(slot.key), 'good');
       paintTray();
       paintSpectrum();
+      paintFragments();
       if (item.slots.every(function (s) { return s.filled; })) finishLabels();
     } else {
       say(wrongNote(slot, tile), 'bad');
@@ -654,7 +730,8 @@ var Game = (function () {
       item.phase = 'done';
       node.classList.add('right');
       say(item.compound.name + ' — ' + item.compound.cls.toLowerCase() + ', M = ' +
-          item.spec.M + '. The peaks you named are the evidence.', 'good');
+          item.spec.M + '. The losses you labelled are the evidence.', 'good');
+      paintFragments();
       el.next.hidden = false;
       el.next.focus();
     } else {
@@ -683,6 +760,13 @@ var Game = (function () {
       var neutral = MS.neutralOf(item.spec, r.peak);
       b.appendChild(make('span', 'route-loss',
         'Lose ' + (neutral || '?') + '   (M − ' + (item.spec.M - r.peak.mz) + ')'));
+      var view = MS.fragmentView(item.compound, r.peak);
+      if (view) {
+        b.appendChild(Structure.render(item.compound.structure, {
+          keeps: view.keeps, charge: view.charge, scale: 25,
+          alt: 'what is left after losing ' + (MS.neutralOf(item.spec, r.peak) || 'the fragment')
+        }));
+      }
       b.appendChild(make('span', 'route-ion', 'leaves ' + r.ion.label));
       /* "Lose H2O" already says how it broke, so a whole-molecule loss does
          not repeat the mechanism underneath itself. */
@@ -1089,7 +1173,7 @@ var Game = (function () {
   function cacheDom() {
     ['plot', 'plotwrap', 'overlay', 'tray', 'card', 'feedback', 'next', 'tabs',
      'levelName', 'blurb', 'counter', 'screen', 'choices', 'stage', 'reference',
-     'refbody', 'lms'].forEach(function (id) { el[id] = $(id); });
+     'refbody', 'fragments', 'lms'].forEach(function (id) { el[id] = $(id); });
   }
 
   function buildReference() {

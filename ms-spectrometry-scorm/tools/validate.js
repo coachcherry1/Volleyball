@@ -18,12 +18,15 @@ const path = require('path');
 const src = path.join(__dirname, '..', 'src', 'js');
 eval(fs.readFileSync(path.join(src, 'fragments.js'), 'utf8'));
 eval(fs.readFileSync(path.join(src, 'compounds.js'), 'utf8'));
+global.getComputedStyle = () => ({ getPropertyValue: () => '' });
+eval(fs.readFileSync(path.join(src, 'massspec.js'), 'utf8'));
 
 const MASS = { C: 12, H: 1, N: 14, O: 16, F: 19, S: 32, Cl: 35, Br: 79, I: 127 };
 const HALOGENS = ['Cl', 'Br', 'F', 'I'];
 
 const problems = [];
 const warn = [];
+const ambiguous = [];
 const fail = (c, msg) => problems.push(c.id + ': ' + msg);
 
 /* ------------------------------------------------------- formula arithmetic */
@@ -165,6 +168,37 @@ for (const c of COMPOUNDS) {
     keyIons.set(p.ion, p.mz);
   }
 
+  /* --- the drawing has to BE the molecule ---
+     Hydrogens are counted back from the bonds, so a structure with a missing
+     bond or a stray vertex will not reproduce the formula. This also
+     underpins the fragment pictures: they are cut out of this same drawing. */
+  const drawn = MS.countsOf(MS.atomsOf(c.structure),
+                            c.structure.pts.map((_, i) => i));
+  if (!MS.sameCounts(drawn, mol)) {
+    fail(c, 'the drawn structure works out to ' + formulaText(drawn) +
+            ', but the formula says ' + c.f);
+  }
+
+  /* --- every peak a student labels must have an honest picture --- */
+  for (const p of c.peaks) {
+    if (p.role !== 'key' && p.role !== 'mplus') continue;
+    const view = MS.fragmentView(c, p);
+    if (!view) {
+      fail(c, 'no fragment picture can be derived for m/z ' + p.mz +
+              ' — the panel would show a gap where the structure should be');
+      continue;
+    }
+    if (view.kind === 'cut') {
+      const kept = MS.countsOf(MS.atomsOf(c.structure), view.keeps);
+      const want = MS.parseFormula(IONS[p.ion].f);
+      if (!MS.sameCounts(kept, want)) {
+        fail(c, 'the fragment picture for m/z ' + p.mz + ' keeps ' + formulaText(kept) +
+                ', not ' + IONS[p.ion].f);
+      }
+      if (view.ambiguous) ambiguous.push(c.id + ' m/z ' + p.mz);
+    }
+  }
+
   if (base !== 1) fail(c, 'expected exactly one base peak (ab: 100), found ' + base);
 
   /* massspec.js holds every other peak at or below 97 so the base peak cannot
@@ -278,6 +312,15 @@ console.log('scored peaks: ' + COMPOUNDS.reduce((n, c) =>
 if (collisions.length) {
   console.log('\nindistinguishable by scored peaks alone (never offered against each other):');
   for (const g of collisions) console.log('  ' + g.join('  =  ') + '   [' + SIG[g[0]] + ']');
+}
+
+/* More than one bond cut gives a piece of the right formula. In this bank they
+   are all symmetry twins — losing either of two equivalent methyls — so the
+   picture is the same molecule seen from the other end. Listed so that a new
+   compound producing a genuine ambiguity gets looked at. */
+if (ambiguous.length) {
+  console.log('\nfragment pictures with more than one matching cut (symmetry twins):');
+  console.log('  ' + ambiguous.join(', '));
 }
 
 if (warn.length) {

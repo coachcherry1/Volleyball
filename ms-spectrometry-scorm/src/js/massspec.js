@@ -246,6 +246,195 @@ var MS = (function () {
     return (ion.cls === 'radical' ? '' : '\u2022') + text;
   }
 
+  /* ------------------------------------------- which atoms the fragment keeps
+   *
+   * A skeletal structure carries no hydrogens, so they are counted back from
+   * the bonds: a carbon has 4 minus the bond orders around it, and a vertex
+   * inside an aromatic ring carries one more bond order than its drawn bonds
+   * show. Heteroatom labels state their own hydrogens.
+   *
+   * With per-vertex counts in hand, a simple cleavage is found by trying each
+   * bond in turn: cut it, and if one of the two pieces has exactly the
+   * fragment's formula, that piece is what the student sees keep the charge.
+   * Hydrogen counts come from the INTACT structure — when R–R' breaks, the
+   * carbon that lost the bond becomes a carbocation with an empty orbital, it
+   * does not pick up an extra hydrogen.
+   */
+
+  var LABEL_ATOM = {
+    'O': { el: 'O', h: 0 }, 'OH': { el: 'O', h: 1 },
+    'N': { el: 'N', h: 0 }, 'NH': { el: 'N', h: 1 }, 'NH₂': { el: 'N', h: 2 },
+    'Cl': { el: 'Cl', h: 0 }, 'Br': { el: 'Br', h: 0 },
+    'F': { el: 'F', h: 0 }, 'I': { el: 'I', h: 0 }, 'S': { el: 'S', h: 0 }
+  };
+
+  function atomsOf(structure) {
+    var n = structure.pts.length;
+    var labels = structure.labels || {};
+    var inRing = {};
+    (structure.rings || []).forEach(function (r) {
+      r.forEach(function (i) { inRing[i] = true; });
+    });
+
+    var order = new Array(n);
+    for (var i = 0; i < n; i++) order[i] = inRing[i] ? 1 : 0;
+    structure.bonds.forEach(function (b) {
+      var o = b[2] || 1;
+      order[b[0]] += o;
+      order[b[1]] += o;
+    });
+
+    var atoms = [];
+    for (var v = 0; v < n; v++) {
+      if (labels[v]) {
+        var L = LABEL_ATOM[labels[v]];
+        atoms.push(L ? { el: L.el, h: L.h } : null);
+      } else {
+        atoms.push({ el: 'C', h: Math.max(0, 4 - order[v]) });
+      }
+    }
+    return atoms;
+  }
+
+  function countsOf(atoms, members) {
+    var c = {};
+    members.forEach(function (v) {
+      var a = atoms[v];
+      if (!a) return;
+      c[a.el] = (c[a.el] || 0) + 1;
+      if (a.h) c.H = (c.H || 0) + a.h;
+    });
+    return c;
+  }
+
+  function sameCounts(a, b) {
+    var keys = {};
+    for (var k in a) keys[k] = 1;
+    for (var k2 in b) keys[k2] = 1;
+    for (var el in keys) if ((a[el] || 0) !== (b[el] || 0)) return false;
+    return true;
+  }
+
+  /* The vertices reachable from `start` once `skip` (a bond index) is gone. */
+  function component(structure, start, skip) {
+    var adj = {};
+    structure.bonds.forEach(function (b, i) {
+      if (i === skip) return;
+      (adj[b[0]] = adj[b[0]] || []).push(b[1]);
+      (adj[b[1]] = adj[b[1]] || []).push(b[0]);
+    });
+    var seen = {}, stack = [start], out = [];
+    while (stack.length) {
+      var v = stack.pop();
+      if (seen[v]) continue;
+      seen[v] = true;
+      out.push(v);
+      (adj[v] || []).forEach(function (w) { if (!seen[w]) stack.push(w); });
+    }
+    return out.sort(function (x, y) { return x - y; });
+  }
+
+  function labelledVertex(structure, els) {
+    var labels = structure.labels || {};
+    for (var k in labels) {
+      var L = LABEL_ATOM[labels[k]];
+      if (L && els.indexOf(L.el) >= 0) return +k;
+    }
+    return -1;
+  }
+
+  /* What the student should see for one peak:
+       kind 'whole'  the intact molecule (the molecular ion)
+       kind 'cut'    one bond broken; `keeps` stay, the rest is ghosted
+       kind 'ghost'  a small neutral walked off from a named atom (water, HCl)
+       kind 'hydrogen' only a hydrogen left, so nothing can be ghosted
+       null          no honest picture available */
+  function fragmentView(compound, peak) {
+    var st = compound.structure;
+    if (!st || !st.pts) return null;
+    var atoms = atomsOf(st);
+    var all = st.pts.map(function (_, i) { return i; });
+
+    if (peak.role === 'mplus') {
+      return { kind: 'whole', keeps: all, charge: -1, lost: null };
+    }
+    var ion = peak.ion ? IONS[peak.ion] : null;
+    if (!ion) return null;
+
+    if (ion.lost === 'H2O' || ion.lost === 'HX') {
+      var v = ion.lost === 'H2O'
+        ? labelledVertex(st, ['O'])
+        : labelledVertex(st, ['Cl', 'Br', 'F', 'I']);
+      if (v < 0) return null;
+      return {
+        kind: 'ghost', charge: -1, lost: ion.lost === 'H2O' ? 'H₂O' : 'HX',
+        keeps: all.filter(function (i) { return i !== v; })
+      };
+    }
+    if (!ion.f) return null;
+
+    var want = parseFormula(ion.f);
+    if (!want) return null;
+
+    /* a loss of one hydrogen shows no missing heavy atom */
+    var whole = countsOf(atoms, all);
+    if (sameCounts(want, Object.keys(whole).reduce(function (o, el) {
+      o[el] = whole[el] - (el === 'H' ? 1 : 0);
+      return o;
+    }, {}))) {
+      return { kind: 'hydrogen', keeps: all, charge: -1, lost: '•H' };
+    }
+
+    var matches = [];
+    st.bonds.forEach(function (b, bi) {
+      [0, 1].forEach(function (endIdx) {
+        var keep = component(st, b[endIdx], bi);
+        if (keep.indexOf(b[1 - endIdx]) >= 0) return;      /* ring bond: still joined */
+        if (!sameCounts(countsOf(atoms, keep), want)) return;
+        matches.push({ keeps: keep, charge: b[endIdx], bond: bi });
+      });
+    });
+    if (!matches.length) return null;
+
+    /* Where more than one bond gives a piece of the right formula, prefer the
+       cut the mechanism actually describes: α-cleavage keeps the heteroatom,
+       benzylic keeps the ring. Anything still tied is a symmetry twin — either
+       picture is the same molecule seen from the other end. */
+    var ringV = {};
+    (st.rings || []).forEach(function (r) { r.forEach(function (i) { ringV[i] = true; }); });
+
+    /* heavy-atom neighbours of each vertex — how substituted a carbon is */
+    var degree = {};
+    st.bonds.forEach(function (b) {
+      degree[b[0]] = (degree[b[0]] || 0) + 1;
+      degree[b[1]] = (degree[b[1]] || 0) + 1;
+    });
+
+    matches.forEach(function (m) {
+      var kept = {};
+      m.keeps.forEach(function (v4) { kept[v4] = true; });
+      /* α-cleavage: the charge should land next to the O or N it is sharing with */
+      var nextToHetero = st.bonds.some(function (b) {
+        var other = b[0] === m.charge ? b[1] : b[1] === m.charge ? b[0] : -1;
+        return other >= 0 && kept[other] && atoms[other] && atoms[other].el !== 'C';
+      });
+      m.score = (ion.mech === 'alpha' && nextToHetero ? 8 : 0) +
+                (ion.mech === 'benzylic' && ringV[m.charge] === undefined &&
+                 m.keeps.some(function (v5) { return ringV[v5]; }) ? 8 : 0) +
+                /* a break at a branch point leaves the MOST substituted carbon
+                   holding the charge — 3° over 2° over 1°, which is the whole
+                   lesson, so the picture must not show the other one */
+                (degree[m.charge] || 0);
+    });
+    matches.sort(function (a, b) { return b.score - a.score; });
+
+    return {
+      kind: 'cut', keeps: matches[0].keeps, charge: matches[0].charge,
+      bond: matches[0].bond, lost: null,
+      ambiguous: matches.filter(function (m) { return m.score === matches[0].score; }).length > 1
+    };
+  }
+
   function peakAt(spec, mz) {
     for (var i = 0; i < spec.peaks.length; i++) if (spec.peaks[i].mz === mz) return spec.peaks[i];
     return null;
@@ -493,7 +682,8 @@ var MS = (function () {
   return {
     THRESHOLD: THRESHOLD, LABEL_H: LABEL_H,
     build: build, draw: draw, drawLeaders: drawLeaders, peakAt: peakAt, rng: rng,
-    neutralOf: neutralOf,
+    neutralOf: neutralOf, fragmentView: fragmentView,
+    atomsOf: atomsOf, countsOf: countsOf, sameCounts: sameCounts,
     parseFormula: parseFormula, massOf: massOf,
     plotRect: plotRect, xOfMz: xOfMz, mzOfX: mzOfX, yOfAb: yOfAb
   };

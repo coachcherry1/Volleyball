@@ -156,6 +156,54 @@ shift, and that the landmark only holds when m/z 31 is the **base peak**.
 
 ---
 
+## Seeing what is left
+
+Naming a loss is arithmetic. Seeing *which piece walked off and which piece kept the
+charge* is the chemistry, and until a structure is drawn the stability argument has nothing
+to attach to. So every labelled peak gets a picture.
+
+At Level 1, a **What is left** panel builds up under the plot as the student works: one
+skeletal drawing per labelled peak, with the departing piece **dashed and faded**, a red
+**+** on the atom holding the charge, and a caption naming the neutral. By the end of a
+spectrum the student has the whole fragmentation laid out side by side — which is what
+makes Level 3 answerable later, where the same drawings appear on the cards being chosen
+between.
+
+At Level 2 the panel waits until the compound has been identified. Drawing the right
+skeleton mid-item would answer the question the level is asking.
+
+### The pictures are derived, not drawn by hand
+
+Nothing in `compounds.js` says which atoms a fragment keeps. It is worked out:
+
+1. **Hydrogens are counted back from the bonds.** A carbon has 4 minus the bond orders
+   around it; a vertex inside an aromatic ring carries one more bond order than its drawn
+   bonds show; heteroatom labels state their own hydrogens (`OH` is one, `NH₂` is two).
+2. **Each bond is cut in turn.** If one of the two pieces has exactly the fragment's
+   formula, that piece is what kept the charge.
+3. Hydrogen counts come from the **intact** structure — when R–R′ breaks, the carbon that
+   lost the bond becomes a carbocation with an empty orbital; it does not pick up a
+   hydrogen.
+
+That makes the picture self-checking, and `tools/validate.js` checks it twice: every
+structure must reproduce its own molecular formula from the drawing alone (all 30 do), and
+every labelled peak must yield a picture whose kept atoms have exactly the fragment's
+formula. A structure with a missing bond fails the build.
+
+Where more than one bond gives a piece of the right formula, the mechanism decides:
+α-cleavage puts the charge next to the O or N, benzylic keeps the ring, and a break at a
+branch point leaves the **most substituted** carbon holding it — 3° over 2°, which is the
+whole lesson, so the picture must not show the other one. Fifteen peaks still have two
+matching cuts; all are symmetry twins (losing either of two equivalent methyls), and the
+validator lists them so a new compound with a genuine ambiguity gets looked at.
+
+Three cases cannot be a clean cut, and say so rather than implying otherwise:
+
+- **dehydration** ghosts the OH and adds *"the H comes off the carbon next door"*, because a
+  skeletal drawing has no hydrogens to ghost
+- **loss of HCl** ghosts the halogen, same caveat
+- **loss of a single H** ghosts nothing and says *"nothing heavy left, so nothing is dashed"*
+
 ## Reading the plot
 
 Every peak above the 5% line has **its mass printed directly above it**, the way real
@@ -263,7 +311,7 @@ target, so a McLafferty peak can never be scored by accident.
 
 ## The compound bank
 
-29 compounds across six themes. The draw is **balanced by theme, not purely random**: every
+30 compounds across six themes. The draw is **balanced by theme, not purely random**: every
 level takes one compound per theme before filling the remaining places freely, so a run
 always contains an alcohol, a carbonyl, an arene, a branched chain, a heteroatom compound
 and a halide.
@@ -275,7 +323,7 @@ and a halide.
 | **arene** | toluene, ethyl-, propyl-, isopropyl- and butylbenzene | m/z 91, and breaking next to a ring |
 | **branch** | hexane, 2-methylbutane, 2,2-dimethylbutane, 2,2,4-trimethylpentane | the tertiary carbocation at 57 |
 | **hetero** | 1-propanamine, diethylamine, diethyl ether, MTBE | α-cleavage at N and at ether O |
-| **halide** | 1-bromopropane, 1-chlorobutane, chlorobenzene | M/M+2 isotope patterns |
+| **halide** | 1-bromopropane, 1-chlorobutane, chlorobenzene, bromobenzene | M/M+2 isotope patterns |
 
 Level 3 draws no halide: a C–X bond simply breaks, with no second route to weigh it
 against, so there is nothing there to predict. The validator knows this and checks theme
@@ -314,6 +362,15 @@ not always draw the same pair.
 Distractors are drawn from the four losses the unit is built around — −15, −18, −29, −43 —
 before anything else, because those are the ones a student should be checking for every
 single time. Level 1 offers two distractors, Level 2 three.
+
+### A halide always faces a halide
+
+An M+2 doublet is visible from across the room. If the answer were the only halogen
+compound on offer, the question would answer itself with no chemistry at all — so when the
+answer contains Cl or Br, **at least one rival must too**, preferring the *same* halogen.
+Chlorobenzene comes up against bromobenzene and 1-chlorobutane: identical structures but
+for the halogen, so the student has to read the 3:1 against the 1:1 *and* check the
+molecular mass. Bromobenzene is in the bank for exactly this reason.
 
 ---
 
@@ -468,14 +525,19 @@ ms-spectrometry-scorm/
 └── README.md
 ```
 
-`structures.js` and `scorm.js` are shared with the IR package: the code is identical, and
-only the header comment differs (it names the file each one reads its data from). A SCORM
-zip has to be self-contained, so they are duplicated rather than linked — if you fix a bug
-in one, fix it in both. `diff` the pair to confirm nothing has drifted:
+`scorm.js` is shared with the IR package — the code is identical, only the header comment
+differs. A SCORM zip has to be self-contained, so it is duplicated rather than linked; if
+you fix a bug in one, fix it in both:
 
 ```bash
 diff <(tail -n +12 ../ir-spectroscopy-scorm/src/js/scorm.js) <(tail -n +16 src/js/scorm.js)
 ```
+
+`structures.js` **started** as the IR package's renderer and has since grown one thing that
+package does not need: `opts.keeps`, the list of vertices a fragment holds on to, plus
+`opts.charge` for the **+**. Everything else is the same. The additions are inert when the
+options are absent, so the file could be copied back to the IR package unchanged if that
+ever became useful.
 
 No CDN, no web fonts, no network calls of any kind. A 40 KB zip that works offline inside a
 locked-down LMS iframe.

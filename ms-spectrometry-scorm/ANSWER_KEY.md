@@ -713,6 +713,28 @@ drawn to make the spectrum honest, and explains itself when clicked.
 
 - **m/z 56** (75%) — The chlorine leaves taking a neighbouring hydrogen with it — loss of HCl, −36. Exactly the move an alcohol makes when it loses water.
 
+### Bromobenzene  ·  `bromobenzene`
+
+| | |
+| --- | --- |
+| Formula | C₆H₅Br |
+| Molecular ion | **156**  — 100%, scored |
+| Base peak | **m/z 156** |
+| Class | Aryl bromide |
+| Levels | loss |
+
+| m/z | % | Loss | Fragment | How it breaks | Role |
+| ---: | ---: | --- | --- | --- | --- |
+| 156 | 100 | — | — | — | molecular ion — **scored** |
+| 78 | 8 | — | — | — | drawn; below the reading line |
+| 77 | 90 | −79 (•Br) | C₆H₅⁺ `C6H5` | plain C–C | **scored** |
+| 51 | 30 | — | C₄H₃⁺ `C4H3` | plain C–C | drawn; above the line but not diagnostic |
+| 50 | 20 | — | — | — | drawn; above the line but not diagnostic |
+
+**Why each scored peak is where it is**
+
+- **m/z 77** (90%) — Losing the bromine atom, −79, leaves the bare ring. The C–Br bond is much the weakest thing here, so it goes first — and the ring holds the molecular ion together so well that M⁺ still edges it.
+
 ### Chlorobenzene  ·  `chlorobenzene`
 
 | | |

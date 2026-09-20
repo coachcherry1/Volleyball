@@ -531,6 +531,19 @@ var COMPOUNDS = [
     ]
   },
   {
+    id: 'bromobenzene', name: 'Bromobenzene', formula: 'C₆H₅Br', f: 'C6H5Br', cls: 'Aryl bromide',
+    theme: 'halide', tags: ['loss'], isotopeTarget: true,
+    structure: arene([[1.62, 0]], [[0, 6, 1]], { 6: 'Br' }),
+    peaks: [
+      { mz: 156, ab: 100, role: 'mplus' },
+      { mz: 77, ab: 90, ion: 'ph', role: 'key',
+        why: 'Losing the bromine atom, −79, leaves the bare ring. The C–Br bond is much the weakest thing here, so it goes first — and the ring holds the molecular ion together so well that M⁺ still edges it.' },
+      { mz: 51, ab: 30, ion: 'c4h3', role: 'cluster' },
+      { mz: 50, ab: 20, role: 'cluster' },
+      { mz: 78, ab: 8, role: 'minor' }
+    ]
+  },
+  {
     id: 'chlorobenzene', name: 'Chlorobenzene', formula: 'C₆H₅Cl', f: 'C6H5Cl', cls: 'Aryl chloride',
     theme: 'halide', tags: ['loss'], isotopeTarget: true,
     structure: arene([[1.62, 0]], [[0, 6, 1]], { 6: 'Cl' }),
