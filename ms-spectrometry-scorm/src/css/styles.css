@@ -265,6 +265,12 @@ h2 { font-size: 0.95rem; margin: 0; }
   fill: var(--bad);
   font: 700 15px system-ui, sans-serif;
 }
+/* The heavier atom in an M+2 peak. Nothing broke, so there is no + and no
+   dashing — this is the only thing marking the cell out from the M⁺ one. */
+.structure .atom.heavy {
+  fill: var(--accent);
+  font: 700 14px system-ui, sans-serif;
+}
 
 /* -------------------------------------------------------------- label tray */
 

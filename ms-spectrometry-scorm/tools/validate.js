@@ -179,9 +179,14 @@ for (const c of COMPOUNDS) {
             ', but the formula says ' + c.f);
   }
 
-  /* --- every peak a student labels must have an honest picture --- */
-  for (const p of c.peaks) {
-    if (p.role !== 'key' && p.role !== 'mplus') continue;
+  /* --- every peak a student labels must have an honest picture ---
+     Checked against a BUILT spectrum, not the declared peak list: the isotope
+     peaks are generated at draw time, so checking compounds.js alone misses
+     them — which is exactly how an M+2 once reached students captioned
+     "lost ?". Whatever the student can drop a tile on gets checked. */
+  const built = MS.build(c, 4242);
+  for (const p of built.peaks) {
+    if (!p.target) continue;
     const view = MS.fragmentView(c, p);
     if (!view) {
       fail(c, 'no fragment picture can be derived for m/z ' + p.mz +
@@ -196,6 +201,26 @@ for (const c of COMPOUNDS) {
                 ', not ' + IONS[p.ion].f);
       }
       if (view.ambiguous) ambiguous.push(c.id + ' m/z ' + p.mz);
+    }
+    /* Every cell in the panel carries a caption. A blank one reads as a
+       question mark next to a drawing, which teaches nothing. */
+    const caption = view.kind === 'isotope' ? view.note
+                  : view.kind === 'whole' ? 'the whole molecule'
+                  : MS.neutralOf(built, p);
+    if (!caption) {
+      fail(c, 'the fragment panel has no caption for m/z ' + p.mz +
+              ' — it would render as "lost ?"');
+    }
+  }
+
+  /* An M+2 only becomes a drop target if it clears the reading threshold, so
+     say which halides actually get to carry the isotope lesson. */
+  if (c.isotopeTarget) {
+    const m2 = built.peaks.find(p => p.role === 'miso2');
+    if (!m2 || !m2.target) {
+      warn.push(c.id + ': its M+2 is only ' + (m2 ? m2.ab.toFixed(1) : '0') +
+                '% — below the reading threshold, so this compound is drawn honestly but ' +
+                'never asks the student to label the doublet');
     }
   }
 

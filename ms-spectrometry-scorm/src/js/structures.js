@@ -1,11 +1,13 @@
 /* structures.js — draws the skeletal formulas from the compact spec in
  * compounds.js.
  *
- * Started as the IR package's renderer and has since grown one thing that
- * package does not need: `opts.keeps`, a list of the vertices a FRAGMENT
- * holds on to. Everything outside that list is ghosted — drawn faintly and
- * dashed — so a student can see which piece walked off and which piece kept
- * the charge. `opts.charge` puts a + on the atom holding it.
+ * Started as the IR package's renderer and has since grown what that package
+ * does not need: `opts.keeps`, a list of the vertices a FRAGMENT holds on to.
+ * Everything outside that list is ghosted — drawn faintly and dashed — so a
+ * student can see which piece walked off and which kept the charge.
+ * `opts.charge` puts a + on the atom holding it, and `opts.highlight` picks
+ * out an atom that is special for some other reason: the heavier halogen in
+ * an M+2 peak, where nothing broke at all.
  * Vertices carrying a heteroatom label are drawn as text and the
  * bonds stop short of them; bare vertices are ordinary chain carbons.
  */
@@ -88,8 +90,10 @@ var Structure = (function () {
     });
 
     Object.keys(labels).forEach(function (i) {
+      var lit = opts.highlight != null && +i === opts.highlight;
       var text = el('text', { x: X(+i).toFixed(1), y: Y(+i).toFixed(1),
-                              class: 'atom' + (isKept(+i) ? '' : ' lost'),
+                              class: 'atom' + (isKept(+i) ? '' : ' lost') +
+                                     (lit ? ' heavy' : ''),
                               'text-anchor': 'middle',
                               'dominant-baseline': 'central' });
       text.textContent = labels[i];

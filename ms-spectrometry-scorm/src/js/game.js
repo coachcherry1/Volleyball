@@ -476,8 +476,8 @@ var Game = (function () {
     el.fragments.hidden = false;
     el.fragments.innerHTML = '';
     el.fragments.appendChild(make('p', 'frag-head',
-      'What is left after each loss. The solid part kept the charge; the dashed part ' +
-      'walked off as a neutral.'));
+      'What each labelled peak actually is. The solid part kept the charge; anything ' +
+      'dashed walked off as a neutral.'));
 
     var row = make('div', 'frag-row');
     slots.slice().sort(function (a, b) { return b.peak.mz - a.peak.mz; }).forEach(function (s) {
@@ -487,11 +487,17 @@ var Game = (function () {
       if (view) {
         cell.appendChild(Structure.render(item.compound.structure, {
           keeps: view.keeps, charge: view.charge, scale: 22,
-          alt: 'The fragment at m/z ' + s.peak.mz + ', with the lost piece dashed'
+          highlight: view.kind === 'isotope' && view.heavy >= 0 ? view.heavy : null,
+          alt: view.kind === 'isotope'
+            ? 'The same molecule at m/z ' + s.peak.mz + ', carrying a heavier isotope'
+            : 'The fragment at m/z ' + s.peak.mz + ', with the lost piece dashed'
         }));
       }
       var neutral;
-      if (view && view.kind === 'whole') {
+      if (view && view.kind === 'isotope') {
+        /* Nothing was lost, so "lost ?" is the wrong sentence entirely. */
+        neutral = view.note;
+      } else if (view && view.kind === 'whole') {
         neutral = 'the whole molecule';
       } else {
         neutral = 'lost ' + (MS.neutralOf(item.spec, s.peak) || '?');

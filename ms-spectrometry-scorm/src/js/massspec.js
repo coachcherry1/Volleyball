@@ -165,12 +165,15 @@ var MS = (function () {
     peaks.forEach(function (p) { p.ab = p.ab / max * 100; });
 
     /* A peak a student is asked to label. The molecular ion always counts;
-       the M+2 doublet counts for the halides, where reading it is the
-       lesson. */
+       the M+2 doublet counts for the halides, where reading it is the lesson —
+       but only when it clears the reading threshold. Marking a peak that the
+       same plot captions "don't read it" would contradict the rule the whole
+       activity is teaching. Where M+ is faint the M+2 is fainter still, and
+       that compound simply carries the lesson without the isotope drop. */
     peaks.forEach(function (p, i) {
       p.i = i;
       p.target = p.role === 'key' || p.role === 'mplus' ||
-                 (p.role === 'miso2' && !!compound.isotopeTarget);
+                 (p.role === 'miso2' && !!compound.isotopeTarget && p.ab >= THRESHOLD);
     });
 
     return {
@@ -358,6 +361,26 @@ var MS = (function () {
     if (peak.role === 'mplus') {
       return { kind: 'whole', keeps: all, charge: -1, lost: null };
     }
+
+    /* An isotope peak is not a fragment: nothing broke, nothing left. It is
+       the SAME molecule carrying one heavier atom, which is exactly the point
+       worth making — so it is drawn whole, with the heavy atom picked out. */
+    if (peak.role === 'miso1') {
+      return { kind: 'isotope', keeps: all, charge: -1, lost: null,
+               isotope: '¹³C', heavy: -1,
+               note: 'the same molecule, with one ¹³C in place of a ¹²C' };
+    }
+    if (peak.role === 'miso2') {
+      var hv = labelledVertex(st, ['Cl', 'Br', 'S']);
+      var swap = peak.halogen === 'Br' ? '⁸¹Br in place of ⁷⁹Br'
+               : peak.halogen === 'Cl' ? '³⁷Cl in place of ³⁵Cl'
+               : peak.halogen === 'S' ? '³⁴S in place of ³²S'
+               : 'a heavier isotope';
+      return { kind: 'isotope', keeps: all, charge: -1, lost: null,
+               isotope: peak.halogen, heavy: hv,
+               note: 'the same molecule, with ' + swap };
+    }
+
     var ion = peak.ion ? IONS[peak.ion] : null;
     if (!ion) return null;
 

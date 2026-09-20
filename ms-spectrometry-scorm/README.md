@@ -257,14 +257,26 @@ that draws them.
 
 ## Isotope patterns
 
-The M+2 peak is a drop target for the three halogen compounds, because reading it *is* the
+The M+2 peak is a drop target for the halogen compounds, because reading it *is* the
 lesson:
 
 - **chlorine** — M+2 about a third the height of M⁺ (³⁵Cl : ³⁷Cl is 3:1)
 - **bromine** — M+2 about equal to M⁺ (⁷⁹Br : ⁸¹Br is 1:1)
 
+An M+2 only becomes a drop target when it clears the 5% reading threshold. Marking a peak
+that the same plot captions *"below this line — don't read it"* would contradict the rule
+the whole activity teaches, and where M⁺ is faint the M+2 is fainter still. 1-chlorobutane
+is the case in this bank: its M⁺ is about 12%, so its M+2 lands near 4% — drawn honestly,
+but never asked about. `tools/validate.js` warns which halides this affects.
+
 M+1 is never a drop target — it would be a tedious click — but it is drawn on every
 compound with a visible molecular ion, and clicking it teaches the carbon count.
+
+In the **What each labelled peak actually is** panel, an isotope peak is drawn as the
+*whole molecule* with the heavy atom picked out in colour, captioned "the same molecule,
+with ³⁷Cl in place of ³⁵Cl". Nothing broke and nothing left — which is the thing students
+most often get wrong about M+2, so the picture says it directly rather than showing a
+fragment that does not exist.
 
 The **nitrogen rule** is taught through the amines: 1-propanamine's molecular ion at 59 and
 diethylamine's at 73 are both odd, and the feedback says why.
