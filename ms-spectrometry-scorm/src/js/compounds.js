@@ -23,9 +23,10 @@
  *   why    for a key peak, the stability argument. Used at Level 3.
  *
  * `tags` are the levels a compound may be drawn for:
- *   'loss'    Level 1 — name what was lost. REQUIRES a visible molecular ion:
- *             you cannot subtract from a peak that is not there.
- *   'ion'     Level 2 — name the cation.
+ *   'loss'    Levels 1 AND 2 — name what was lost from the molecular ion.
+ *             REQUIRES a visible molecular ion: you cannot subtract from a
+ *             peak that is not there. Level 2 is the same task with the
+ *             compound hidden behind three candidate structures.
  *   'predict' Level 3 — predict the base peak. Needs two or more competing
  *             cleavages, or there is nothing to decide.
  *
@@ -75,7 +76,7 @@ var COMPOUNDS = [
   /* ========================= carbonyls: the fragment that keeps the C=O */
   {
     id: 'acetone', name: 'Acetone', formula: 'C₃H₆O', f: 'C3H6O', cls: 'Ketone',
-    theme: 'carbonyl', tags: ['loss', 'ion'],
+    theme: 'carbonyl', tags: ['loss'],
     structure: { pts: [[0, 0], [1, 0.5], [2, 0], [1, 1.5]],
                  bonds: [[0, 1, 1], [1, 2, 1], [1, 3, 2]], labels: { 3: 'O' } },
     peaks: [
@@ -90,7 +91,7 @@ var COMPOUNDS = [
   },
   {
     id: 'butanone', name: '2-Butanone', formula: 'C₄H₈O', f: 'C4H8O', cls: 'Ketone',
-    theme: 'carbonyl', tags: ['loss', 'ion', 'predict'],
+    theme: 'carbonyl', tags: ['loss', 'predict'],
     structure: { pts: [[0, 0], [1, 0.5], [2, 0], [3, 0.5], [1, 1.5]],
                  bonds: link(4).concat([[1, 4, 2]]), labels: { 4: 'O' } },
     peaks: [
@@ -106,7 +107,7 @@ var COMPOUNDS = [
   },
   {
     id: 'pentan3one', name: '3-Pentanone', formula: 'C₅H₁₀O', f: 'C5H10O', cls: 'Ketone',
-    theme: 'carbonyl', tags: ['loss', 'ion', 'predict'],
+    theme: 'carbonyl', tags: ['loss', 'predict'],
     structure: { pts: zig(5).concat([[2, -1]]),
                  bonds: link(5).concat([[2, 5, 2]]), labels: { 5: 'O' } },
     peaks: [
@@ -121,7 +122,7 @@ var COMPOUNDS = [
   },
   {
     id: 'pentan2one', name: '2-Pentanone', formula: 'C₅H₁₀O', f: 'C5H10O', cls: 'Ketone',
-    theme: 'carbonyl', tags: ['loss', 'ion', 'predict'],
+    theme: 'carbonyl', tags: ['loss', 'predict'],
     structure: { pts: zig(5).concat([[1, 1.5]]),
                  bonds: link(5).concat([[1, 5, 2]]), labels: { 5: 'O' } },
     peaks: [
@@ -137,7 +138,7 @@ var COMPOUNDS = [
   },
   {
     id: 'acetophenone', name: 'Acetophenone', formula: 'C₈H₈O', f: 'C8H8O', cls: 'Aryl ketone',
-    theme: 'carbonyl', tags: ['loss', 'ion', 'predict'],
+    theme: 'carbonyl', tags: ['loss', 'predict'],
     structure: arene([[1.62, 0], [2.12, 0.87], [2.62, 0]],
                      [[0, 6, 1], [6, 7, 2], [6, 8, 1]], { 7: 'O' }),
     peaks: [
@@ -156,7 +157,7 @@ var COMPOUNDS = [
     /* No 'predict': benzaldehyde's base peak is the molecular ion itself, so
        there is no winning cleavage to pick. That is its own lesson, taught at
        Levels 1 and 2 instead. */
-    theme: 'carbonyl', tags: ['loss', 'ion'],
+    theme: 'carbonyl', tags: ['loss'],
     structure: arene([[1.62, 0], [2.12, 0.87]], [[0, 6, 1], [6, 7, 2]], { 7: 'O' }),
     peaks: [
       { mz: 106, ab: 100, role: 'mplus' },
@@ -175,7 +176,7 @@ var COMPOUNDS = [
   },
   {
     id: 'methylacetate', name: 'Methyl acetate', formula: 'C₃H₆O₂', f: 'C3H6O2', cls: 'Ester',
-    theme: 'carbonyl', tags: ['loss', 'ion', 'predict'],
+    theme: 'carbonyl', tags: ['loss', 'predict'],
     structure: { pts: [[0, 0], [1, 0.5], [1, 1.5], [2, 0], [3, 0.5]],
                  bonds: [[0, 1, 1], [1, 2, 2], [1, 3, 1], [3, 4, 1]], labels: { 2: 'O', 3: 'O' } },
     peaks: [
@@ -192,7 +193,7 @@ var COMPOUNDS = [
   /* ============================== alcohols: alpha cleavage and dehydration */
   {
     id: 'butan1ol', name: '1-Butanol', formula: 'C₄H₁₀O', f: 'C4H10O', cls: 'Primary alcohol',
-    theme: 'alcohol', tags: ['ion', 'predict'],
+    theme: 'alcohol', tags: ['predict'],
     structure: { pts: zig(4).concat([[4, 0]]), bonds: link(5), labels: { 4: 'OH' } },
     peaks: [
       { mz: 74, ab: 1, role: 'minor' },
@@ -209,7 +210,7 @@ var COMPOUNDS = [
   },
   {
     id: 'butan2ol', name: '2-Butanol', formula: 'C₄H₁₀O', f: 'C4H10O', cls: 'Secondary alcohol',
-    theme: 'alcohol', tags: ['ion', 'predict'],
+    theme: 'alcohol', tags: ['predict'],
     structure: { pts: zig(4).concat([[1, 1.5]]),
                  bonds: link(4).concat([[1, 4, 1]]), labels: { 4: 'OH' } },
     peaks: [
@@ -230,16 +231,14 @@ var COMPOUNDS = [
   },
   {
     id: 'tbutanol', name: '2-Methyl-2-propanol', formula: 'C₄H₁₀O', f: 'C4H10O', cls: 'Tertiary alcohol',
-    /* No 'predict': one cleavage dominates so completely that there is no
-       competition to reason about. 2-methyl-2-butanol teaches the tertiary
-       case properly, because there the two cleavages differ. */
-    theme: 'alcohol', tags: ['ion'],
+    theme: 'alcohol', tags: ['predict'],
     structure: { pts: [[1, 0], [0, 0.5], [2, 0.5], [1, -1], [1, 1]],
                  bonds: [[0, 1, 1], [0, 2, 1], [0, 3, 1], [0, 4, 1]], labels: { 4: 'OH' } },
     peaks: [
       { mz: 59, ab: 100, ion: 'me2coh', role: 'key',
         why: 'Alpha cleavage losing one of the three methyls. What is left keeps the oxygen AND has two methyls propping up the charge — so stable that the molecular ion at 74 never survives long enough to be seen at all.' },
-      { mz: 57, ab: 6, role: 'minor' },
+      { mz: 57, ab: 6, ion: 'c4h9', role: 'key',
+        why: 'Losing the whole OH, −17, leaves a tert-butyl cation — an excellent carbocation in its own right. It still loses badly to the other route, because keeping the oxygen beats even a tertiary carbon. That comparison is the point of this one.' },
       { mz: 43, ab: 20, ion: 'c3h7', role: 'cluster' },
       { mz: 41, ab: 25, ion: 'c3h5', role: 'cluster' },
       { mz: 31, ab: 25, ion: 'ch2oh', role: 'cluster',
@@ -249,7 +248,7 @@ var COMPOUNDS = [
   },
   {
     id: 'mbutan2ol', name: '2-Methyl-2-butanol', formula: 'C₅H₁₂O', f: 'C5H12O', cls: 'Tertiary alcohol',
-    theme: 'alcohol', tags: ['ion', 'predict'],
+    theme: 'alcohol', tags: ['predict'],
     structure: { pts: [[1, 0], [0, 0.5], [1, -1], [1, 1], [2, 0.5], [3, 0]],
                  bonds: [[0, 1, 1], [0, 2, 1], [0, 3, 1], [0, 4, 1], [4, 5, 1]], labels: { 3: 'OH' } },
     peaks: [
@@ -266,7 +265,7 @@ var COMPOUNDS = [
   },
   {
     id: 'cyclohexanol', name: 'Cyclohexanol', formula: 'C₆H₁₂O', f: 'C6H12O', cls: 'Secondary alcohol',
-    theme: 'alcohol', tags: ['loss', 'ion'],
+    theme: 'alcohol', tags: ['loss'],
     structure: ring6([[1.62, 0]], [[0, 6, 1]], { 6: 'OH' }),
     peaks: [
       { mz: 100, ab: 10, role: 'mplus' },
@@ -280,7 +279,7 @@ var COMPOUNDS = [
   },
   {
     id: 'phenylethanol', name: '1-Phenylethanol', formula: 'C₈H₁₀O', f: 'C8H10O', cls: 'Benzylic alcohol',
-    theme: 'alcohol', tags: ['loss', 'ion', 'predict'],
+    theme: 'alcohol', tags: ['loss', 'predict'],
     structure: arene([[1.62, 0], [2.12, 0.87], [2.62, 0]],
                      [[0, 6, 1], [6, 7, 1], [6, 8, 1]], { 7: 'OH' }),
     peaks: [
@@ -300,7 +299,7 @@ var COMPOUNDS = [
   /* ================================ arenes: breaking next to the ring, m/z 91 */
   {
     id: 'toluene', name: 'Toluene', formula: 'C₇H₈', f: 'C7H8', cls: 'Alkylbenzene',
-    theme: 'arene', tags: ['loss', 'ion'],
+    theme: 'arene', tags: ['loss'],
     structure: arene([[1.62, 0]], [[0, 6, 1]]),
     peaks: [
       { mz: 92, ab: 70, role: 'mplus' },
@@ -313,7 +312,7 @@ var COMPOUNDS = [
   },
   {
     id: 'ethylbenzene', name: 'Ethylbenzene', formula: 'C₈H₁₀', f: 'C8H10', cls: 'Alkylbenzene',
-    theme: 'arene', tags: ['loss', 'ion'],
+    theme: 'arene', tags: ['loss'],
     structure: arene([[1.62, 0], [2.24, 0.4]], [[0, 6, 1], [6, 7, 1]]),
     peaks: [
       { mz: 106, ab: 25, role: 'mplus' },
@@ -327,7 +326,7 @@ var COMPOUNDS = [
   },
   {
     id: 'propylbenzene', name: 'Propylbenzene', formula: 'C₉H₁₂', f: 'C9H12', cls: 'Alkylbenzene',
-    theme: 'arene', tags: ['loss', 'ion'],
+    theme: 'arene', tags: ['loss'],
     structure: arene([[1.62, 0], [2.24, 0.4], [2.86, 0]], [[0, 6, 1], [6, 7, 1], [7, 8, 1]]),
     peaks: [
       { mz: 120, ab: 25, role: 'mplus' },
@@ -341,7 +340,7 @@ var COMPOUNDS = [
   },
   {
     id: 'cumene', name: 'Isopropylbenzene (cumene)', formula: 'C₉H₁₂', f: 'C9H12', cls: 'Alkylbenzene',
-    theme: 'arene', tags: ['loss', 'ion', 'predict'],
+    theme: 'arene', tags: ['loss', 'predict'],
     structure: arene([[1.62, 0], [2.42, 0.5], [2.42, -0.5]], [[0, 6, 1], [6, 7, 1], [6, 8, 1]]),
     peaks: [
       { mz: 120, ab: 25, role: 'mplus' },
@@ -356,7 +355,7 @@ var COMPOUNDS = [
   },
   {
     id: 'butylbenzene', name: 'Butylbenzene', formula: 'C₁₀H₁₄', f: 'C10H14', cls: 'Alkylbenzene',
-    theme: 'arene', tags: ['loss', 'ion'],
+    theme: 'arene', tags: ['loss'],
     structure: arene([[1.62, 0], [2.24, 0.4], [2.86, 0], [3.48, 0.4]],
                      [[0, 6, 1], [6, 7, 1], [7, 8, 1], [8, 9, 1]]),
     peaks: [
@@ -373,7 +372,7 @@ var COMPOUNDS = [
   /* ================================= branched chains: tertiary carbocations */
   {
     id: 'hexane', name: 'Hexane', formula: 'C₆H₁₄', f: 'C6H14', cls: 'Straight-chain alkane',
-    theme: 'branch', tags: ['loss', 'ion'],
+    theme: 'branch', tags: ['loss'],
     structure: { pts: zig(6), bonds: link(6), labels: {} },
     peaks: [
       { mz: 86, ab: 12, role: 'mplus' },
@@ -389,7 +388,7 @@ var COMPOUNDS = [
   },
   {
     id: 'dimethylbutane', name: '2,2-Dimethylbutane', formula: 'C₆H₁₄', f: 'C6H14', cls: 'Branched alkane',
-    theme: 'branch', tags: ['ion', 'predict'],
+    theme: 'branch', tags: ['predict'],
     structure: { pts: [[1, 0], [0, 0.5], [1, -1], [1, 1], [2, 0.5], [3, 0]],
                  bonds: [[0, 1, 1], [0, 2, 1], [0, 3, 1], [0, 4, 1], [4, 5, 1]], labels: {} },
     peaks: [
@@ -404,8 +403,25 @@ var COMPOUNDS = [
     ]
   },
   {
+    id: 'methylbutane', name: '2-Methylbutane', formula: 'C₅H₁₂', f: 'C5H12', cls: 'Branched alkane',
+    theme: 'branch', tags: ['loss'],
+    structure: { pts: [[0, 0], [1, 0.5], [2, 0], [3, 0.5], [1, 1.5]],
+                 bonds: [[0, 1, 1], [1, 2, 1], [2, 3, 1], [1, 4, 1]], labels: {} },
+    peaks: [
+      { mz: 72, ab: 10, role: 'mplus' },
+      { mz: 57, ab: 35, ion: 'c4h9s', role: 'key',
+        why: 'Losing a methyl, −15, leaves a four-carbon cation — but a SECONDARY one, because this molecule has a branch and no quaternary carbon. Compare it with the m/z 57 of a compound that does have one: same mass, very different height.' },
+      { mz: 43, ab: 100, ion: 'c3h7', role: 'key',
+        why: 'Losing an ethyl, −29, leaves the cation sitting on the branched carbon. Breaking off the bigger group is easier, so this is the taller of the two.' },
+      { mz: 42, ab: 55, role: 'cluster' },
+      { mz: 41, ab: 35, ion: 'c3h5', role: 'cluster' },
+      { mz: 29, ab: 30, role: 'cluster' },
+      { mz: 27, ab: 35, role: 'cluster' }
+    ]
+  },
+  {
     id: 'isooctane', name: '2,2,4-Trimethylpentane', formula: 'C₈H₁₈', f: 'C8H18', cls: 'Branched alkane',
-    theme: 'branch', tags: ['ion', 'predict'],
+    theme: 'branch', tags: ['predict'],
     structure: { pts: [[1, 0], [0, 0.5], [1, -1], [1, 1], [2, 0.5], [3, 0], [4, 0.5], [3, -1]],
                  bonds: [[0, 1, 1], [0, 2, 1], [0, 3, 1], [0, 4, 1], [4, 5, 1], [5, 6, 1], [5, 7, 1]],
                  labels: {} },
@@ -424,7 +440,7 @@ var COMPOUNDS = [
   /* ============================== heteroatoms: amines and ethers, alpha again */
   {
     id: 'propylamine', name: '1-Propanamine', formula: 'C₃H₉N', f: 'C3H9N', cls: 'Primary amine',
-    theme: 'hetero', tags: ['loss', 'ion'],
+    theme: 'hetero', tags: ['loss'],
     structure: { pts: zig(3).concat([[3, 0.5]]), bonds: link(4), labels: { 3: 'NH₂' } },
     peaks: [
       { mz: 59, ab: 20, role: 'mplus' },
@@ -438,7 +454,7 @@ var COMPOUNDS = [
   },
   {
     id: 'diethylamine', name: 'Diethylamine', formula: 'C₄H₁₁N', f: 'C4H11N', cls: 'Secondary amine',
-    theme: 'hetero', tags: ['loss', 'ion'],
+    theme: 'hetero', tags: ['loss'],
     structure: { pts: zig(5), bonds: link(5), labels: { 2: 'NH' } },
     peaks: [
       { mz: 73, ab: 20, role: 'mplus' },
@@ -455,7 +471,7 @@ var COMPOUNDS = [
     id: 'diethylether', name: 'Diethyl ether', formula: 'C₄H₁₀O', f: 'C4H10O', cls: 'Ether',
     /* No 'predict': only one route here is a clean α-cleavage. The other tall
        peaks need a hydrogen shift, so there is no fair pair to weigh. */
-    theme: 'hetero', tags: ['loss', 'ion'],
+    theme: 'hetero', tags: ['loss'],
     structure: { pts: zig(5), bonds: link(5), labels: { 2: 'O' } },
     peaks: [
       { mz: 74, ab: 30, role: 'mplus' },
@@ -471,7 +487,7 @@ var COMPOUNDS = [
   },
   {
     id: 'mtbe', name: 'tert-Butyl methyl ether (MTBE)', formula: 'C₅H₁₂O', f: 'C5H12O', cls: 'Ether',
-    theme: 'hetero', tags: ['ion', 'predict'],
+    theme: 'hetero', tags: ['predict'],
     structure: { pts: [[1, 0], [0, 0.5], [1, -1], [1, 1], [2, 0.5], [3, 0]],
                  bonds: [[0, 1, 1], [0, 2, 1], [0, 3, 1], [0, 4, 1], [4, 5, 1]], labels: { 4: 'O' } },
     peaks: [
@@ -489,7 +505,7 @@ var COMPOUNDS = [
   /* ============================================= halides: isotope patterns */
   {
     id: 'bromopropane', name: '1-Bromopropane', formula: 'C₃H₇Br', f: 'C3H7Br', cls: 'Alkyl bromide',
-    theme: 'halide', tags: ['loss', 'ion'], isotopeTarget: true,
+    theme: 'halide', tags: ['loss'], isotopeTarget: true,
     structure: { pts: zig(3).concat([[3, 0.5]]), bonds: link(4), labels: { 3: 'Br' } },
     peaks: [
       { mz: 122, ab: 30, role: 'mplus' },
@@ -502,7 +518,7 @@ var COMPOUNDS = [
   },
   {
     id: 'chlorobutane', name: '1-Chlorobutane', formula: 'C₄H₉Cl', f: 'C4H9Cl', cls: 'Alkyl chloride',
-    theme: 'halide', tags: ['loss', 'ion'], isotopeTarget: true,
+    theme: 'halide', tags: ['loss'], isotopeTarget: true,
     structure: { pts: zig(4).concat([[4, 0]]), bonds: link(5), labels: { 4: 'Cl' } },
     peaks: [
       { mz: 92, ab: 12, role: 'mplus' },
@@ -516,7 +532,7 @@ var COMPOUNDS = [
   },
   {
     id: 'chlorobenzene', name: 'Chlorobenzene', formula: 'C₆H₅Cl', f: 'C6H5Cl', cls: 'Aryl chloride',
-    theme: 'halide', tags: ['loss', 'ion'], isotopeTarget: true,
+    theme: 'halide', tags: ['loss'], isotopeTarget: true,
     structure: arene([[1.62, 0]], [[0, 6, 1]], { 6: 'Cl' }),
     peaks: [
       { mz: 112, ab: 100, role: 'mplus' },

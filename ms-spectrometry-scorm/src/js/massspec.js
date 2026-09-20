@@ -180,6 +180,72 @@ var MS = (function () {
     };
   }
 
+  var SUB = '\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089';
+
+  /* What actually walked off, worked out from the formulas rather than looked
+     up. The lookup table cannot be trusted here: LOSSES[43] offers "•C3H7 or
+     CH3CO•", and for acetophenone only the second is true. Subtracting the
+     fragment from the molecule settles it every time. */
+  function neutralOf(spec, peak) {
+    var ion = peak.ion ? IONS[peak.ion] : null;
+    if (!ion) return null;
+    var counts;
+    if (ion.f) {
+      var mol = parseFormula(spec.compound.f), frag = parseFormula(ion.f);
+      if (!mol || !frag) return null;
+      counts = {};
+      for (var el in mol) {
+        var n = mol[el] - (frag[el] || 0);
+        if (n < 0) return null;
+        if (n > 0) counts[el] = n;
+      }
+    } else if (ion.lost) {
+      counts = ion.lost === 'X' || ion.lost === 'HX'
+        ? (function () {
+            var m = parseFormula(spec.compound.f), c = {};
+            ['Cl', 'Br', 'F', 'I'].some(function (h) { if (m[h]) { c[h] = 1; return true; } });
+            if (ion.lost === 'HX') c.H = 1;
+            return c;
+          })()
+        : parseFormula(ion.lost);
+    }
+    if (!counts) return null;
+
+    /* C and H first, the way a formula is written. */
+    var order = Object.keys(counts).sort(function (a, b) {
+      if (a === 'C') return -1;
+      if (b === 'C') return 1;
+      if (a === 'H') return -1;
+      if (b === 'H') return 1;
+      return a < b ? -1 : 1;
+    });
+    var text = order.map(function (el) {
+      return el + (counts[el] > 1 ? String(counts[el]).replace(/\d/g, function (d) {
+        return SUB[+d];
+      }) : '');
+    }).join('');
+
+    /* Hill order is correct but unfamiliar: a student reading "•C2H3O" will
+       not connect it to the "CH3CO•" in the correlation table. These four are
+       spelled the conventional way. Only aliases that are unambiguous
+       throughout this bank are listed — •C2H5O is deliberately absent,
+       because in 1-phenylethanol it is CH3CHOH• rather than an ethoxy. */
+    var ALIAS = {
+      'C2H3O': 'CH\u2083CO\u2022',
+      'C3H5O': 'CH\u2083CH\u2082CO\u2022',
+      'CH3O': '\u2022OCH\u2083',
+      'HO': '\u2022OH'
+    };
+    var plain = order.map(function (el) {
+      return el + (counts[el] > 1 ? counts[el] : '');
+    }).join('');
+    if (ALIAS[plain]) return ALIAS[plain];
+
+    /* A radical cation was left by a whole molecule walking off; anything
+       else was left by a radical, which carries the dot. */
+    return (ion.cls === 'radical' ? '' : '\u2022') + text;
+  }
+
   function peakAt(spec, mz) {
     for (var i = 0; i < spec.peaks.length; i++) if (spec.peaks[i].mz === mz) return spec.peaks[i];
     return null;
@@ -427,6 +493,7 @@ var MS = (function () {
   return {
     THRESHOLD: THRESHOLD, LABEL_H: LABEL_H,
     build: build, draw: draw, drawLeaders: drawLeaders, peakAt: peakAt, rng: rng,
+    neutralOf: neutralOf,
     parseFormula: parseFormula, massOf: massOf,
     plotRect: plotRect, xOfMz: xOfMz, mzOfX: mzOfX, yOfAb: yOfAb
   };

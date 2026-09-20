@@ -3,9 +3,11 @@
  * A peak in an EI mass spectrum can be named two ways, and this activity
  * teaches them in that order:
  *
- *   LEVEL 1, the LOSS view      "that peak is M minus 43"
- *   LEVEL 2, the FRAGMENT view  "that 43 is CH3CO+, the piece that kept
- *                               the C=O" 
+ * Both labelling levels work in the LOSS view — "that peak is M minus 43" —
+ * because that is how the chemistry is taught: fragments lost from the
+ * molecular ion. The FRAGMENT view ("that 43 is CH3CO+") is recognition
+ * material only: it shows up in the reference table, in the Level 3 cards and
+ * in feedback, but no student is asked to produce one.
  *
  * The loss is arithmetic: M - m/z. The ion is chemistry. They are not the
  * same question, and the gap between them is where the teaching happens -
@@ -115,6 +117,10 @@ var IONS = {
     f: 'C4H9', mz: 57, cls: 'tertiary', mech: 'branch', label: '(CH₃)₃C⁺', name: 'alkyl fragment (3°)', twin: 'c2h5co',
     hint: 'THE tertiary carbocation. Three methyls propping up the positive charge make it far more stable than a straight-chain C₄H₉⁺ — so stable that a molecule containing a tert-butyl group often shows almost no molecular ion at all. A big m/z 57 means a branch point.'
   },
+  c4h9s: {
+    f: 'C4H9', mz: 57, cls: 'secondary', mech: 'branch', label: 'C₄H₉⁺', name: 'alkyl fragment (2°)',
+    hint: 'A four-carbon alkyl fragment, but a SECONDARY one — only two groups propping up the charge, not three. Same formula and same mass as a tert-butyl fragment, and a good deal less stable, which is why m/z 57 is modest here and enormous in a compound with a real branch point.'
+  },
   c5h11: {
     f: 'C5H11', mz: 71, cls: 'tertiary', mech: 'branch', label: 'C₅H₁₁⁺', name: 'alkyl fragment (3°)', twin: 'c3h7co',
     hint: 'A methyl has left the branch point, and what remains is still a tertiary carbocation. Careful at m/z 71: a four-carbon C=O fragment weighs the same.'
@@ -223,12 +229,12 @@ var IONS = {
   /* --- whole-molecule fragments, mass set by the molecule --- */
   dehydr: {
     lost: 'H2O', f: null, mz: null, cls: 'radical', mech: 'dehydr',
-    label: '[M − H₂O]⁺', name: 'after losing water',
+    label: '[M − H₂O]⁺', name: 'what is left of the molecule',
     hint: 'DEHYDRATION. The alcohol throws off water, −18, and what is left is the rest of the molecule. M⁺ and M−18 together say alcohol; in a tertiary alcohol the M⁺ can vanish and leave M−18 as the highest peak you can see.'
   },
   dehydrohalo: {
     lost: 'HX', f: null, mz: null, cls: 'radical', mech: 'sigma',
-    label: '[M − HCl]⁺', name: 'after losing HCl',
+    label: '[M − HCl]⁺', name: 'what is left of the molecule',
     hint: 'The chlorine leaves with a neighbouring hydrogen, −36 — exactly the way an alcohol loses water.'
   }
 };
@@ -263,23 +269,24 @@ function lossNumber(key) {
   return key.indexOf('loss_') === 0 ? +key.slice(5) : null;
 }
 
+/* A loss tile reads the way the loss is spoken about in class — "M minus
+   15" — with the neutral that left on the line underneath, rather than the
+   other way round. The arithmetic is the headline. */
 function keyLabel(key) {
   if (LANDMARKS[key]) return LANDMARKS[key].label;
   var n = lossNumber(key);
-  if (n != null) {
-    var L = LOSSES[n];
-    return '− ' + n + (L ? '  (' + L.neutral + (L.also ? ' or ' + L.also : '') + ')' : '');
-  }
+  if (n != null) return 'M − ' + n;
   return IONS[key].label;
 }
 
-/* The sub-line under a tile. At Level 1 it says what the loss means; at
-   Level 2 it names the ion but deliberately WITHHOLDS the m/z, so a student
-   has to count the formula rather than match a number to the axis. */
+/* The sub-line under a tile: what actually walked off. */
 function keySub(key) {
   if (LANDMARKS[key]) return LANDMARKS[key].sub;
   var n = lossNumber(key);
-  if (n != null) return 'loss of ' + n + ' mass units';
+  if (n != null) {
+    var L = LOSSES[n];
+    return L ? 'lost ' + L.neutral + (L.also ? ' or ' + L.also : '') : 'lost ' + n;
+  }
   return IONS[key].name;
 }
 
@@ -292,8 +299,11 @@ function keyHint(key) {
 
 /* Everything a tile may show. Landmarks are in both universes because the
    molecular ion is asked for at both levels. */
+/* Everything a tile may show. Only the loss vocabulary is draggable: the
+   fragment names in IONS are recognition material — they appear in the
+   reference table, in the Level 3 cards and in the feedback — but a student
+   is never asked to produce one. */
 var UNIVERSE = {
   loss: ['mplus', 'miso1', 'miso2'].concat(
-    Object.keys(LOSSES).map(function (n) { return 'loss_' + n; })),
-  ion: ['mplus', 'miso1', 'miso2'].concat(ION_IDS)
+    Object.keys(LOSSES).map(function (n) { return 'loss_' + n; }))
 };

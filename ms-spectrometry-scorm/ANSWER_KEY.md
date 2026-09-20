@@ -21,7 +21,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **74**  — *only 1%: drawn, but too weak to measure a loss from, so this compound is kept out of Level 1* |
 | Base peak | **m/z 31**  CH₂=OH⁺, keeps the oxygen |
 | Class | Primary alcohol |
-| Levels | ion, predict |
+| Levels | predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -47,7 +47,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **74**  — *only 1%: drawn, but too weak to measure a loss from, so this compound is kept out of Level 1* |
 | Base peak | **m/z 45**  CH₃CH=OH⁺, keeps the oxygen |
 | Class | Secondary alcohol |
-| Levels | ion, predict |
+| Levels | predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -79,12 +79,12 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **74**  — *not observed at all; the molecule falls apart on ionisation* |
 | Base peak | **m/z 59**  (CH₃)₂C=OH⁺, keeps the oxygen |
 | Class | Tertiary alcohol |
-| Levels | ion |
+| Levels | predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
 | 59 | 100 | −15 (•CH₃) | (CH₃)₂C=OH⁺ `C3H7O` | breaks next to O or N | **scored** |
-| 57 | 6 | — | — | — | drawn; below the reading line |
+| 57 | 6 | −17 (•OH) | (CH₃)₃C⁺ `C4H9` | breaks at the branch point | **scored** |
 | 43 | 20 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
 | 41 | 25 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
 | 31 | 25 | — | CH₂=OH⁺ `CH3O` | breaks next to O or N | drawn; above the line but not diagnostic |
@@ -93,6 +93,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 **Why each scored peak is where it is**
 
 - **m/z 59** (100%) — Alpha cleavage losing one of the three methyls. What is left keeps the oxygen AND has two methyls propping up the charge — so stable that the molecular ion at 74 never survives long enough to be seen at all.
+- **m/z 57** (6%) — Losing the whole OH, −17, leaves a tert-butyl cation — an excellent carbocation in its own right. It still loses badly to the other route, because keeping the oxygen beats even a tertiary carbon. That comparison is the point of this one.
 
 **Peaks that need a caveat in class**
 
@@ -106,7 +107,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **88**  — *not observed at all; the molecule falls apart on ionisation* |
 | Base peak | **m/z 59**  (CH₃)₂C=OH⁺, keeps the oxygen |
 | Class | Tertiary alcohol |
-| Levels | ion, predict |
+| Levels | predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -131,7 +132,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **100**  — 10%, scored |
 | Base peak | **m/z 57** |
 | Class | Secondary alcohol |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -154,7 +155,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **122**  — 25%, scored |
 | Base peak | **m/z 107**  C₆H₅CH=OH⁺, keeps the oxygen |
 | Class | Benzylic alcohol |
-| Levels | loss, ion, predict |
+| Levels | loss, predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -182,7 +183,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **58**  — 26%, scored |
 | Base peak | **m/z 43**  CH₃C≡O⁺, keeps the C=O |
 | Class | Ketone |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -205,7 +206,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **72**  — 24%, scored |
 | Base peak | **m/z 43**  CH₃C≡O⁺, keeps the C=O |
 | Class | Ketone |
-| Levels | loss, ion, predict |
+| Levels | loss, predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -229,7 +230,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **86**  — 24%, scored |
 | Base peak | **m/z 57**  CH₃CH₂C≡O⁺, keeps the C=O |
 | Class | Ketone |
-| Levels | loss, ion, predict |
+| Levels | loss, predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -252,7 +253,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **86**  — 25%, scored |
 | Base peak | **m/z 43**  CH₃C≡O⁺, keeps the C=O |
 | Class | Ketone |
-| Levels | loss, ion, predict |
+| Levels | loss, predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -278,7 +279,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **120**  — 30%, scored |
 | Base peak | **m/z 105**  C₆H₅C≡O⁺, keeps the C=O and the ring |
 | Class | Aryl ketone |
-| Levels | loss, ion, predict |
+| Levels | loss, predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -302,7 +303,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **106**  — 100%, scored |
 | Base peak | **m/z 106** |
 | Class | Aromatic aldehyde |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -327,7 +328,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **74**  — 25%, scored |
 | Base peak | **m/z 43**  CH₃C≡O⁺, keeps the C=O |
 | Class | Ester |
-| Levels | loss, ion, predict |
+| Levels | loss, predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -352,7 +353,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **92**  — 70%, scored |
 | Base peak | **m/z 91**  C₇H₇⁺, benzyl fragment |
 | Class | Alkylbenzene |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -374,7 +375,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **106**  — 25%, scored |
 | Base peak | **m/z 91**  C₇H₇⁺, benzyl fragment |
 | Class | Alkylbenzene |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -397,7 +398,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **120**  — 25%, scored |
 | Base peak | **m/z 91**  C₇H₇⁺, benzyl fragment |
 | Class | Alkylbenzene |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -420,7 +421,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **120**  — 25%, scored |
 | Base peak | **m/z 105**  C₆H₅CH⁺CH₃, benzyl fragment (+CH₃) |
 | Class | Alkylbenzene |
-| Levels | loss, ion, predict |
+| Levels | loss, predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -444,7 +445,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **134**  — 25%, scored |
 | Base peak | **m/z 91**  C₇H₇⁺, benzyl fragment |
 | Class | Alkylbenzene |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -471,7 +472,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **86**  — 12%, scored |
 | Base peak | **m/z 43**  C₃H₇⁺, alkyl fragment |
 | Class | Straight-chain alkane |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -496,7 +497,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **86**  — *only 1%: drawn, but too weak to measure a loss from, so this compound is kept out of Level 1* |
 | Base peak | **m/z 57**  (CH₃)₃C⁺, alkyl fragment (3°) |
 | Class | Branched alkane |
-| Levels | ion, predict |
+| Levels | predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -512,6 +513,31 @@ drawn to make the spectrum honest, and explains itself when clicked.
 - **m/z 57** (100%) — The chain breaks at the quaternary carbon and leaves a TERT-BUTYL cation — three methyls donating into an empty orbital. It forms so readily that the molecular ion at 86 is all but gone. A missing M⁺ plus a huge 57 says "branch point" before you have worked anything else out.
 - **m/z 71** (12%) — Losing a methyl from the quaternary carbon. Also gives a tertiary cation, but it is the less favourable of the two cuts.
 
+### 2-Methylbutane  ·  `methylbutane`
+
+| | |
+| --- | --- |
+| Formula | C₅H₁₂ |
+| Molecular ion | **72**  — 10%, scored |
+| Base peak | **m/z 43**  C₃H₇⁺, alkyl fragment |
+| Class | Branched alkane |
+| Levels | loss |
+
+| m/z | % | Loss | Fragment | How it breaks | Role |
+| ---: | ---: | --- | --- | --- | --- |
+| 72 | 10 | — | — | — | molecular ion — **scored** |
+| 57 | 35 | −15 (•CH₃) | C₄H₉⁺ `C4H9` | breaks at the branch point | **scored** |
+| 43 | 100 | −29 (•C₂H₅ / •CHO) | C₃H₇⁺ `C3H7` | breaks at the branch point | **scored** |
+| 42 | 55 | — | — | — | drawn; above the line but not diagnostic |
+| 41 | 35 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
+| 29 | 30 | — | — | — | drawn; above the line but not diagnostic |
+| 27 | 35 | — | — | — | drawn; above the line but not diagnostic |
+
+**Why each scored peak is where it is**
+
+- **m/z 43** (100%) — Losing an ethyl, −29, leaves the cation sitting on the branched carbon. Breaking off the bigger group is easier, so this is the taller of the two.
+- **m/z 57** (35%) — Losing a methyl, −15, leaves a four-carbon cation — but a SECONDARY one, because this molecule has a branch and no quaternary carbon. Compare it with the m/z 57 of a compound that does have one: same mass, very different height.
+
 ### 2,2,4-Trimethylpentane  ·  `isooctane`
 
 | | |
@@ -520,7 +546,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **114**  — *not observed at all; the molecule falls apart on ionisation* |
 | Base peak | **m/z 57**  (CH₃)₃C⁺, alkyl fragment (3°) |
 | Class | Branched alkane |
-| Levels | ion, predict |
+| Levels | predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -546,7 +572,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **59**  — 20%, scored |
 | Base peak | **m/z 30**  CH₂=NH₂⁺, keeps the nitrogen |
 | Class | Primary amine |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -569,7 +595,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **73**  — 20%, scored |
 | Base peak | **m/z 58**  CH₃CH=NH⁺C₂H₅, keeps the nitrogen |
 | Class | Secondary amine |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -596,7 +622,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **74**  — 30%, scored |
 | Base peak | **m/z 59**  CH₃CH₂O⁺=CH₂, keeps the oxygen |
 | Class | Ether |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -624,7 +650,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **88**  — *only 2%: drawn, but too weak to measure a loss from, so this compound is kept out of Level 1* |
 | Base peak | **m/z 73**  (CH₃)₂C=O⁺CH₃, keeps the oxygen |
 | Class | Ether |
-| Levels | ion, predict |
+| Levels | predict |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -650,7 +676,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **122**  — 30%, scored |
 | Base peak | **m/z 43**  C₃H₇⁺, alkyl fragment |
 | Class | Alkyl bromide |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -672,7 +698,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **92**  — 12%, scored |
 | Base peak | **m/z 41**  C₃H₅⁺, alkyl fragment |
 | Class | Alkyl chloride |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -695,7 +721,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | Molecular ion | **112**  — 100%, scored |
 | Base peak | **m/z 112** |
 | Class | Aryl chloride |
-| Levels | loss, ion |
+| Levels | loss |
 
 | m/z | % | Loss | Fragment | How it breaks | Role |
 | ---: | ---: | --- | --- | --- | --- |
@@ -743,6 +769,7 @@ drawn to make the spectrum honest, and explains itself when clicked.
 | 51 | C₄H₃⁺ — ring fragment | `C4H3` | aryl | What is left when the bare ring itself breaks up. m/z 51 under m/z 77 corroborates a ring, and nothing more. |
 | 55 | C₄H₇⁺ — alkyl fragment | `C4H7` | allylic | A four-carbon fragment with a double bond in it — very often what is left after an alcohol loses water and then a methyl. |
 | 57 | (CH₃)₃C⁺ — alkyl fragment (3°) | `C4H9` | tertiary | THE tertiary carbocation. Three methyls propping up the positive charge make it far more stable than a straight-chain C₄H₉⁺ — so stable that a molecule containing a tert-butyl group often shows almost no molecular ion at all. A big m/z 57 means a branch point. |
+| 57 | C₄H₉⁺ — alkyl fragment (2°) | `C4H9` | secondary | A four-carbon alkyl fragment, but a SECONDARY one — only two groups propping up the charge, not three. Same formula and same mass as a tert-butyl fragment, and a good deal less stable, which is why m/z 57 is modest here and enormous in a compound with a real branch point. |
 | 57 | CH₃CH₂C≡O⁺ — keeps the C=O | `C3H5O` | resonance | A C=O fragment one carbon longer than CH₃C≡O⁺. Careful at m/z 57: a tert-butyl fragment weighs the same, and only this one needs a C=O in the structure. |
 | 58 | CH₃CH=NH⁺C₂H₅ — keeps the nitrogen | `C3H8N` | resonance | ALPHA CLEAVAGE at a secondary amine: a methyl leaves one of the ethyls, and the nitrogen carries the charge. |
 | 59 | (CH₃)₂C=OH⁺ — keeps the oxygen | `C3H7O` | resonance | ALPHA CLEAVAGE next to the OH, with two methyls helping as well. As the BASE PEAK, m/z 59 means a tertiary alcohol. |
@@ -772,7 +799,7 @@ makes −29 and −43 worth teaching rather than just listing.
 | 29 | C₂H₅⁺ (alkyl fragment)  **vs**  CHO⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CHO⁺ needs a C=O or an O–H. |
 | 43 | C₃H₇⁺ (alkyl fragment)  **vs**  CH₃C≡O⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CH₃C≡O⁺ needs a C=O or an O–H. |
 | 45 | CH₃CH=OH⁺ (keeps the oxygen)  **vs**  CH₃O⁺=CH₂ (keeps the oxygen) | **nothing at this mass can** — identical formulas. Only the rest of the pattern, and the structures on offer, decide it. |
-| 57 | (CH₃)₃C⁺ (alkyl fragment (3°))  **vs**  CH₃CH₂C≡O⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CH₃CH₂C≡O⁺ needs a C=O or an O–H. |
+| 57 | (CH₃)₃C⁺ (alkyl fragment (3°))  **vs**  C₄H₉⁺ (alkyl fragment (2°))  **vs**  CH₃CH₂C≡O⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CH₃CH₂C≡O⁺ needs a C=O or an O–H. |
 | 59 | (CH₃)₂C=OH⁺ (keeps the oxygen)  **vs**  CH₃CH₂CH=OH⁺ (keeps the oxygen)  **vs**  CH₃CH₂O⁺=CH₂ (keeps the oxygen)  **vs**  CH₃CO–O⁺ (keeps both oxygens) | how many oxygens: (CH₃)₂C=OH⁺ has 1, CH₃CH₂CH=OH⁺ has 1, CH₃CH₂O⁺=CH₂ has 1, CH₃CO–O⁺ has 2. |
 | 71 | C₅H₁₁⁺ (alkyl fragment (3°))  **vs**  CH₃CH₂CH₂C≡O⁺ (keeps the C=O) | whether the molecule contains oxygen at all: only CH₃CH₂CH₂C≡O⁺ needs a C=O or an O–H. |
 | 73 | CH₃CH₂(CH₃)C=OH⁺ (keeps the oxygen)  **vs**  (CH₃)₂C=O⁺CH₃ (keeps the oxygen) | **nothing at this mass can** — identical formulas. Only the rest of the pattern, and the structures on offer, decide it. |
@@ -798,6 +825,7 @@ one giving the most stable cation, then works out its m/z.
 - **Methyl acetate** (M = 74) → CH₃C≡O⁺ at 43 **(wins)**  ·  CH₃CO–O⁺ at 59
 - **1-Butanol** (M = 74) → CH₂=OH⁺ at 31 **(wins)**  ·  [M − H₂O]⁺ at 56
 - **2-Butanol** (M = 74) → CH₃CH=OH⁺ at 45 **(wins)**  ·  CH₃CH₂CH=OH⁺ at 59  ·  [M − H₂O]⁺ at 56
+- **2-Methyl-2-propanol** (M = 74) → (CH₃)₂C=OH⁺ at 59 **(wins)**  ·  (CH₃)₃C⁺ at 57
 - **2-Methyl-2-butanol** (M = 88) → (CH₃)₂C=OH⁺ at 59 **(wins)**  ·  CH₃CH₂(CH₃)C=OH⁺ at 73  ·  [M − H₂O]⁺ at 70
 - **1-Phenylethanol** (M = 122) → C₆H₅CH=OH⁺ at 107 **(wins)**  ·  C₆H₅⁺ at 77  ·  [M − H₂O]⁺ at 104
 - **Isopropylbenzene (cumene)** (M = 120) → C₆H₅CH⁺CH₃ at 105 **(wins)**  ·  C₆H₅⁺ at 77

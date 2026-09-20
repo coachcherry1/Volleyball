@@ -368,6 +368,18 @@ h2 { font-size: 0.95rem; margin: 0; }
 
 /* A cleavage option. Wider than a compound card because it carries a formula,
    a name and the mechanism that produced it. */
+/* Candidates on the bench before they are the question: still legible and
+   still structures to study, just not yet the thing to click. */
+.choices-row.preview .choice { cursor: default; opacity: 0.88; }
+.choices-row.preview .choice:hover { border-color: var(--line); }
+
+.route-loss {
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.route.wrong .route-ion, .route.right .route-ion { opacity: 0.9; }
+
 .choices-row.routes .route {
   flex: 1 1 210px;
   align-items: flex-start;

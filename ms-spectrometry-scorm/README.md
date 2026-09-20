@@ -1,20 +1,22 @@
 # Mass Spectrometry — Reading the Fragments
 
-A click-and-drag SCORM 1.2 activity for Schoology. Students label the peaks in an EI
-mass spectrum, name the cations that produced them, and finally predict which peak will
-be the base peak from the structure alone.
+A click-and-drag SCORM 1.2 activity for Schoology. Students work out what an EI mass
+spectrum's molecular ion has lost to make each peak — −15, −18, −29, −43 — then use those
+losses to identify the compound, and finally predict which peak will be tallest from the
+structure alone.
 
 Built as a companion to the IR diagnostic-region activity: same drag-a-label interaction,
 same three-level arc, same accessibility guarantees. The chemistry is different, and so is
-the central question — IR asks *which bond is this*, mass spec asks *which cation was
-stable enough to survive*.
+the central question — IR asks *which bond is this*, mass spec asks *what did the molecule
+lose, and why was what is left stable enough to survive*.
 
 ---
 
 ## The one idea the whole package is built on
 
-**The tall peaks are the stable cations.** 3° > 2° > 1° > methyl, with resonance beating
-all of them. Every level, every hint and every piece of feedback comes back to that.
+**The tall peaks are the stable cations.** 3° > 2° > 1° > methyl, and a fragment that
+keeps an O, an N or a ring beats all of them, because those spread the charge. Every level,
+every hint and every piece of feedback comes back to that.
 
 Four mechanisms, and no more:
 
@@ -31,38 +33,36 @@ about it anyway.
 
 ---
 
-## Loss view and ion view — why there are two labelling levels
+## Everything is a loss from the molecular ion
 
-A peak can be named two ways, and they are not the same question:
+The whole package works in one frame: **find M⁺, then ask what each peak below it is
+missing.** Both labelling levels use the same tiles —
 
-- the **loss** view — *"that peak is M minus 43"* — is arithmetic
-- the **fragment** view — *"that 43 is CH₃C≡O⁺, the piece that kept the C=O"* — is chemistry
+```
+   M − 15        M − 18       M − 29               M − 43
+   lost •CH₃     lost H₂O     lost •C₂H₅ or •CHO   lost •C₃H₇ or CH₃CO•
+```
 
-The gap between them is where the teaching happens. **CH₃CO⁺ sits at m/z 43 in both
-acetone and 2-butanone** — but it is a loss of 15 from one and a loss of 29 from the
-other. A loss is therefore computed per compound at run time rather than stored on the
-ion; only the ion id lives in the bank.
+— and both draw from the same pool, because both need a molecular ion you can actually
+subtract from. A loss is computed per compound at run time rather than stored anywhere:
+**CH₃CO⁺ sits at m/z 43 in both acetone and 2-butanone**, but it is a loss of 15 from one
+and a loss of 29 from the other.
 
-This is also what makes −29 and −43 worth an entire unit. At Level 1 a peak is "−43". At
-Level 2 the student has to decide *which* 43: a propyl fragment, which needs three carbons
-in a row, or the piece that kept a C=O, which needs an oxygen in the structure. Four masses
-in this bank carry that ambiguity — 29, 43, 57 and 105 — and `ANSWER_KEY.md` tables all of
-them with what settles each one.
+That is what makes −29 and −43 worth teaching rather than listing. Four masses in this bank
+are ambiguous — 29, 43, 57 and 105 — and `ANSWER_KEY.md` tables each one with what settles
+it.
 
-### How deep the naming goes
+### Students are never asked to name a fragment
 
-Students are **not** asked to memorise the words *acylium*, *oxocarbenium*, *iminium* or
-*tropylium*. A fragment is named by its formula and by what it kept:
+The fragment names — CH₃C≡O⁺, C₇H₇⁺, CH₂=OH⁺ — are **recognition material only**. They
+appear in the correlation table, in the Level 3 cards and in feedback, but no student is
+ever asked to produce one, and no drag tile carries one. An earlier version asked for them
+at Level 2 and it was too advanced: it wanted a fragment's identity before the student had
+any idea what the compound was.
 
-| Tile reads | Meaning |
-| --- | --- |
-| `C₃H₇⁺` · alkyl fragment | a plain piece of chain |
-| `(CH₃)₃C⁺` · alkyl fragment (3°) | a chain piece off a branch point |
-| `CH₃C≡O⁺` · keeps the C=O | the carbonyl end held the charge |
-| `CH₂=OH⁺` · keeps the oxygen | broke next to the OH |
-| `CH₂=NH₂⁺` · keeps the nitrogen | broke next to the N |
-| `C₇H₇⁺` · benzyl fragment | the ring took the charge |
-| `[M − H₂O]⁺` · after losing water | dehydration |
+Nor are the words *acylium*, *oxocarbenium*, *iminium* or *tropylium* used anywhere a
+student can see. Where a fragment is described, it is described by what it kept — "keeps
+the C=O", "keeps the oxygen", "alkyl fragment (3°)".
 
 The stability reasoning is all still there — *3° beats 2° beats 1°, and an O, N or ring
 next door beats all of them* — it just never depends on knowing a name for the ion class.
@@ -82,9 +82,15 @@ is the −29 / −43 lesson again in a different costume.
 
 | Level | Name | What the student does |
 | --- | --- | --- |
-| 1 | **Read the losses** | The compound is named and drawn. Label each marked peak with what the molecule lost: −15, −18, −29, −43. Reference table available. Six spectra. |
-| 2 | **Name the fragment** | The compound is hidden. Work out which fragment each marked peak is, then identify the compound from three structures. **Tiles carry formulas, never m/z values**, so a student adds up the formula and matches it to a mass on the plot. Six spectra. |
-| 3 | **Predict the base peak** | **No spectrum.** From the structure alone, choose which cleavage gives the most stable cation, then work out where it lands. The spectrum is revealed afterwards, annotated, as the answer. Six compounds. |
+| 1 | **Read the losses** | The compound is named and drawn. Label each marked peak with what the molecule lost: −15, −18, −29, −43. Correlation table available. Six spectra. |
+| 2 | **Which compound is it?** | The same labelling job, but the compound is hidden — and **three candidate structures sit under the plot from the moment the item opens**. Read M⁺ off the plot, work out what each candidate weighs, label the losses, then say which one it is. Six spectra. |
+| 3 | **Predict the base peak** | **No spectrum.** From the structure alone, choose which loss leaves the most stable fragment, then work out where it lands. The spectrum is revealed afterwards, annotated, as the answer. Six compounds. |
+
+Level 2 is deliberately the same *task* as Level 1 with something taken away and something
+given back. Taken away: the compound’s name. Given back: three structures to choose between,
+and the correlation table stays open. A student who can do Level 1 can do Level 2 — they just
+have to work out which compound they are holding before the arithmetic means anything, and the
+candidates make that a comparison rather than a blank.
 
 Levels unlock in order. Wrong answers are never penalised: the tile returns to the tray
 and the feedback explains the discriminator.
@@ -97,18 +103,22 @@ theme.
 
 Two questions per compound, both answerable from the structure:
 
-1. **Which cation is most stable?** Every competing cleavage is offered as a card with its
-   formula, its name and its mechanism. Picking a loser explains *why* it loses.
+1. **Which loss leaves the most stable fragment?** Each competing route is a card led by
+   the loss — `Lose •C₂H₅ (M − 29)` — with what it leaves underneath. Picking a loser
+   explains *why* it loses.
 2. **At what m/z does it appear?** The arithmetic, with the masses of the losing routes
    offered as decoys — every option is a number a student could genuinely have reached.
+
+The neutral on each card is **computed from the formulas**, not looked up, because the
+lookup would be wrong: the table offers "−43 = •C₃H₇ or CH₃CO•", and for acetophenone only
+the second is true. Subtracting the fragment from the molecule settles it every time.
 
 Only then does the spectrum appear, with the full ordering of routes spelled out
 underneath it.
 
-A compound is only eligible for Level 3 if it offers **two or more competing cleavages** —
-`tools/validate.js` refuses the tag otherwise. That rules out *tert*-butanol, where one
-route dominates so completely there is nothing to weigh, and benzaldehyde, whose base peak
-is the molecular ion itself.
+A compound is only eligible for Level 3 if it offers **two or more competing losses** —
+`tools/validate.js` refuses the tag otherwise. That rules out benzaldehyde, whose base peak
+is the molecular ion itself, so there is no winning loss to pick.
 
 ---
 
@@ -253,7 +263,7 @@ target, so a McLafferty peak can never be scored by accident.
 
 ## The compound bank
 
-28 compounds across six themes. The draw is **balanced by theme, not purely random**: every
+29 compounds across six themes. The draw is **balanced by theme, not purely random**: every
 level takes one compound per theme before filling the remaining places freely, so a run
 always contains an alcohol, a carbonyl, an arene, a branched chain, a heteroatom compound
 and a halide.
@@ -263,7 +273,7 @@ and a halide.
 | **alcohol** | 1-butanol, 2-butanol, *tert*-butanol, 2-methyl-2-butanol, cyclohexanol, 1-phenylethanol | α-cleavage at 1°/2°/3°, and −18 |
 | **carbonyl** | acetone, 2-butanone, 3-pentanone, 2-pentanone, acetophenone, benzaldehyde, methyl acetate | the fragment that keeps the C=O — m/z 43, 57, 105 |
 | **arene** | toluene, ethyl-, propyl-, isopropyl- and butylbenzene | m/z 91, and breaking next to a ring |
-| **branch** | hexane, 2,2-dimethylbutane, 2,2,4-trimethylpentane | the tertiary carbocation at 57 |
+| **branch** | hexane, 2-methylbutane, 2,2-dimethylbutane, 2,2,4-trimethylpentane | the tertiary carbocation at 57 |
 | **hetero** | 1-propanamine, diethylamine, diethyl ether, MTBE | α-cleavage at N and at ether O |
 | **halide** | 1-bromopropane, 1-chlorobutane, chlorobenzene | M/M+2 isotope patterns |
 
@@ -299,13 +309,11 @@ molecular weight, and above all its molecular formula — so 1-butanol comes up 
 distinction being taught. The ranking carries a small random term, so the same compound does
 not always draw the same pair.
 
-### Distractor tiles are the confusable twin
+### Distractor tiles
 
-At Level 2 the wrong tile offered against the m/z 43 that kept a C=O is the **m/z 43 propyl
-fragment** — not something absurd. Each fragment declares its `twin`, the one of the same
-mass it is routinely confused with, and those are drawn first, then fragments of the same
-stability class, then at random. A Level 2 tray is a set of genuine alternatives rather than
-a lineup of obvious rejects.
+Distractors are drawn from the four losses the unit is built around — −15, −18, −29, −43 —
+before anything else, because those are the ones a student should be checking for every
+single time. Level 1 offers two distractors, Level 2 three.
 
 ---
 
@@ -384,7 +392,7 @@ Everything a teacher would want to change lives in two files.
 ```js
 {
   id: 'propiophenone', name: 'Propiophenone', formula: 'C₉H₁₀O', f: 'C9H10O',
-  cls: 'Aryl ketone', theme: 'carbonyl', tags: ['loss', 'ion', 'predict'],
+  cls: 'Aryl ketone', theme: 'carbonyl', tags: ['loss', 'predict'],
   structure: { pts: [...], bonds: [...], labels: {...} },
   peaks: [
     { mz: 134, ab: 25, role: 'mplus' },
@@ -399,6 +407,8 @@ Everything a teacher would want to change lives in two files.
 - `f` is the parseable formula, checked against the displayed one.
 - `role` is `mplus`, `key` (scored), `cluster` (above the line, not diagnostic), `minor`
   (below the line), or `mcl` (a McLafferty peak, never scored).
+- `tags` are `'loss'` (Levels 1 and 2 — needs a molecular ion above 5%) and `'predict'`
+  (Level 3 — needs two or more competing losses).
 - `why` is required on every `key` peak — it is the stability argument, and Level 3 reads it.
 - `note` optionally overrides the generated explanation for a non-scored peak, for cases
   where the stock wording would mislead.
@@ -424,6 +434,8 @@ node tools/answer-key.js > ANSWER_KEY.md
 - a scored peak has no `why`, so Level 3 could not use it;
 - a compound is tagged `loss` but its molecular ion is under 5%, or tagged `predict` with
   fewer than two competing cleavages;
+- the `loss` pool holds fewer than the twelve compounds Levels 1 and 2 draw between them,
+  or a theme inside it has only one member, since both levels would then draw it;
 - a McLafferty peak carries an ion id;
 - a level's pool is missing one of the themes that level draws.
 

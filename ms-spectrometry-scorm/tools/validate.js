@@ -182,9 +182,10 @@ for (const c of COMPOUNDS) {
   /* --- what each level needs --- */
   if (c.tags.includes('loss')) {
     if (!mplus) {
-      fail(c, 'tagged for Level 1 but has no molecular ion — you cannot subtract from a peak that is not there');
+      fail(c, 'tagged for the labelling levels but has no molecular ion — you cannot ' +
+              'subtract from a peak that is not there');
     } else if (mplus.ab < 5) {
-      fail(c, 'tagged for Level 1 but its molecular ion is only ' + mplus.ab +
+      fail(c, 'tagged for the labelling levels but its molecular ion is only ' + mplus.ab +
               '% — too faint to measure a loss from');
     }
   }
@@ -225,7 +226,7 @@ for (const c of COMPOUNDS) for (const p of c.peaks) if (p.ion) usedIons.add(p.io
 const idle = ION_IDS.filter(k => !usedIons.has(k));
 if (idle.length) {
   warn.push('no compound uses ' + idle.join(', ') +
-            ' — they appear only in the reference table and as distractors');
+            ' — they appear only in the reference table, as recognition material');
 }
 
 /* --------------------------------------------- level pools and theme cover */
@@ -234,17 +235,29 @@ if (idle.length) {
    route to weigh it against, so there is nothing there to predict. */
 const THEMES = {
   loss:    ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero', 'halide'],
-  ion:     ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero', 'halide'],
   predict: ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero']
 };
-for (const tag of ['loss', 'ion', 'predict']) {
+for (const tag of ['loss', 'predict']) {
   const pool = COMPOUNDS.filter(c => c.tags.includes(tag));
   const missing = THEMES[tag].filter(t => !pool.some(c => c.theme === t));
   if (missing.length) {
     problems.push('the "' + tag + '" pool has no ' + missing.join(', ') +
                   ' compound, so that theme drops out of that level');
   }
-  if (pool.length < 6) problems.push('the "' + tag + '" pool has only ' + pool.length + ' compounds');
+  const need = tag === 'loss' ? 12 : 6;   /* the loss pool feeds BOTH labelling levels */
+  if (pool.length < need) {
+    problems.push('the "' + tag + '" pool has only ' + pool.length + ' compounds, and ' +
+                  need + ' are drawn');
+  }
+  if (tag === 'loss') {
+    for (const t of THEMES[tag]) {
+      const n = pool.filter(c => c.theme === t).length;
+      if (n < 2) {
+        warn.push('only ' + n + ' "' + t + '" compound can do losses, so Levels 1 and 2 ' +
+                  'will both draw it');
+      }
+    }
+  }
 }
 
 /* Compounds whose scored peaks are identical cannot be told apart from the

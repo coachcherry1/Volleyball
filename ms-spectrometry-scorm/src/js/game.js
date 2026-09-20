@@ -32,24 +32,30 @@ var Game = (function () {
      breaks, with no second route to weigh it against. */
   var THEMES = {
     loss:    ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero', 'halide'],
-    ion:     ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero', 'halide'],
     predict: ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero']
   };
 
+  /* Levels 1 and 2 ask the SAME question — what did the molecular ion lose?
+     Only the scaffolding changes: Level 1 names the compound, Level 2 puts
+     three candidate structures on the bench and makes the student work out
+     which one they are holding. Both draw from the same pool, because both
+     need a molecular ion you can actually subtract from. */
   var LEVELS = [
-    { n: 1, name: 'Read the losses', tag: 'loss', mode: 'loss', items: 6, reference: true,
+    { n: 1, name: 'Read the losses', tag: 'loss', mode: 'loss', items: 6,
+      reference: true, distractors: 2,
       blurb: 'The compound is named for you. Label each marked peak with what the molecule LOST to make it.' },
-    { n: 2, name: 'Name the fragment', tag: 'ion', mode: 'ion', items: 6, identify: true,
-      blurb: 'The compound is hidden. Work out which fragment each marked peak is — the tiles give you formulas, so add them up — then identify the compound.' },
+    { n: 2, name: 'Which compound is it?', tag: 'loss', mode: 'loss', items: 6,
+      reference: true, distractors: 3, identify: true, candidates: true,
+      blurb: 'Same job — label what was lost — but the compound is one of three. Read the molecular ion off the plot, work out the mass of each candidate, and see which one fits.' },
     { n: 3, name: 'Predict the base peak', tag: 'predict', mode: 'predict', items: 6,
-      blurb: 'No spectrum yet. From the structure alone, work out which cleavage gives the most stable cation, and where it lands.' }
+      blurb: 'No spectrum yet. From the structure alone, work out which break leaves the most stable fragment, and where it lands.' }
   ];
 
   /* Bumped whenever the shape of a saved run changes - the level list, the
      draw, or the vocabulary. A save from an older build is discarded rather
      than resumed, otherwise a student carries a stale lineup of spectra
      forward and never sees the new one. */
-  var SCHEMA = 1;
+  var SCHEMA = 2;
 
   var el = {};
   var state = null;
@@ -227,7 +233,7 @@ var Game = (function () {
       for (var i = 0; i < needed[k]; i++) wanted.push(k);
     });
 
-    var tiles = shuffle(wanted.concat(distractorsFor(slots, needed, cfg.mode, rand)), rand)
+    var tiles = shuffle(wanted.concat(distractorsFor(needed, cfg, rand)), rand)
       .map(function (k) {
         return { key: k, label: keyLabel(k), sub: keySub(k), used: false, distractor: !needed[k] };
       });
@@ -243,31 +249,18 @@ var Game = (function () {
      cation, not something absurd. Distractors are drawn twin first, then from
      the same stability class, then at random - so a Level 2 tray is a set of
      genuine alternatives rather than a lineup of obvious rejects. */
-  function distractorsFor(slots, needed, mode, rand) {
-    var want = mode === 'loss' ? 2 : 3;
+  function distractorsFor(needed, cfg, rand) {
+    var want = cfg.distractors || 2;
     var picked = [];
 
     function add(k) {
       if (k && !needed[k] && picked.indexOf(k) < 0 && picked.length < want) picked.push(k);
     }
 
-    if (mode === 'ion') {
-      slots.forEach(function (s) {
-        var ion = IONS[s.key];
-        if (ion && ion.twin) add(ion.twin);
-      });
-      var classes = {};
-      slots.forEach(function (s) { if (IONS[s.key]) classes[IONS[s.key].cls] = true; });
-      shuffle(ION_IDS, rand).forEach(function (k) {
-        if (classes[IONS[k].cls]) add(k);
-      });
-    } else {
-      /* The four losses this unit is built around are the fairest wrong
-         answers: a student should be checking for all of them every time. */
-      shuffle(['loss_15', 'loss_18', 'loss_29', 'loss_43'], rand).forEach(add);
-    }
-
-    shuffle(UNIVERSE[mode], rand).forEach(add);
+    /* The four losses this unit is built around are the fairest wrong
+       answers: a student should be checking for all of them every time. */
+    shuffle(['loss_15', 'loss_18', 'loss_29', 'loss_43'], rand).forEach(add);
+    shuffle(UNIVERSE.loss, rand).forEach(add);
     return picked;
   }
 
@@ -435,11 +428,13 @@ var Game = (function () {
 
   function paintCard() {
     el.card.innerHTML = '';
-    if (item.cfg.mode === 'ion') {
+    if (item.cfg.candidates) {
       el.card.appendChild(make('p', 'card-kicker', 'Unknown compound'));
       el.card.appendChild(make('p', 'card-hidden', '?'));
       el.card.appendChild(make('p', 'card-note',
-        'Work out every marked peak, then identify the compound.'));
+        'It is one of the three below the plot. Start with the molecular ion — the ' +
+        'rightmost real peak, ignoring the isotope peaks just past it — and work out which ' +
+        'candidate weighs that much.'));
       return;
     }
     el.card.appendChild(make('p', 'card-kicker', item.compound.cls));
@@ -488,6 +483,7 @@ var Game = (function () {
     el.choices.hidden = true;
     el.next.hidden = true;
     if (item.phase === 'predict') paintRoutes();
+    else if (item.cfg.candidates) paintChoices(false);
   }
 
   /* ------------------------------------------------------------- answering */
@@ -607,9 +603,9 @@ var Game = (function () {
       item.phase = 'identify';
       clearSelection();
       paintTray();
-      say('Every marked peak is worked out. Now — which compound is this?', 'good');
+      say('Every marked peak is labelled. Now — which compound is this?', 'good');
       window.__item = item;
-      paintChoices();
+      paintChoices(true);
     } else {
       item.phase = 'done';
       clearSelection();
@@ -620,11 +616,18 @@ var Game = (function () {
     }
   }
 
-  function paintChoices() {
+  /* Shown from the moment the item opens, not sprung once the labelling is
+     done. Three structures on the bench are the scaffolding: they turn "what
+     is this?" into "which of these three is this?", and a student can check a
+     candidate's mass against the molecular ion before touching a tile. */
+  function paintChoices(asking) {
     el.choices.hidden = false;
     el.choices.innerHTML = '';
-    el.choices.appendChild(make('p', 'choices-q', 'Which compound produced this spectrum?'));
-    var row = make('div', 'choices-row');
+    el.choices.appendChild(make('p', 'choices-q', asking
+      ? 'Which compound produced this spectrum?'
+      : 'The compound is one of these three. Work out what each one weighs, and check it ' +
+        'against the molecular ion.'));
+    var row = make('div', 'choices-row' + (asking ? '' : ' preview'));
     item.choices.forEach(function (c) {
       var b = make('button', 'choice');
       b.type = 'button';
@@ -638,6 +641,11 @@ var Game = (function () {
   }
 
   function chooseCompound(id, node) {
+    if (item.phase === 'label') {
+      say('Label the marked peaks first — the losses are what tell you which of these three ' +
+          'it is.', 'quiet');
+      return;
+    }
     if (item.phase !== 'identify') return;
     state.stats.attempts++;
     if (id === item.compound.id) {
@@ -664,16 +672,23 @@ var Game = (function () {
     el.choices.hidden = false;
     el.choices.innerHTML = '';
     el.choices.appendChild(make('p', 'choices-q',
-      'Every one of these breaks happens. Which fragment is the most stable — which peak will ' +
-      'be the TALLEST?'));
+      'Every one of these losses happens. Which one leaves the most stable fragment — which ' +
+      'peak will be the TALLEST?'));
     var row = make('div', 'choices-row routes');
     item.routes.forEach(function (r, i) {
       var b = make('button', 'choice route');
       b.type = 'button';
       b.dataset.route = String(i);
-      b.appendChild(make('span', 'route-ion', r.ion.label));
-      b.appendChild(make('span', 'route-name', r.ion.name));
-      b.appendChild(make('span', 'route-mech', MECH[r.ion.mech] || r.ion.mech));
+      /* Led by the loss, the way the rest of the package frames it. */
+      var neutral = MS.neutralOf(item.spec, r.peak);
+      b.appendChild(make('span', 'route-loss',
+        'Lose ' + (neutral || '?') + '   (M − ' + (item.spec.M - r.peak.mz) + ')'));
+      b.appendChild(make('span', 'route-ion', 'leaves ' + r.ion.label));
+      /* "Lose H2O" already says how it broke, so a whole-molecule loss does
+         not repeat the mechanism underneath itself. */
+      b.appendChild(make('span', 'route-mech', r.ion.cls === 'radical'
+        ? r.ion.name
+        : r.ion.name + ' · ' + (MECH[r.ion.mech] || r.ion.mech)));
       row.appendChild(b);
     });
     el.choices.appendChild(row);
@@ -860,10 +875,14 @@ var Game = (function () {
         'carbocation stability is something you already know: 3° beats 2° beats 1°, and a ' +
         'nearby O, N or ring beats all of them.'));
       box.appendChild(make('p', null,
-        'Two rules carry most of the work. A dotted line is drawn across every spectrum at 5% ' +
-        'of the base peak: below it, do not read anything. And above it, a peak still has to be ' +
-        'diagnostic to be worth your time — click any peak that is not one of the answers and ' +
-        'it will tell you why it is not.'));
+        'You read it by SUBTRACTION. Find the molecular ion on the far right, then ask what ' +
+        'each tall peak below it is missing: 15 is a methyl gone, 18 is water, 29 and 43 could ' +
+        'be either of two things. Every peak worth reading has its mass printed above it, so ' +
+        'the arithmetic is right there.'));
+      box.appendChild(make('p', null,
+        'A dotted line is drawn across every spectrum at 5% of the base peak: below it, do not ' +
+        'read anything. Above it, a peak still has to be diagnostic to be worth your time — ' +
+        'click any peak that is not one of the answers and it will tell you why it is not.'));
       var ul = make('ul', 'screen-list');
       LEVELS.forEach(function (L) {
         var li = make('li', null);
