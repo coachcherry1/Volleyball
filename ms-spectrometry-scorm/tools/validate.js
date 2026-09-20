@@ -269,7 +269,7 @@ if (idle.length) {
    route to weigh it against, so there is nothing there to predict. */
 const THEMES = {
   loss:    ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero', 'halide'],
-  predict: ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero']
+  predict: ['alcohol', 'carbonyl', 'branch', 'hetero']
 };
 for (const tag of ['loss', 'predict']) {
   const pool = COMPOUNDS.filter(c => c.tags.includes(tag));
@@ -287,8 +287,25 @@ for (const tag of ['loss', 'predict']) {
     for (const t of THEMES[tag]) {
       const n = pool.filter(c => c.theme === t).length;
       if (n < 2) {
-        warn.push('only ' + n + ' "' + t + '" compound can do losses, so Levels 1 and 2 ' +
-                  'will both draw it');
+        problems.push('only ' + n + ' "' + t + '" compound can do losses, so Levels 1 and 2 ' +
+                      'would both have to draw it');
+      }
+    }
+  }
+
+  /* Level 3 draws last, after Levels 1-2 have taken twelve compounds. A theme
+     it guarantees must therefore have enough members that are EITHER
+     Level-3-only or plentiful enough to survive that, or the guarantee forces
+     a repeat. */
+  if (tag === 'predict') {
+    for (const t of THEMES[tag]) {
+      const inTheme = pool.filter(c => c.theme === t);
+      const exclusive = inTheme.filter(c => !c.tags.includes('loss')).length;
+      const lossSameTheme = COMPOUNDS.filter(c => c.tags.includes('loss') && c.theme === t).length;
+      /* worst case Levels 1-2 take two of this theme from the shared pool */
+      if (exclusive < 1 && inTheme.length - Math.min(2, lossSameTheme) < 1) {
+        problems.push('Level 3 guarantees a "' + t + '" compound, but Levels 1-2 can use ' +
+                      'them all first, forcing a repeat');
       }
     }
   }

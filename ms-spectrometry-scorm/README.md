@@ -316,6 +316,12 @@ level takes one compound per theme before filling the remaining places freely, s
 always contains an alcohol, a carbonyl, an arene, a branched chain, a heteroatom compound
 and a halide.
 
+**No compound is ever drawn twice in the same run.** The used-list is kept for the whole
+sitting rather than per pool, so a student meets eighteen different spectra across the
+three levels. (It was once kept per pool, which let a compound tagged for two levels turn
+up in both — that is fixed, and `tools/validate.js` now fails the build if any theme
+guarantee could only be met by repeating a compound.)
+
 | Theme | Compounds | Teaches |
 | --- | --- | --- |
 | **alcohol** | 1-butanol, 2-butanol, *tert*-butanol, 2-methyl-2-butanol, cyclohexanol, 1-phenylethanol | α-cleavage at 1°/2°/3°, and −18 |
@@ -325,9 +331,11 @@ and a halide.
 | **hetero** | 1-propanamine, diethylamine, diethyl ether, MTBE | α-cleavage at N and at ether O |
 | **halide** | 1-bromopropane, 1-chlorobutane, chlorobenzene, bromobenzene | M/M+2 isotope patterns |
 
-Level 3 draws no halide: a C–X bond simply breaks, with no second route to weigh it
-against, so there is nothing there to predict. The validator knows this and checks theme
-coverage per level accordingly.
+Level 3 guarantees neither a halide nor an arene. A C–X bond simply breaks, with no second
+route to weigh it against; and every alkylbenzene except cumene gives m/z 91 with nothing
+competing, so there is nothing to predict. Cumene can still be drawn into one of Level 3's
+free slots — it just is not *forced*, which would mean repeating it whenever Levels 1–2 had
+already taken it. The validator checks theme coverage per level accordingly.
 
 ### The sets worth pointing at in class
 

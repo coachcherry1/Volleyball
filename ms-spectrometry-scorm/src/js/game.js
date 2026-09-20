@@ -32,7 +32,12 @@ var Game = (function () {
      breaks, with no second route to weigh it against. */
   var THEMES = {
     loss:    ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero', 'halide'],
-    predict: ['alcohol', 'carbonyl', 'arene', 'branch', 'hetero']
+    /* Level 3 guarantees neither an arene nor a halide. A halide simply
+       snaps its C–X bond, and every alkylbenzene but cumene gives m/z 91 and
+       nothing that competes with it — so there is no second route to weigh.
+       Cumene can still be drawn into a free slot; it just is not forced,
+       which would mean repeating it after Levels 1–2 had already used it. */
+    predict: ['alcohol', 'carbonyl', 'branch', 'hetero']
   };
 
   /* Levels 1 and 2 ask the SAME question — what did the molecular ion lose?
@@ -55,7 +60,7 @@ var Game = (function () {
      draw, or the vocabulary. A save from an older build is discarded rather
      than resumed, otherwise a student carries a stale lineup of spectra
      forward and never sees the new one. */
-  var SCHEMA = 2;
+  var SCHEMA = 3;
 
   var el = {};
   var state = null;
@@ -186,12 +191,15 @@ var Game = (function () {
   function newRun() {
     var seed = (Date.now() ^ Math.floor(Math.random() * 0x7fffffff)) >>> 0;
     var rand = MS.rng(seed);
-    var plan = {}, usedByTag = {};
+    var plan = {}, used = [];
+    /* ONE used-list for the whole run, not one per pool. Keying it by tag
+       meant a compound tagged for two different levels could be drawn twice
+       in the same sitting — a student would meet the same spectrum in Level 1
+       and again in Level 3 and reasonably wonder what they were missing. */
     LEVELS.forEach(function (L) {
-      var used = usedByTag[L.tag] || (usedByTag[L.tag] = []);
       var ids = pickCompounds(L.tag, L.items, rand, used).map(function (c) { return c.id; });
       plan[L.n] = ids;
-      usedByTag[L.tag] = used.concat(ids);
+      used = used.concat(ids);
     });
     return {
       seed: seed, unlocked: 1, level: 1, index: 0, done: [],
