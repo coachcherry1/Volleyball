@@ -137,11 +137,12 @@ for (const b of CFU.BANK) {
   if (ids.has(b.id)) fail('duplicate question id ' + b.id);
   ids.add(b.id);
   if (!TAGS.has(b.tag)) fail(b.id + ': unknown tag ' + b.tag);
-  if (!(b.min >= 1 && b.min <= 6)) fail(b.id + ': min level ' + b.min);
+  if (!(b.min >= 1 && b.min <= Plan.LEVELS.length)) fail(b.id + ': min level ' + b.min);
   if (!b.why) fail(b.id + ': no explanation');
   if (b.a.length < 3 || new Set(b.a).size !== b.a.length) fail(b.id + ': needs 3+ distinct options');
   for (const t of [b.q, ...b.a, b.why]) checkSymbols(b.id, t);
-  if ((b.tag === 'poly' || b.tag === 'paren') && b.min < 4) fail(b.id + ': polyatomic questions start at Level 4');
+  if (b.tag !== 'tm' && b.tag !== 'fixed' && b.tag !== 'ide' && b.tag !== 'ionic' && b.min < 2) fail(b.id + ': naming and formula questions start at Level 2');
+  if (b.min > Plan.LEVELS.length) fail(b.id + ': min level ' + b.min + ' is past the last level');
 }
 let generated = 0;
 for (const cpd of all) {
@@ -158,6 +159,7 @@ for (const cpd of all) {
 
 const RUNS = 2000;
 let maxState = 0;
+let blocked = 0;
 const counts = {};
 for (let r = 0; r < RUNS; r++) {
   const seed = (r * 2654435761) >>> 0;
@@ -180,14 +182,22 @@ for (let r = 0; r < RUNS; r++) {
     const cpds = list.map((c) => Plan.compoundOf(c)).filter(Boolean).map(Chem.fromCode);
     const t = cpds.map((c) => ({ c, t: Chem.traits(c) }));
     const has = (f) => t.some((x) => f(x.c, x.t));
+    const names = list.filter((c) => c.startsWith('n:')).length;
+    const formulas = list.filter((c) => c.startsWith('f:')).length;
     const need = {
       1: () => ['Ag', 'Zn', 'Sn', 'Pb'].every((s) => list.includes('m:' + s)),
-      2: () => has((c) => c.c.t === 'Ag') && has((c) => c.c.t === 'Zn') && !has((c, x) => x.tm),
-      3: () => has((c, x) => x.fourOverTwo) && has((c) => c.c.t === 'Sn' || c.c.t === 'Pb') && has((c, x) => x.tm && c.q === 1),
-      4: () => has((c, x) => x.ammonium) && has((c, x) => x.parens) && list.includes('p:NH4:n') !== list.includes('p:NH4:f'),
-      5: () => has((c, x) => x.fourOverTwo) && has((c, x) => x.parens) && has((c, x) => x.ammonium),
-      6: () => list.some((c) => c.startsWith('n:')) && list.some((c) => c.startsWith('f:')) && has((c, x) => x.parens)
+      2: () => names === 6 && formulas === 6 && has((c, x) => x.fourOverTwo) &&
+               has((c) => c.c.t === 'Ag' || c.c.t === 'Zn') && has((c) => c.c.t === 'Sn' || c.c.t === 'Pb') &&
+               has((c, x) => x.ammonium) && has((c, x) => x.parens) && has((c, x) => x.tm && c.q === 1) &&
+               has((c, x) => !x.tm) && has((c, x) => x.binary) && has((c, x) => x.poly),
+      3: () => names === 6 && formulas === 6 && has((c, x) => x.parens) && has((c, x) => x.ammonium) &&
+               has((c) => c.c.t === 'Ag' || c.c.t === 'Zn') && has((c) => c.c.t === 'Sn' || c.c.t === 'Pb')
     };
+    /* interleaved: never three names or three formulas in a row */
+    if (L.n >= 2) {
+      const kinds = list.map((c) => c.charAt(0)).filter((k) => k === 'n' || k === 'f').join('');
+      if (/nnn|fff/.test(kinds)) blocked++;
+    }
     if (!need[L.n]()) fail('run ' + r + ' level ' + L.n + ' is missing a required case: ' + list.join(' '));
   }
   /* worst case: every level also takes its full quota of follow-up questions */
@@ -197,6 +207,7 @@ for (let r = 0; r < RUNS; r++) {
     st: { items: 999, clean: 999, checks: 999, checksRight: 999 } }).length;
   maxState = Math.max(maxState, size);
 }
+if (blocked) fail(blocked + ' of ' + RUNS + ' runs had three names or three formulas in a row');
 if (maxState > 4000) fail('saved state can reach ' + maxState + ' characters; SCORM 1.2 allows 4096');
 
 /* ------------------------------------------------------------- report */

@@ -3,17 +3,18 @@
  * A run is a list of item codes per level:
  *   m:Fe          Level 1: is this metal a transition metal? its charge? its name?
  *   a:O           Level 1: which ion does this nonmetal form, and what is it called?
- *   p:SO4:n       Level 4: name this polyatomic ion   (p:SO4:f = pick its formula)
- *   n:Fe3.SO4     name this compound                  (f:Fe3.SO4 = write its formula)
+ *   n:Fe3.SO4     name this compound      (f:Fe3.SO4 = write its formula)
  *   q:tm1         a check-for-understanding question from the bank
  *   g:c:Pb4.O     a generated check question (see cfu.js)
  * A leading "!" marks a level-end checkpoint question and a leading "+" a
  * follow-up added after a missed check.
  *
- * The draw is balanced, not purely random: each level takes one compound per
- * required case before filling freely, so every run meets Ag and Zn, Sn and
- * Pb, a reduced formula like PbO2, a formula that needs parentheses, and
- * ammonium. Which compound fills each case varies, so a retry is a new set.
+ * After Level 1 every level is interleaved: names and formulas, transition
+ * metals and not, single-element and polyatomic ions, shuffled together.
+ * The draw is balanced, not purely random: each level fills a list of
+ * required cases, so every run meets Ag and Zn, Sn and Pb, a reduced formula
+ * like PbO2, a formula that needs parentheses, and ammonium. Which compound
+ * fills each case varies, so a retry is a new set.
  */
 
 var Plan = (function () {
@@ -23,29 +24,19 @@ var Plan = (function () {
     { n: 1, name: 'Transition metal or not?', kind: 'ions', metals: 10, anions: 4, cfuEvery: 4,
       tags: ['tm', 'fixed', 'ide', 'ionic'], checkpoint: ['tm', 'fixed', 'ide'],
       blurb: 'Find each element on the periodic table. Decide whether it is a transition metal, then give its name and charge.' },
-    { n: 2, name: 'Name it: not transition metals', kind: 'name', count: 5, cfuEvery: 2,
-      tags: ['tm', 'fixed', 'ide', 'ionic'], checkpoint: ['tm', 'fixed', 'ide'],
-      blurb: 'Every metal here has only one charge — Ag and Zn included. Decide “no Roman numeral,” then build the name.' },
-    { n: 3, name: 'Name it: transition metals', kind: 'name', count: 6, cfuEvery: 2,
-      tags: ['tm', 'numeral', 'charge', 'reduce'], checkpoint: ['tm', 'charge', 'numeral'],
-      blurb: 'Now some metals are transition metals. When one is, work out its charge from the formula and write it as a Roman numeral.' },
-    { n: 4, name: 'Polyatomic ions', kind: 'poly', drill: 5, count: 6, cfuEvery: 3,
-      tags: ['poly', 'paren', 'tm', 'charge'], checkpoint: ['poly', 'paren', 'charge'],
-      blurb: 'Know your polyatomic ions, then name compounds that contain them. The number after a parenthesis tells you how many of that ion there are.' },
-    { n: 5, name: 'Write the formula', kind: 'formula', count: 7, cfuEvery: 2,
-      tags: ['numeral', 'reduce', 'paren', 'poly'], checkpoint: ['numeral', 'reduce', 'paren'],
-      blurb: 'From a name to a formula: find both charges, balance them, reduce, and use parentheses when you need more than one polyatomic ion.' },
-    { n: 6, name: 'On your own', kind: 'typed', count: 8, cfuEvery: 2,
+    { n: 2, name: 'Mixed practice', kind: 'mixed', count: 12, cfuEvery: 2,
       tags: ['tm', 'charge', 'numeral', 'reduce', 'paren', 'poly', 'fixed', 'ide'],
       checkpoint: ['tm', 'charge', 'paren'],
-      blurb: 'Mixed names and formulas. Type each answer — no flowchart and no steps. The periodic table is still there.' }
+      blurb: 'Names and formulas, mixed: transition metals or not, single-element or polyatomic ions. Every question starts with the same decision — is it a transition metal?' },
+    { n: 3, name: 'On your own', kind: 'typed', count: 12, cfuEvery: 3,
+      tags: ['tm', 'charge', 'numeral', 'reduce', 'paren', 'poly', 'fixed', 'ide'],
+      checkpoint: ['numeral', 'reduce', 'poly'],
+      blurb: 'Still mixed, now typed — no flowchart and no steps. The periodic table is still there.' }
   ];
 
   var FIXED_METALS = ['Li', 'Na', 'K', 'Rb', 'Be', 'Mg', 'Ca', 'Ba', 'Al', 'Ga'];
   var TM_METALS = ['Ti', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Au', 'Hg'];
   var EXCEPTIONS = ['Ag', 'Zn', 'Sn', 'Pb'];
-  var FAMILIES = [['SO4', 'SO3'], ['NO3', 'NO2'], ['ClO4', 'ClO3', 'ClO2', 'ClO'],
-                  ['PO4', 'PO3'], ['CrO4', 'Cr2O7']];
 
   var POOL = Chem.all().map(function (cpd) { return { cpd: cpd, t: Chem.traits(cpd) }; });
 
@@ -95,8 +86,6 @@ var Plan = (function () {
     };
   }
 
-  function is(sym) { return function (c) { return c.c.t === sym; }; }
-
   /* ------------------------------------------------------ content per level */
 
   function drawIons(rand) {
@@ -110,78 +99,74 @@ var Plan = (function () {
       .concat(shuffle(anions, rand).map(function (s) { return 'a:' + s; }));
   }
 
-  function drawName2(rand, used) {
+  /* Interleaved: names and formulas shuffled together, so every question
+     starts from the same decision instead of a level that answers it in
+     advance. Each slot is a case the level must cover; which compound fills
+     it varies from run to run. */
+  function interleave(rand, used, names, formulas) {
     var pick = chooser(rand, used);
-    var plain = function (c, t) { return t.binary && !t.tm; };
-    return shuffle([
-      pick(function (c, t) { return plain(c, t) && c.c.t === 'Ag'; }),
-      pick(function (c, t) { return plain(c, t) && c.c.t === 'Zn'; }),
-      pick(function (c, t) { return plain(c, t) && c.a.charge === 3; }),
-      pick(function (c, t) { return plain(c, t) && c.a.charge === 2; }),
-      pick(function (c, t) { return plain(c, t) && c.a.charge === 1; })
-    ], rand).map(function (x) { return 'n:' + x; });
+    var n = shuffle(names.map(function (test) { return 'n:' + pick(test); }), rand);
+    var f = shuffle(formulas.map(function (test) { return 'f:' + pick(test); }), rand);
+    /* Merge at random, but never three of the same kind in a row, so the
+       student can't settle into naming mode or formula mode. */
+    var out = [];
+    /* After taking from `a`, the rest can still be laid out with runs of at
+       most two only if neither kind outnumbers the other by too much. */
+    function ok(a, b, run) {
+      var na = a.length - 1, nb = b.length;
+      if (a.length === 0 || run >= 2) return false;
+      return na <= 2 * nb + (2 - run - 1) && nb <= 2 * (na + 1);
+    }
+    while (n.length || f.length) {
+      var lastKind = out.length ? out[out.length - 1].charAt(0) : '';
+      var run = 0;
+      for (var i = out.length - 1; i >= 0 && out[i].charAt(0) === lastKind; i--) run++;
+      var canN = ok(n, f, lastKind === 'n' ? run : 0);
+      var canF = ok(f, n, lastKind === 'f' ? run : 0);
+      var from = canN && canF ? (rand() * (n.length + f.length) < n.length ? n : f)
+               : canN ? n : canF ? f : (n.length ? n : f);
+      out.push(from.shift());
+    }
+    return out;
   }
 
-  function drawName3(rand, used) {
-    var pick = chooser(rand, used);
-    return shuffle([
-      pick(function (c, t) { return t.binary && t.tm && t.fourOverTwo; }),
-      pick(function (c, t) { return t.binary && t.tm && (c.c.t === 'Sn' || c.c.t === 'Pb'); }),
-      pick(function (c, t) { return t.binary && t.tm && c.q === 1; }),
-      pick(function (c, t) { return t.binary && t.tm && c.m > 1 && TM_METALS.indexOf(c.c.t) >= 0; }),
-      pick(function (c, t) { return t.binary && !t.tm; }),
-      pick(function (c, t) { return t.binary && !t.tm; })
-    ], rand).map(function (x) { return 'n:' + x; });
-  }
+  function snPb(c) { return c.c.t === 'Sn' || c.c.t === 'Pb'; }
+  function agZn(c) { return c.c.t === 'Ag' || c.c.t === 'Zn'; }
 
-  function drawPoly(rand, used) {
-    var family = shuffle(any(FAMILIES, rand), rand).slice(0, 2);
-    var polys = DATA.ANIONS.filter(function (a) { return a.poly && family.indexOf(a.t) < 0; })
-      .map(function (a) { return a.t; });
-    var drill = ['NH4'].concat(family).concat(shuffle(polys, rand).slice(0, 2));
-    drill = shuffle(drill, rand).map(function (t) { return 'p:' + t + ':' + (rand() < 0.5 ? 'n' : 'f'); });
-
-    var pick = chooser(rand, used);
-    var metal = function (c, t) { return !t.ammonium && c.a.poly; };
-    var compounds = shuffle([
-      pick(function (c, t) { return t.ammonium; }),
-      pick(function (c, t) { return metal(c, t) && t.tm && c.n > 1; }),
-      pick(function (c, t) { return metal(c, t) && t.tm && t.reduced; }),
-      pick(function (c, t) { return metal(c, t) && !t.tm && c.n > 1; }),
-      pick(function (c, t) { return metal(c, t) && !t.tm && c.n === 1; }),
-      pick(function (c, t) { return t.poly; })
-    ], rand).map(function (x) { return 'n:' + x; });
-    return drill.concat(compounds);
-  }
-
-  function drawFormula(rand, used) {
-    var pick = chooser(rand, used);
-    return shuffle([
-      pick(function (c, t) { return t.tm && t.fourOverTwo; }),
-      pick(function (c, t) { return t.tm && t.binary && c.m > 1 && c.q !== c.m; }),
-      pick(function (c, t) { return c.a.poly && c.n > 1; }),
-      pick(function (c, t) { return c.a.poly && c.n === 1 && !t.ammonium; }),
-      pick(function (c, t) { return t.ammonium; }),
-      pick(function (c, t) { return t.binary && !t.tm; }),
-      pick(function () { return true; })
-    ], rand).map(function (x) { return 'f:' + x; });
+  function drawMixed(rand, used) {
+    return interleave(rand, used, [
+      function (c, t) { return t.tm && t.binary && t.fourOverTwo; },
+      function (c, t) { return agZn(c) && t.binary; },
+      function (c, t) { return t.tm && c.a.poly && c.n > 1; },
+      function (c, t) { return t.ammonium; },
+      function (c, t) { return !t.tm && !t.ammonium && c.a.poly; },
+      function (c) { return snPb(c); }
+    ], [
+      function (c, t) { return t.tm && c.a.poly && t.reduced; },
+      function (c, t) { return t.tm && t.binary && c.m > 1 && c.q !== c.m; },
+      function (c, t) { return !t.tm && c.a.poly && c.n > 1; },
+      function (c, t) { return c.a.poly && c.n === 1 && !t.ammonium; },
+      function (c, t) { return agZn(c) || (t.binary && !t.tm); },
+      function (c, t) { return t.tm && c.q === 1; }
+    ]);
   }
 
   function drawTyped(rand, used) {
-    var pick = chooser(rand, used);
-    var names = [
-      pick(function (c, t) { return t.tm && t.binary; }),
-      pick(function (c, t) { return t.tm && t.poly; }),
-      pick(function (c, t) { return !t.tm && t.poly; }),
-      pick(function () { return true; })
-    ].map(function (x) { return 'n:' + x; });
-    var formulas = [
-      pick(function (c, t) { return t.tm && t.binary && t.reduced; }),
-      pick(function (c, t) { return t.parens; }),
-      pick(function (c, t) { return t.binary && !t.tm; }),
-      pick(function () { return true; })
-    ].map(function (x) { return 'f:' + x; });
-    return shuffle(names.concat(formulas), rand);
+    return interleave(rand, used, [
+      function (c, t) { return t.tm && t.binary && t.reduced; },
+      function (c, t) { return t.tm && c.a.poly; },
+      function (c, t) { return !t.tm && !t.ammonium && c.a.poly; },
+      function (c) { return agZn(c); },
+      function (c, t) { return t.ammonium; },
+      function () { return true; }
+    ], [
+      function (c, t) { return t.tm && t.binary && t.reduced; },
+      function (c, t) { return t.parens; },
+      function (c, t) { return t.binary && !t.tm; },
+      function (c) { return snPb(c); },
+      function (c, t) { return c.a.poly && c.n === 1 && !t.ammonium; },
+      function () { return true; }
+    ]);
   }
 
   /* ------------------------------------------------------------ checks */
@@ -193,22 +178,22 @@ var Plan = (function () {
 
   function genCandidates(level, tag) {
     var test = null, kind = null;
-    var scope = function (t) { return level >= 4 || t.binary; };
-    if (tag === 'charge' && level >= 3) {
+    if (level < 2) return [];
+    if (tag === 'charge') {
       kind = 'c';
-      test = function (c, t) { return t.tm && scope(t) && c.n !== c.q; };
-    } else if (tag === 'numeral' && level >= 3) {
+      test = function (c, t) { return t.tm && c.n !== c.q; };
+    } else if (tag === 'numeral') {
       kind = 'f';
-      test = function (c, t) { return t.tm && scope(t) && c.q !== c.m; };
-    } else if (tag === 'reduce' && level >= 3) {
+      test = function (c, t) { return t.tm && c.q !== c.m; };
+    } else if (tag === 'reduce') {
       kind = 'f';
-      test = function (c, t) { return t.reduced && scope(t); };
-    } else if (tag === 'paren' && level >= 4) {
+      test = function (c, t) { return t.reduced; };
+    } else if (tag === 'paren') {
       kind = 'f';
       test = function (c, t) { return t.parens; };
-    } else if (tag === 'tm' && level >= 2) {
+    } else if (tag === 'tm') {
       kind = 'n';
-      test = function (c, t) { return level === 2 ? t.binary && !t.tm : scope(t); };
+      test = function () { return true; };
     }
     if (!test) return [];
     return POOL.filter(function (x) { return test(x.cpd, x.t); })
@@ -259,10 +244,7 @@ var Plan = (function () {
     var content;
     switch (level) {
       case 1: content = drawIons(rand); break;
-      case 2: content = drawName2(rand, used); break;
-      case 3: content = drawName3(rand, used); break;
-      case 4: content = drawPoly(rand, used); break;
-      case 5: content = drawFormula(rand, used); break;
+      case 2: content = drawMixed(rand, used); break;
       default: content = drawTyped(rand, used);
     }
     return withChecks(level, content, rand, usedQ);
@@ -285,8 +267,6 @@ var Plan = (function () {
     switch (p[0]) {
       case 'm': return !!Chem.CAT[p[1]] && !Chem.CAT[p[1]].poly;
       case 'a': return !!Chem.AN[p[1]] && !Chem.AN[p[1]].poly;
-      case 'p': return (p[1] === 'NH4' || !!(Chem.AN[p[1]] && Chem.AN[p[1]].poly)) &&
-                       (p[2] === 'n' || p[2] === 'f');
       case 'n': case 'f': return !!Chem.fromCode(p.slice(1).join(':'));
       case 'q': case 'g': return !!CFU.build(code);
     }

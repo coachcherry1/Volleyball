@@ -1,14 +1,15 @@
 /* game.js — items, steps, feedback and progression.
  *
- * Every item is a short list of steps. Naming a compound in Levels 2-4 runs
- * the conditional out loud:
+ * Every item is a short list of steps. Naming a compound in Level 2 runs the
+ * conditional out loud:
  *   1. Is the positive ion a transition metal?          (the IF)
- *   2. (Level 4) how many of the polyatomic ion?        (reading parentheses)
+ *   2. how many of the polyatomic ion?                  (only when in parentheses)
  *   3. YES branch: total negative charge, then charge on each metal
  *   4. build the name from tiles, Roman numeral row included - "none" is a
  *      choice the student has to make, not a default
- * Formulas in Level 5 run: cation charge, anion charge, build the formula with
- * counts and a parentheses switch per ion. Level 6 is typed, no scaffolds.
+ * Writing a formula in Level 2 runs: cation charge, anion charge, build the
+ * formula with counts and a parentheses switch per ion. Names and formulas
+ * are interleaved. Level 3 is the same mix, typed, with no scaffolds.
  *
  * Build and typed answers go through Chem.checkName / Chem.checkFormula, so a
  * mistake made with tiles gets the same explanation as the same mistake typed.
@@ -22,7 +23,7 @@ var Game = (function () {
 
   /* Bump whenever the level list, the draw or the item codes change. A save
      written by an older build is then discarded rather than resumed. */
-  var SCHEMA = 1;
+  var SCHEMA = 2;
 
   /* A build or typed step shows the answer after this many wrong tries, so
      nobody is stuck on one compound for the rest of the period. */
@@ -225,61 +226,6 @@ var Game = (function () {
                          { rightMsg: 'One-element negative ions end in -ide: ' + a.el + ' → ' + a.name + '.' }));
   }
 
-  function polyIon(t) {
-    if (t === 'NH4') {
-      var c = Chem.CAT.NH4;
-      return { t: t, name: c.name, u: Chem.catIon(c, 1), charge: 1, near: [] };
-    }
-    var a = Chem.AN[t];
-    return { t: t, name: a.name, u: Chem.anIon(a), charge: a.charge, near: a.near };
-  }
-
-  function buildPolyDrill(it, t, dir) {
-    var ion = polyIon(t);
-    var others = DATA.ANIONS.filter(function (a) { return a.poly && a.t !== t && ion.near.indexOf(a.t) < 0; });
-    var extra = Plan.shuffle(others, it.rand);
-    it.kicker = 'Polyatomic ions';
-
-    if (dir === 'n') {
-      it.prompt = ion.u;
-      it.promptClass = 'formula';
-      var wrongs = t === 'NH4'
-        ? [{ label: 'ammonia', why: 'Ammonia is NH₃, a neutral molecule — not an ion.' },
-           { label: 'nitride', why: 'Nitride is N³⁻, a single nitrogen ion.' }]
-        : ion.near.map(function (x) {
-            var y = Chem.AN[x];
-            return { label: y.name, why: Chem.cap(y.name) + ' is ' + Chem.anIon(y) + '.' };
-          });
-      while (wrongs.length < 3 && extra.length) {
-        var e = extra.shift();
-        wrongs.push({ label: e.name, why: Chem.cap(e.name) + ' is ' + Chem.anIon(e) + '.' });
-      }
-      it.steps.push(choice('Name this ion.', ion.name, wrongs, it.rand,
-                           { rightMsg: ion.u + ' is ' + ion.name + '.' }));
-      return;
-    }
-
-    it.prompt = ion.name;
-    it.promptClass = 'name';
-    var sign = t === 'NH4' ? '⁺' : '⁻';
-    var wrongCharge = ion.charge === 1 ? 2 : ion.charge - 1;
-    var fWrongs = t === 'NH4'
-      ? [{ label: 'NH₃', why: 'NH₃ is ammonia, a neutral molecule. Ammonium is NH₄⁺.' },
-         { label: 'NH₄⁻', why: 'Right atoms, wrong charge: ammonium is 1+.' },
-         { label: 'N³⁻', why: 'N³⁻ is nitride.' }]
-      : ion.near.map(function (x) {
-          var y = Chem.AN[x];
-          return { label: Chem.anIon(y), why: Chem.anIon(y) + ' is ' + y.name + '.' };
-        }).concat([{ label: U(t) + Chem.sup(wrongCharge, sign),
-                     why: 'Right atoms, wrong charge: ' + ion.name + ' is ' + ion.charge + '−.' }]);
-    while (fWrongs.length < 3 && extra.length) {
-      var f = extra.shift();
-      fWrongs.push({ label: Chem.anIon(f), why: Chem.anIon(f) + ' is ' + f.name + '.' });
-    }
-    it.steps.push(choice('Which is the ' + ion.name + ' ion?', ion.u, fWrongs, it.rand,
-                         { rightMsg: Chem.cap(ion.name) + ' is ' + ion.u + '.' }));
-  }
-
   function countStep(text, count, F) {
     var why = 'The ' + count + ' after the parentheses multiplies everything inside them: ' +
               count + ' ' + U(text) + ' ions.';
@@ -299,7 +245,7 @@ var Game = (function () {
     it.prompt = F;
     it.promptClass = 'formula';
 
-    if (L >= 6) {
+    if (L >= 3) {
       it.kicker = 'Type the name';
       it.steps.push({ type: 'typeName', q: 'Type the name of this compound.' });
       return;
@@ -307,8 +253,8 @@ var Game = (function () {
     it.kicker = 'Name this compound';
     it.steps.push(tmStep(c, c.poly ? Chem.catIon(c, 1) : c.t));
 
-    if (L >= 4 && c.poly && cpd.m > 1) it.steps.push(countStep(c.t, cpd.m, F));
-    if (L >= 4 && a.poly && cpd.n > 1) it.steps.push(countStep(a.t, cpd.n, F));
+    if (c.poly && cpd.m > 1) it.steps.push(countStep(c.t, cpd.m, F));
+    if (a.poly && cpd.n > 1) it.steps.push(countStep(a.t, cpd.n, F));
 
     if (c.tm) {
       var tot = cpd.n * a.charge;
@@ -355,7 +301,7 @@ var Game = (function () {
     it.prompt = Chem.name(cpd);
     it.promptClass = 'name';
 
-    if (L >= 6) {
+    if (L >= 3) {
       it.kicker = 'Type the formula';
       it.steps.push({ type: 'typeFormula', q: 'Type the formula for this compound.' });
       return;
@@ -412,7 +358,6 @@ var Game = (function () {
     var p = code.split(':');
     if (p[0] === 'm') buildMetal(it, p[1]);
     else if (p[0] === 'a') buildNonmetal(it, p[1]);
-    else if (p[0] === 'p') buildPolyDrill(it, p[1], p[2]);
     else if (p[0] === 'n') buildNameItem(it, Chem.fromCode(p[1]));
     else if (p[0] === 'f') buildFormulaItem(it, Chem.fromCode(p[1]));
     else buildCheck(it, code);
@@ -462,15 +407,17 @@ var Game = (function () {
     }
   }
 
+  /* Level 1 shows the periodic table; Level 2 shows whichever flowchart
+     fits the question on screen, naming or formula; Level 3 shows neither. */
   function paintSide() {
     var n = state.level;
+    var formula = item.flow === 'formula';
     el.ptInline.hidden = n !== 1;
-    el.flowName.hidden = !(n >= 2 && n <= 4);
-    el.flowFormula.hidden = n !== 5;
-    el.stage.classList.toggle('solo', n >= 6);
+    el.flowName.hidden = n !== 2 || formula;
+    el.flowFormula.hidden = n !== 2 || !formula;
+    el.stage.classList.toggle('solo', n >= 3);
     if (n === 1) PTable.highlight(el.ptInline, item.highlight || null);
-    if (n >= 2 && n <= 4) paintFlow(el.flowName);
-    if (n === 5) paintFlow(el.flowFormula);
+    if (n === 2) paintFlow(formula ? el.flowFormula : el.flowName);
   }
 
   function renderDone(s) {
@@ -908,7 +855,7 @@ var Game = (function () {
       return;
     }
 
-    box.appendChild(make('h2', null, 'All six levels complete'));
+    box.appendChild(make('h2', null, 'All levels complete'));
     box.appendChild(make('p', null, statsLine()));
     box.appendChild(make('p', 'screen-note', state.preview
       ? 'Teacher preview — nothing was saved or reported.'

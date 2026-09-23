@@ -1151,11 +1151,11 @@ the compound pool above and are not listed.
 | tm9 | 2 | Which name is written correctly? | silver chloride | Silver is not a transition metal in this class — it is only ever Ag⁺, so no Roman numeral. And Cl⁻ is chloride, not chlorine. |
 | tm10 | 2 | Which name is written correctly? | zinc oxide | Zinc is always Zn²⁺, so its name never needs a numeral. O²⁻ is oxide. |
 | tm11 | 2 | A student named CaCl₂ “calcium(II) chloride.” What is wrong? | Calcium is not a transition metal, so no Roman numeral | Calcium is in Group 2 and is always 2+. Roman numerals are only for transition metals. |
-| tm12 | 3 | A student named CuO “copper oxide.” What is missing? | A Roman numeral: copper(II) oxide | Copper is a transition metal (Cu⁺ or Cu²⁺). O is 2−, so the copper here is 2+: copper(II) oxide. |
-| tm13 | 3 | Why do FeCl₂ and FeCl₃ need different names? | The iron has a different charge in each: 2+ and 3+ | FeCl₂ is iron(II) chloride and FeCl₃ is iron(III) chloride. Same elements, different iron ion. |
-| tm14 | 4 | What is the name of KMnO₄? | potassium permanganate | The positive ion is K⁺ (Group 1), so no numeral. The Mn is locked inside the permanganate ion, MnO₄⁻, so the transition-metal rule doesn’t apply to it. |
-| tm15 | 4 | What is the name of Na₂CrO₄? | sodium chromate | Na⁺ is Group 1, so no numeral. CrO₄²⁻ is chromate — a metal inside a polyatomic ion never gets a numeral. |
-| tm16 | 4 | Does ammonium chloride, NH₄Cl, need a Roman numeral? | No — ammonium is not a metal and is always 1+ | NH₄⁺ is a polyatomic ion with one charge. The Roman numeral rule is only for transition metals. |
+| tm12 | 2 | A student named CuO “copper oxide.” What is missing? | A Roman numeral: copper(II) oxide | Copper is a transition metal (Cu⁺ or Cu²⁺). O is 2−, so the copper here is 2+: copper(II) oxide. |
+| tm13 | 2 | Why do FeCl₂ and FeCl₃ need different names? | The iron has a different charge in each: 2+ and 3+ | FeCl₂ is iron(II) chloride and FeCl₃ is iron(III) chloride. Same elements, different iron ion. |
+| tm14 | 2 | What is the name of KMnO₄? | potassium permanganate | The positive ion is K⁺ (Group 1), so no numeral. The Mn is locked inside the permanganate ion, MnO₄⁻, so the transition-metal rule doesn’t apply to it. |
+| tm15 | 2 | What is the name of Na₂CrO₄? | sodium chromate | Na⁺ is Group 1, so no numeral. CrO₄²⁻ is chromate — a metal inside a polyatomic ion never gets a numeral. |
+| tm16 | 2 | Does ammonium chloride, NH₄Cl, need a Roman numeral? | No — ammonium is not a metal and is always 1+ | NH₄⁺ is a polyatomic ion with one charge. The Roman numeral rule is only for transition metals. |
 | fx1 | 1 | What is the charge on a silver ion? | 1+ | Silver is always Ag⁺. Its position doesn’t tell you — it is one to memorize. |
 | fx2 | 1 | What is the charge on a zinc ion? | 2+ | Zinc is always Zn²⁺ — another one to memorize. |
 | fx3 | 1 | What charge does aluminum always form? | 3+ | Al is in Group 13: it loses 3 electrons to form Al³⁺. |
@@ -1175,46 +1175,46 @@ the compound pool above and are not listed.
 | io3 | 1 | Which element on your list will NOT appear in an ionic compound here? | Ar | Argon is a noble gas — its outer shell is full, so it doesn’t form ions. |
 | io4 | 1 | The total charge of any ionic compound is… | zero | The positive and negative charges cancel exactly. That is how you choose the subscripts. |
 | io5 | 1 | Which element forms a positive ion? | Ca | Calcium is a metal, so it loses electrons: Ca²⁺. Cl, S and N are nonmetals and form negative ions. |
-| nu1 | 3 | What does the (III) in iron(III) oxide tell you? | Each iron ion has a 3+ charge | The Roman numeral is always the charge on the metal ion. The subscripts come from balancing the charges. |
-| nu2 | 3 | Which formula is iron(III) oxide? | Fe₂O₃ | Fe³⁺ and O²⁻: two Fe (6+) balance three O (6−). The III is a charge, not a subscript. |
-| nu3 | 3 | Which formula is copper(I) sulfide? | Cu₂S | Cu⁺ and S²⁻: it takes two Cu⁺ to balance one S²⁻. |
-| nu4 | 3 | Which formula is tin(IV) chloride? | SnCl₄ | Sn⁴⁺ and Cl⁻: one Sn⁴⁺ needs four Cl⁻. |
-| nu5 | 3 | A student wrote Fe₃O for iron(III) oxide. What went wrong? | They used the Roman numeral as a subscript | The (III) is the charge on each iron. Balance Fe³⁺ against O²⁻ to get Fe₂O₃. |
-| nu6 | 3 | Lead(II) and lead(IV) are… | the same element with two different charges | Pb²⁺ and Pb⁴⁺. Lead is a transition metal in this class, so its name always says which ion it is. |
-| ch1 | 3 | In PbO₂, what is the charge on the lead? | 4+ | Two O²⁻ make 4− in total. One Pb balances it alone, so Pb is 4+: lead(IV) oxide. Swapping the subscripts back gives 2+, which is wrong because PbO₂ was reduced from Pb₂O₄. |
-| ch2 | 3 | In Fe₂O₃, what is the charge on each iron? | 3+ | Three O²⁻ make 6−. Two Fe share it: 3+ each → iron(III) oxide. |
-| ch3 | 3 | In CuCl, what is the charge on the copper? | 1+ | One Cl⁻ is 1−, so one Cu balances it at 1+ → copper(I) chloride. |
-| ch4 | 3 | What is the name of MnO₂? | manganese(IV) oxide | Two O²⁻ = 4−, balanced by one Mn: Mn⁴⁺. And Mn is manganese — Mg is magnesium. |
-| ch5 | 3 | To find a transition metal’s charge from a formula, you… | divide the total negative charge by the number of metal atoms | Formulas never show Roman numerals. Add up the negative charge, then share it among the metal atoms. |
-| ch6 | 3 | In SnS₂, why is the tin 4+ and not 2+? | Two S²⁻ make 4−, and one Sn must balance all of it | SnS₂ was reduced from Sn₂S₄, so swapping the subscripts back misleads you. Count the charge: 2 × 2− = 4−. |
-| ch7 | 4 | In Fe(NO₃)₃, what is the charge on the iron? | 3+ | Three NO₃⁻ ions make 3−. One Fe balances it: Fe³⁺ → iron(III) nitrate. |
-| ch8 | 4 | In Sn(SO₄)₂, what is the charge on the tin? | 4+ | Two SO₄²⁻ ions make 4−. One Sn balances it: tin(IV) sulfate. |
-| re1 | 3 | Titanium(IV) ions and oxide ions combine. Which formula is correct? | TiO₂ | Ti⁴⁺ and O²⁻ criss-cross to Ti₂O₄, which reduces to TiO₂. |
-| re2 | 3 | Why is Ti₂O₄ not an acceptable formula? | Ionic formulas use the lowest whole-number ratio | The charges do balance, but 2:4 reduces to 1:2 — TiO₂. |
-| re3 | 3 | Which formula is written in lowest terms? | CaS | Ca²⁺ and S²⁻ are already 1:1. The others can all be divided by 2. |
-| re4 | 4 | Which is correct for sodium peroxide? | Na₂O₂ | Peroxide is O₂²⁻ — one ion. Two Na⁺ balance it: Na₂O₂. Never reduce the subscript inside a polyatomic ion. |
-| re5 | 4 | Which is correct for tin(IV) sulfate? | Sn(SO₄)₂ | Sn⁴⁺ and SO₄²⁻ criss-cross to Sn₂(SO₄)₄, which reduces to Sn(SO₄)₂. Only the numbers outside the ions reduce. |
-| pa1 | 4 | Which formula is correct for calcium nitrate? | Ca(NO₃)₂ | Ca²⁺ needs two NO₃⁻. More than one polyatomic ion → parentheses: Ca(NO₃)₂. |
-| pa2 | 4 | When do you put parentheses around a polyatomic ion? | When the formula needs more than one of it | Parentheses let a subscript multiply the whole ion. With only one of the ion, leave them off. |
-| pa3 | 4 | Which formula uses parentheses correctly? | Al₂(SO₄)₃ | Al₂(SO₄)₃ has three sulfates, so they need parentheses. The others have one polyatomic ion or none. |
-| pa4 | 4 | How many oxygen atoms are in Fe(NO₃)₃? | 9 | The 3 outside the parentheses multiplies everything inside: 3 NO₃ = 3 N and 9 O. |
-| pa5 | 4 | Why is MgOH₂ the wrong way to write magnesium hydroxide? | The 2 would multiply only the H, not the whole OH | Mg²⁺ needs two whole OH⁻ ions, so it is Mg(OH)₂. |
-| pa6 | 4 | Which is correct for sodium sulfate? | Na₂SO₄ | Two Na⁺ balance one SO₄²⁻. There is only one sulfate, so no parentheses. |
-| pa7 | 4 | Which is correct for ammonium sulfate? | (NH₄)₂SO₄ | Two NH₄⁺ balance one SO₄²⁻. Two ammoniums → parentheses around NH₄. |
-| pa8 | 4 | How many ammonium ions are in (NH₄)₃PO₄? | 3 | The 3 outside the parentheses counts the NH₄⁺ ions. The 4 inside belongs to hydrogen. |
-| pa9 | 4 | Which is correct for aluminum hydroxide? | Al(OH)₃ | Al³⁺ needs three OH⁻. More than one hydroxide → Al(OH)₃. |
-| po1 | 4 | What is the charge on the sulfate ion? | 2− | Sulfate is SO₄²⁻. |
-| po2 | 4 | NO₂⁻ is called… | nitrite | NO₃⁻ is nitrate; one fewer oxygen, NO₂⁻, is nitrite. Nitride is N³⁻. |
-| po3 | 4 | Which ion is phosphate? | PO₄³⁻ | Phosphate is PO₄³⁻. PO₃³⁻ is phosphite, and P³⁻ is phosphide. |
-| po4 | 4 | ClO₄⁻ is… | perchlorate | ClO₃⁻ is chlorate. One more O is per-…-ate: perchlorate. |
-| po5 | 4 | ClO⁻ is… | hypochlorite | ClO₂⁻ is chlorite. One fewer O is hypo-…-ite: hypochlorite. |
-| po6 | 4 | Which is the only positive polyatomic ion on your list? | ammonium, NH₄⁺ | Ammonium is the one polyatomic cation. It takes the metal’s place in a name or formula. |
-| po7 | 4 | Which formula is dichromate? | Cr₂O₇²⁻ | Chromate is CrO₄²⁻; dichromate is Cr₂O₇²⁻. Both are 2−. |
-| po8 | 4 | What is the difference between oxide and peroxide? | Oxide is O²⁻; peroxide is O₂²⁻ | Oxide is one oxygen atom. Peroxide is a polyatomic ion of two oxygens with a 2− charge overall. |
-| po9 | 4 | Which two formulas both mean acetate? | C₂H₃O₂⁻ and CH₃COO⁻ | Acetate can be written either way — same atoms, same 1− charge. |
-| po10 | 4 | What is the name of Ba(OH)₂? | barium hydroxide | Ba is Group 2, so no numeral. OH⁻ is hydroxide, and the name never counts the ions. |
-| po11 | 4 | What is the name of Fe(NO₃)₂? | iron(II) nitrate | Two NO₃⁻ make 2−, so the iron is 2+: iron(II) nitrate. |
-| po12 | 4 | An -ate ion and the -ite ion of the same element differ by… | one oxygen: the -ate has one more | Sulfate SO₄²⁻ vs sulfite SO₃²⁻; nitrate NO₃⁻ vs nitrite NO₂⁻. Same charge, one fewer O in the -ite. |
-| po13 | 4 | What is the charge on the phosphite ion? | 3− | Phosphite is PO₃³⁻ — same 3− charge as phosphate, PO₄³⁻. |
-| po14 | 4 | CN⁻ is… | cyanide | CN⁻ is cyanide. Carbonate is CO₃²⁻, and nitride is N³⁻. |
-| po15 | 4 | What is the charge on the carbonate ion? | 2− | Carbonate is CO₃²⁻. |
+| nu1 | 2 | What does the (III) in iron(III) oxide tell you? | Each iron ion has a 3+ charge | The Roman numeral is always the charge on the metal ion. The subscripts come from balancing the charges. |
+| nu2 | 2 | Which formula is iron(III) oxide? | Fe₂O₃ | Fe³⁺ and O²⁻: two Fe (6+) balance three O (6−). The III is a charge, not a subscript. |
+| nu3 | 2 | Which formula is copper(I) sulfide? | Cu₂S | Cu⁺ and S²⁻: it takes two Cu⁺ to balance one S²⁻. |
+| nu4 | 2 | Which formula is tin(IV) chloride? | SnCl₄ | Sn⁴⁺ and Cl⁻: one Sn⁴⁺ needs four Cl⁻. |
+| nu5 | 2 | A student wrote Fe₃O for iron(III) oxide. What went wrong? | They used the Roman numeral as a subscript | The (III) is the charge on each iron. Balance Fe³⁺ against O²⁻ to get Fe₂O₃. |
+| nu6 | 2 | Lead(II) and lead(IV) are… | the same element with two different charges | Pb²⁺ and Pb⁴⁺. Lead is a transition metal in this class, so its name always says which ion it is. |
+| ch1 | 2 | In PbO₂, what is the charge on the lead? | 4+ | Two O²⁻ make 4− in total. One Pb balances it alone, so Pb is 4+: lead(IV) oxide. Swapping the subscripts back gives 2+, which is wrong because PbO₂ was reduced from Pb₂O₄. |
+| ch2 | 2 | In Fe₂O₃, what is the charge on each iron? | 3+ | Three O²⁻ make 6−. Two Fe share it: 3+ each → iron(III) oxide. |
+| ch3 | 2 | In CuCl, what is the charge on the copper? | 1+ | One Cl⁻ is 1−, so one Cu balances it at 1+ → copper(I) chloride. |
+| ch4 | 2 | What is the name of MnO₂? | manganese(IV) oxide | Two O²⁻ = 4−, balanced by one Mn: Mn⁴⁺. And Mn is manganese — Mg is magnesium. |
+| ch5 | 2 | To find a transition metal’s charge from a formula, you… | divide the total negative charge by the number of metal atoms | Formulas never show Roman numerals. Add up the negative charge, then share it among the metal atoms. |
+| ch6 | 2 | In SnS₂, why is the tin 4+ and not 2+? | Two S²⁻ make 4−, and one Sn must balance all of it | SnS₂ was reduced from Sn₂S₄, so swapping the subscripts back misleads you. Count the charge: 2 × 2− = 4−. |
+| ch7 | 2 | In Fe(NO₃)₃, what is the charge on the iron? | 3+ | Three NO₃⁻ ions make 3−. One Fe balances it: Fe³⁺ → iron(III) nitrate. |
+| ch8 | 2 | In Sn(SO₄)₂, what is the charge on the tin? | 4+ | Two SO₄²⁻ ions make 4−. One Sn balances it: tin(IV) sulfate. |
+| re1 | 2 | Titanium(IV) ions and oxide ions combine. Which formula is correct? | TiO₂ | Ti⁴⁺ and O²⁻ criss-cross to Ti₂O₄, which reduces to TiO₂. |
+| re2 | 2 | Why is Ti₂O₄ not an acceptable formula? | Ionic formulas use the lowest whole-number ratio | The charges do balance, but 2:4 reduces to 1:2 — TiO₂. |
+| re3 | 2 | Which formula is written in lowest terms? | CaS | Ca²⁺ and S²⁻ are already 1:1. The others can all be divided by 2. |
+| re4 | 2 | Which is correct for sodium peroxide? | Na₂O₂ | Peroxide is O₂²⁻ — one ion. Two Na⁺ balance it: Na₂O₂. Never reduce the subscript inside a polyatomic ion. |
+| re5 | 2 | Which is correct for tin(IV) sulfate? | Sn(SO₄)₂ | Sn⁴⁺ and SO₄²⁻ criss-cross to Sn₂(SO₄)₄, which reduces to Sn(SO₄)₂. Only the numbers outside the ions reduce. |
+| pa1 | 2 | Which formula is correct for calcium nitrate? | Ca(NO₃)₂ | Ca²⁺ needs two NO₃⁻. More than one polyatomic ion → parentheses: Ca(NO₃)₂. |
+| pa2 | 2 | When do you put parentheses around a polyatomic ion? | When the formula needs more than one of it | Parentheses let a subscript multiply the whole ion. With only one of the ion, leave them off. |
+| pa3 | 2 | Which formula uses parentheses correctly? | Al₂(SO₄)₃ | Al₂(SO₄)₃ has three sulfates, so they need parentheses. The others have one polyatomic ion or none. |
+| pa4 | 2 | How many oxygen atoms are in Fe(NO₃)₃? | 9 | The 3 outside the parentheses multiplies everything inside: 3 NO₃ = 3 N and 9 O. |
+| pa5 | 2 | Why is MgOH₂ the wrong way to write magnesium hydroxide? | The 2 would multiply only the H, not the whole OH | Mg²⁺ needs two whole OH⁻ ions, so it is Mg(OH)₂. |
+| pa6 | 2 | Which is correct for sodium sulfate? | Na₂SO₄ | Two Na⁺ balance one SO₄²⁻. There is only one sulfate, so no parentheses. |
+| pa7 | 2 | Which is correct for ammonium sulfate? | (NH₄)₂SO₄ | Two NH₄⁺ balance one SO₄²⁻. Two ammoniums → parentheses around NH₄. |
+| pa8 | 2 | How many ammonium ions are in (NH₄)₃PO₄? | 3 | The 3 outside the parentheses counts the NH₄⁺ ions. The 4 inside belongs to hydrogen. |
+| pa9 | 2 | Which is correct for aluminum hydroxide? | Al(OH)₃ | Al³⁺ needs three OH⁻. More than one hydroxide → Al(OH)₃. |
+| po1 | 2 | What is the charge on the sulfate ion? | 2− | Sulfate is SO₄²⁻. |
+| po2 | 2 | NO₂⁻ is called… | nitrite | NO₃⁻ is nitrate; one fewer oxygen, NO₂⁻, is nitrite. Nitride is N³⁻. |
+| po3 | 2 | Which ion is phosphate? | PO₄³⁻ | Phosphate is PO₄³⁻. PO₃³⁻ is phosphite, and P³⁻ is phosphide. |
+| po4 | 2 | ClO₄⁻ is… | perchlorate | ClO₃⁻ is chlorate. One more O is per-…-ate: perchlorate. |
+| po5 | 2 | ClO⁻ is… | hypochlorite | ClO₂⁻ is chlorite. One fewer O is hypo-…-ite: hypochlorite. |
+| po6 | 2 | Which is the only positive polyatomic ion on your list? | ammonium, NH₄⁺ | Ammonium is the one polyatomic cation. It takes the metal’s place in a name or formula. |
+| po7 | 2 | Which formula is dichromate? | Cr₂O₇²⁻ | Chromate is CrO₄²⁻; dichromate is Cr₂O₇²⁻. Both are 2−. |
+| po8 | 2 | What is the difference between oxide and peroxide? | Oxide is O²⁻; peroxide is O₂²⁻ | Oxide is one oxygen atom. Peroxide is a polyatomic ion of two oxygens with a 2− charge overall. |
+| po9 | 2 | Which two formulas both mean acetate? | C₂H₃O₂⁻ and CH₃COO⁻ | Acetate can be written either way — same atoms, same 1− charge. |
+| po10 | 2 | What is the name of Ba(OH)₂? | barium hydroxide | Ba is Group 2, so no numeral. OH⁻ is hydroxide, and the name never counts the ions. |
+| po11 | 2 | What is the name of Fe(NO₃)₂? | iron(II) nitrate | Two NO₃⁻ make 2−, so the iron is 2+: iron(II) nitrate. |
+| po12 | 2 | An -ate ion and the -ite ion of the same element differ by… | one oxygen: the -ate has one more | Sulfate SO₄²⁻ vs sulfite SO₃²⁻; nitrate NO₃⁻ vs nitrite NO₂⁻. Same charge, one fewer O in the -ite. |
+| po13 | 2 | What is the charge on the phosphite ion? | 3− | Phosphite is PO₃³⁻ — same 3− charge as phosphate, PO₄³⁻. |
+| po14 | 2 | CN⁻ is… | cyanide | CN⁻ is cyanide. Carbonate is CO₃²⁻, and nitride is N³⁻. |
+| po15 | 2 | What is the charge on the carbonate ion? | 2− | Carbonate is CO₃²⁻. |

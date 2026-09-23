@@ -1,7 +1,7 @@
 /* scorm.js — minimal SCORM 1.2 run-time wrapper.
  *
  * This package reports COMPLETION ONLY: lesson_status becomes "completed" once
- * a student finishes all six levels. No numeric grade is written, so the
+ * a student finishes the last level. No numeric grade is written, so the
  * Schoology column reads as complete / incomplete rather than a percent.
  *
  * If no LMS API is found the wrapper switches to a local no-op mode so the

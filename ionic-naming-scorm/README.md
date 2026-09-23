@@ -31,24 +31,50 @@ Only elements 1–20, Honors Element List 2 and the class Polyatomic Ions List a
 | Sn, Pb | 2+, 4+ |
 | Hg | 2+ |
 
-## The six levels
+## The three levels
 
 | Level | Name | What the student does |
 | --- | --- | --- |
 | 1 | Transition metal or not? | 10 metals, one at a time, **highlighted on the periodic table**: name it, decide *transition metal or not*, and give the charge if it has only one. Ag, Zn, Sn and Pb appear every run. Then 4 nonmetals: name, ion, and *-ide* name. |
-| 2 | Name it: not transition metals | 5 binary formulas, including an Ag and a Zn compound. *Transition metal?* → **No**, then build the name from tiles. The Roman-numeral row is still there: "none" has to be chosen on purpose. |
-| 3 | Name it: transition metals | 6 binary formulas (4 transition metal, 2 not). On the YES branch the student finds the **total negative charge**, then the **charge on each metal**, then builds the name. Every run includes a reduced formula (TiO₂/PbO₂ type), an Sn or Pb compound, and a Cu⁺ or Au⁺ compound. |
-| 4 | Polyatomic ions | 5 quick ion drills (name ↔ formula, always including NH₄⁺ and an *-ate/-ite* pair), then 6 compounds with polyatomic ions. When a formula has parentheses, the student first answers *how many of that ion?* |
-| 5 | Write the formula | 7 names → formulas: charge of each ion, then a formula builder with a count and a **( ) switch** for each ion. Every run needs a reduction, parentheses, no parentheses, and ammonium. |
-| 6 | On your own | 8 mixed questions, **typed**, with no flowchart and no steps. The periodic table is still available. |
+| 2 | Mixed practice | 12 questions, **interleaved**: 6 formula → name and 6 name → formula, shuffled so there are never three of one kind in a row. They mix transition and non-transition metals, single-element and polyatomic ions, and ammonium. Every naming question starts with *Is it a transition metal?*; formula questions start with the two charges. |
+| 3 | On your own | 12 more interleaved questions, **typed**, with no flowchart and no steps. The periodic table is still available. |
 
-Levels 2–4 show a *formula → name* flowchart and Level 5 a *name → formula* one. The box for
-the current step lights up, and the branch not taken fades.
+There is no blocked practice after Level 1: every level from 2 on mixes all the cases, so the
+if/then decision has to be made fresh on every question.
+
+Each run of Level 2 is guaranteed to include:
+
+- a reduced formula of the TiO₂/PbO₂ type;
+- an Ag or Zn compound and an Sn or Pb compound;
+- a Cu⁺ or Au⁺ compound;
+- ammonium;
+- a formula that needs parentheses and one that doesn't;
+- both binary and polyatomic compounds, and both transition and non-transition metals.
+
+Level 3 has the same kind of coverage.
+
+On a naming question in Level 2, the steps are:
+
+1. *Transition metal?*
+2. *How many of the polyatomic ion?* — only when the formula has parentheses.
+3. On the YES branch, the **total negative charge**, then the **charge on each metal**.
+4. Build the name from tiles. The Roman-numeral row includes "none", which has to be chosen on
+   purpose.
+
+On a formula question the steps are:
+
+1. The charge on each ion.
+2. A formula builder with a count and a **( ) switch** for each ion.
+
+The flowchart beside the question switches between *formula → name* and *name → formula* to
+match the question on screen. The box for the current step lights up, and the branch not taken
+fades.
 
 ### Check for understanding
 
-- A multiple-choice check comes after every 2nd question (every 3rd in Levels 1 and 4), and
-  each level ends with a **3-question checkpoint**. That's about 35 checks per run.
+- A multiple-choice check comes after every 2nd question in Level 2 (every 3rd in Level 3,
+  every 4th in Level 1), and each level ends with a **3-question checkpoint**. That's about 20
+  checks per run.
 - They come from a bank of 78 written questions plus generated ones. The generated ones cover
   the metal's charge in a formula, picking the right formula, and picking the right name.
 - Every answer shows an explanation.
@@ -105,13 +131,13 @@ tab, which works wherever the school network allows collegeboard.org.
 
 ## Grading
 
-**Completion only.** `cmi.core.lesson_status` becomes `completed` when a student finishes Level 6,
+**Completion only.** `cmi.core.lesson_status` becomes `completed` when a student finishes Level 3,
 and no numeric score is written. Students still see their own accuracy on the level and finish
 screens.
 
 Progress saves to `cmi.suspend_data` after every answer, so a student can close the window and
-resume later. A finished question is not repeated on return. The run takes 1,500 characters at
-most, well under the SCORM 1.2 limit of 4,096.
+resume later. A finished question is not repeated on return. The run takes under 1,000
+characters, well under the SCORM 1.2 limit of 4,096.
 
 Bump `SCHEMA` in `src/js/game.js` whenever you change the levels, the draw or the ion list, so an
 old save is discarded rather than resumed.
@@ -121,25 +147,25 @@ old save is discarded rather than resumed.
 ## Building and uploading
 
 ```bash
-./build.sh                    # → dist/ionic-naming-v1.zip
+./build.sh                    # → dist/ionic-naming-v2.zip
 ```
 
 `imsmanifest.xml` must sit at the root of the zip, which is why `build.sh` zips from inside `src/`.
 
 1. In Schoology: **Add Materials → Add File/Link/External Tool → Add File**, and upload
-   `dist/ionic-naming-v1.zip`. Or use **Add Materials → Package** if your install shows it.
+   `dist/ionic-naming-v2.zip`. Or use **Add Materials → Package** if your install shows it.
 2. Enable the gradebook column in the item's settings to track completion.
 3. Open it once with **Preview as Student**. The badge in the top right should read
    **Connected to the LMS**.
 
-A built `dist/ionic-naming-v1.zip` is committed, so you can upload it without running the build.
+A built `dist/ionic-naming-v2.zip` is committed, so you can upload it without running the build.
 
 ### Teacher preview
 
-Open `src/index.html` directly, or add `?level=N` to jump straight to a level:
+Open `src/index.html` directly, or add `?level=N` (1–3) to jump straight to a level:
 
 ```
-src/index.html?level=3
+src/index.html?level=2
 ```
 
 Preview mode unlocks every level and **saves nothing**, so showing it in class never touches a
@@ -155,9 +181,9 @@ student's progress.
 | Check-for-understanding questions | `src/js/cfu.js` (`BANK`) |
 | Items per level, how often checks appear, checkpoint topics | `LEVELS` at the top of `src/js/plan.js` |
 
-**Too long for one period?** A run is about 85 screens (50 questions and 35 checks), and progress
-saves, so it can span two days. To shorten it, lower `count` (and `metals`/`drill`) or raise
-`cfuEvery` in `LEVELS`.
+A run is about 58 screens: 38 questions and 20 checks. Progress saves, so it can span two days.
+To shorten it, lower `count` (or `metals`/`anions` in Level 1) or raise `cfuEvery` in `LEVELS`.
+Level 1 can be dropped entirely by removing it from `LEVELS` and the `draw` switch.
 
 After any edit:
 
@@ -176,8 +202,8 @@ node tools/answer-key.js > ANSWER_KEY.md
 - every one of the 933 compounds balances, is in lowest terms, has a unique formula and a unique
   name, follows the parentheses and Roman-numeral rules, and is accepted when answered correctly;
 - the classic mistakes are rejected;
-- 2,000 simulated runs each contain every required case, never repeat a question, and fit the
-  SCORM save limit.
+- 2,000 simulated runs each contain every required case, never put three names or three
+  formulas in a row, never repeat a question, and fit the SCORM save limit.
 
 ---
 
