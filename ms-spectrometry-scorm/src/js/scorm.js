@@ -1,8 +1,9 @@
 /* scorm.js — minimal SCORM 1.2 run-time wrapper.
  *
- * Shared verbatim with the IR spectroscopy package, so a fix to one is a fix
- * to both. A SCORM zip has to be self-contained, which is why it is copied
- * rather than linked.
+ * Adapted from the IR spectroscopy package. Two differences: it keeps its own
+ * localStorage key (sharing one meant whichever activity a student opened
+ * second wiped the other's standalone resume state), and saveState reports
+ * WHERE it saved, so the Save progress button can say something true.
  *
  * This package reports COMPLETION ONLY: lesson_status becomes "completed" once
  * a student finishes all three levels. No numeric grade is written, so the
@@ -72,22 +73,32 @@ var SCORM = (function () {
     return pad(hh) + ':' + pad(mm) + ':' + pad(ss) + '.00';
   }
 
-  /* suspend_data is capped at 4096 characters in SCORM 1.2. */
+  /* Its own key. The IR package uses 'ir-dr-state'; sharing it meant a
+     student who opened both activities in one browser had the second wipe
+     the first's standalone progress. */
+  var KEY = 'ms-rf-state';
+
+  /* suspend_data is capped at 4096 characters in SCORM 1.2.
+     Returns where the save landed: 'lms', 'local' or 'none'. */
   function saveState(obj) {
     var json;
-    try { json = JSON.stringify(obj); } catch (e) { return false; }
-    if (json.length > 4000) return false;
-    try { localStorage.setItem('ir-dr-state', json); } catch (e) { /* private mode */ }
-    if (!connected) return false;
-    var ok = set('cmi.suspend_data', json);
-    commit();
-    return ok;
+    try { json = JSON.stringify(obj); } catch (e) { return 'none'; }
+    if (json.length > 4000) return 'none';
+
+    var local = false;
+    try { localStorage.setItem(KEY, json); local = true; } catch (e) { /* private mode */ }
+
+    if (connected && set('cmi.suspend_data', json)) {
+      commit();
+      return 'lms';
+    }
+    return local ? 'local' : 'none';
   }
 
   function loadState() {
     var json = get('cmi.suspend_data');
     if (!json) {
-      try { json = localStorage.getItem('ir-dr-state') || ''; } catch (e) { json = ''; }
+      try { json = localStorage.getItem(KEY) || ''; } catch (e) { json = ''; }
     }
     if (!json) return null;
     try { return JSON.parse(json); } catch (e) { return null; }

@@ -52,6 +52,13 @@ function ring6(extraPts, extraBonds, labels) {
   return { pts: HEX.concat(extraPts), bonds: HEX_BONDS.concat(extraBonds), labels: labels || {} };
 }
 
+var PENT = [[0.62, 0], [0.19, 0.59], [-0.50, 0.36], [-0.50, -0.36], [0.19, -0.59]];
+var PENT_BONDS = [[0, 1, 1], [1, 2, 1], [2, 3, 1], [3, 4, 1], [4, 0, 1]];
+
+function ring5(extraPts, extraBonds, labels) {
+  return { pts: PENT.concat(extraPts), bonds: PENT_BONDS.concat(extraBonds), labels: labels || {} };
+}
+
 /* n vertices of a zig-zag chain starting at (x0, y0). */
 function zig(n, x0, y0) {
   var p = [];
@@ -278,6 +285,20 @@ var COMPOUNDS = [
     ]
   },
   {
+    id: 'cyclopentanol', name: 'Cyclopentanol', formula: 'C₅H₁₀O', f: 'C5H10O', cls: 'Secondary alcohol',
+    theme: 'alcohol', tags: ['loss'],
+    structure: ring5([[1.62, 0]], [[0, 5, 1]], { 5: 'OH' }),
+    peaks: [
+      { mz: 86, ab: 20, role: 'mplus' },
+      { mz: 68, ab: 35, ion: 'dehydr', role: 'key',
+        why: 'Dehydration, −18. A ring cannot break in half and fly apart the way a chain can, so throwing off water is the easiest way out and M−18 is prominent.' },
+      { mz: 57, ab: 100, role: 'cluster' },
+      { mz: 44, ab: 30, role: 'cluster' },
+      { mz: 41, ab: 35, ion: 'c3h5', role: 'cluster' },
+      { mz: 39, ab: 15, role: 'cluster' }
+    ]
+  },
+  {
     id: 'phenylethanol', name: '1-Phenylethanol', formula: 'C₈H₁₀O', f: 'C8H10O', cls: 'Benzylic alcohol',
     theme: 'alcohol', tags: ['loss', 'predict'],
     structure: arene([[1.62, 0], [2.12, 0.87], [2.62, 0]],
@@ -384,6 +405,23 @@ var COMPOUNDS = [
       { mz: 29, ab: 35, ion: 'c2h5', role: 'cluster' },
       { mz: 27, ab: 30, role: 'cluster' },
       { mz: 71, ab: 10, role: 'cluster' }
+    ]
+  },
+  {
+    id: 'methylpentane', name: '3-Methylpentane', formula: 'C₆H₁₄', f: 'C6H14', cls: 'Branched alkane',
+    theme: 'branch', tags: ['loss'],
+    structure: { pts: [[0, 0], [1, 0.5], [2, 0], [3, 0.5], [4, 0], [2, -1]],
+                 bonds: [[0, 1, 1], [1, 2, 1], [2, 3, 1], [3, 4, 1], [2, 5, 1]], labels: {} },
+    peaks: [
+      { mz: 86, ab: 12, role: 'mplus' },
+      { mz: 71, ab: 15, role: 'cluster' },
+      { mz: 57, ab: 100, ion: 'c4h9s', role: 'key',
+        why: 'Losing an ethyl, −29, leaves the charge on the branched carbon — a SECONDARY cation. Compare it with the same m/z 57 from a compound with a quaternary carbon: there it is a tert-butyl and the molecular ion vanishes, here the molecular ion survives at 12%. One branch is not the same as two.' },
+      { mz: 56, ab: 35, role: 'cluster' },
+      { mz: 43, ab: 25, ion: 'c3h7', role: 'cluster' },
+      { mz: 41, ab: 35, ion: 'c3h5', role: 'cluster' },
+      { mz: 29, ab: 25, role: 'cluster' },
+      { mz: 27, ab: 30, role: 'cluster' }
     ]
   },
   {

@@ -147,6 +147,29 @@ drawn to make the spectrum honest, and explains itself when clicked.
 
 - **m/z 82** (50%) — Dehydration, −18. A ring cannot cleave alpha and fly apart the way a chain can, so losing water is the dominant escape and M−18 is enormous.
 
+### Cyclopentanol  ·  `cyclopentanol`
+
+| | |
+| --- | --- |
+| Formula | C₅H₁₀O |
+| Molecular ion | **86**  — 20%, scored |
+| Base peak | **m/z 57** |
+| Class | Secondary alcohol |
+| Levels | loss |
+
+| m/z | % | Loss | Fragment | How it breaks | Role |
+| ---: | ---: | --- | --- | --- | --- |
+| 86 | 20 | — | — | — | molecular ion — **scored** |
+| 68 | 35 | −18 (H₂O) | [M − H₂O]⁺  | loses water | **scored** |
+| 57 | 100 | — | — | — | drawn; above the line but not diagnostic |
+| 44 | 30 | — | — | — | drawn; above the line but not diagnostic |
+| 41 | 35 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
+| 39 | 15 | — | — | — | drawn; above the line but not diagnostic |
+
+**Why each scored peak is where it is**
+
+- **m/z 68** (35%) — Dehydration, −18. A ring cannot break in half and fly apart the way a chain can, so throwing off water is the easiest way out and M−18 is prominent.
+
 ### 1-Phenylethanol  ·  `phenylethanol`
 
 | | |
@@ -488,6 +511,31 @@ drawn to make the spectrum honest, and explains itself when clicked.
 
 - **m/z 43** (100%) — Breaking the middle of the chain. With no branch point anywhere, every C–C bond is about as good as every other, so the spectrum is a smooth run of clusters rather than one dominant peak. That evenness IS the evidence for a straight chain.
 - **m/z 57** (45%) — A butyl cation from breaking the chain — but this butyl is PRIMARY, not tertiary, so it has nothing special going for it.
+
+### 3-Methylpentane  ·  `methylpentane`
+
+| | |
+| --- | --- |
+| Formula | C₆H₁₄ |
+| Molecular ion | **86**  — 12%, scored |
+| Base peak | **m/z 57**  C₄H₉⁺, alkyl fragment (2°) |
+| Class | Branched alkane |
+| Levels | loss |
+
+| m/z | % | Loss | Fragment | How it breaks | Role |
+| ---: | ---: | --- | --- | --- | --- |
+| 86 | 12 | — | — | — | molecular ion — **scored** |
+| 71 | 15 | — | — | — | drawn; above the line but not diagnostic |
+| 57 | 100 | −29 (•C₂H₅ / •CHO) | C₄H₉⁺ `C4H9` | breaks at the branch point | **scored** |
+| 56 | 35 | — | — | — | drawn; above the line but not diagnostic |
+| 43 | 25 | — | C₃H₇⁺ `C3H7` | breaks at the branch point | drawn; above the line but not diagnostic |
+| 41 | 35 | — | C₃H₅⁺ `C3H5` | plain C–C | drawn; above the line but not diagnostic |
+| 29 | 25 | — | — | — | drawn; above the line but not diagnostic |
+| 27 | 30 | — | — | — | drawn; above the line but not diagnostic |
+
+**Why each scored peak is where it is**
+
+- **m/z 57** (100%) — Losing an ethyl, −29, leaves the charge on the branched carbon — a SECONDARY cation. Compare it with the same m/z 57 from a compound with a quaternary carbon: there it is a tert-butyl and the molecular ion vanishes, here the molecular ion survives at 12%. One branch is not the same as two.
 
 ### 2,2-Dimethylbutane  ·  `dimethylbutane`
 

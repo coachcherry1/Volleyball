@@ -46,13 +46,13 @@ var Game = (function () {
      which one they are holding. Both draw from the same pool, because both
      need a molecular ion you can actually subtract from. */
   var LEVELS = [
-    { n: 1, name: 'Read the losses', tag: 'loss', mode: 'loss', items: 6,
+    { n: 1, name: 'Read the losses', tag: 'loss', mode: 'loss', items: 7,
       reference: true, distractors: 2,
       blurb: 'The compound is named for you. Label each marked peak with what the molecule LOST to make it.' },
-    { n: 2, name: 'Which compound is it?', tag: 'loss', mode: 'loss', items: 6,
+    { n: 2, name: 'Which compound is it?', tag: 'loss', mode: 'loss', items: 7,
       reference: true, distractors: 3, identify: true, candidates: true,
       blurb: 'Same job — label what was lost — but the compound is one of three. Read the molecular ion off the plot, work out the mass of each candidate, and see which one fits.' },
-    { n: 3, name: 'Predict the base peak', tag: 'predict', mode: 'predict', items: 6,
+    { n: 3, name: 'Predict the base peak', tag: 'predict', mode: 'predict', items: 7,
       blurb: 'No spectrum yet. From the structure alone, work out which break leaves the most stable fragment, and where it lands.' }
   ];
 
@@ -60,7 +60,7 @@ var Game = (function () {
      draw, or the vocabulary. A save from an older build is discarded rather
      than resumed, otherwise a student carries a stale lineup of spectra
      forward and never sees the new one. */
-  var SCHEMA = 3;
+  var SCHEMA = 4;
 
   var el = {};
   var state = null;
@@ -68,6 +68,7 @@ var Game = (function () {
   var selectedTile = null;
   var drag = null;
   var suppressClick = false;
+  var resumed = false;          /* opened onto a save rather than a fresh run */
 
   /* ---------------------------------------------------------------- helpers */
 
@@ -208,12 +209,46 @@ var Game = (function () {
     };
   }
 
+  /* Returns where the save landed — 'lms', 'local' or 'none' — so the Save
+     progress button can report it. Progress is written after every answer
+     anyway; the button exists so a student leaving mid-activity gets told, in
+     so many words, that it is safe to close the window. */
   function persist() {
-    if (state.pin) return;
-    SCORM.saveState({
+    if (state.pin) return 'none';
+    return SCORM.saveState({
       v: SCHEMA, s: state.seed, u: state.unlocked, l: state.level, i: state.index,
       d: state.done, st: state.stats, p: state.plan
     });
+  }
+
+  var saveTimer = null;
+
+  function saveNow() {
+    if (state.pin) {
+      say('This is a pinned demo spectrum, so nothing is saved. Open the activity normally ' +
+          'to keep progress.', 'quiet');
+      return;
+    }
+    var where = persist();
+    if (where === 'lms') {
+      say('Progress saved. You can close this window — it will open again at Level ' +
+          state.level + ', spectrum ' + (state.index + 1) + '.', 'good');
+    } else if (where === 'local') {
+      say('Progress saved in this browser. It will reopen at Level ' + state.level +
+          ', spectrum ' + (state.index + 1) + ' — but on this computer only, since no LMS ' +
+          'was detected.', 'good');
+    } else {
+      say('Could not save. Your browser may be blocking storage — keep this window open ' +
+          'until you have finished.', 'bad');
+    }
+
+    el.saveNote.textContent = where === 'none' ? '' : 'Saved';
+    el.saveNote.className = 'save-note ' + (where === 'none' ? 'bad' : 'ok');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      el.saveNote.textContent = '';
+      el.saveNote.className = 'save-note';
+    }, 4000);
   }
 
   function restore(saved) {
@@ -992,7 +1027,12 @@ var Game = (function () {
       box.appendChild(make('p', 'screen-note',
         'Drag a label onto a peak, or click the label and then click the peak. Wrong answers ' +
         'are not penalised — read the explanation and try again.'));
-      var start = make('button', 'primary', 'Start');
+      if (resumed) {
+        box.appendChild(make('p', 'screen-resume',
+          'Welcome back — your progress was saved. You are on Level ' + state.level +
+          ', spectrum ' + (state.index + 1) + ' of ' + itemCount(state.level) + '.'));
+      }
+      var start = make('button', 'primary', resumed ? 'Carry on' : 'Start');
       start.type = 'button';
       start.addEventListener('click', function () { hideScreen(); el.tray.focus(); });
       box.appendChild(start);
@@ -1187,7 +1227,9 @@ var Game = (function () {
   function cacheDom() {
     ['plot', 'plotwrap', 'overlay', 'tray', 'card', 'feedback', 'next', 'tabs',
      'levelName', 'blurb', 'counter', 'screen', 'choices', 'stage', 'reference',
-     'refbody', 'fragments', 'lms'].forEach(function (id) { el[id] = $(id); });
+     'refbody', 'fragments', 'save', 'saveNote', 'lms'].forEach(function (id) {
+       el[id] = $(id);
+     });
   }
 
   function buildReference() {
@@ -1282,8 +1324,14 @@ var Game = (function () {
         }
       }
     } else {
-      state = restore(SCORM.loadState()) || newRun();
-      if (!state.plan || !state.plan[1] || !byId(state.plan[1][0])) state = newRun();
+      var saved = restore(SCORM.loadState());
+      if (saved && saved.plan && saved.plan[1] && byId(saved.plan[1][0])) {
+        state = saved;
+        resumed = state.level > 1 || state.index > 0 ||
+                  !!(state.stats && state.stats.attempts);
+      } else {
+        state = newRun();
+      }
     }
 
     /* Write the run out before the first answer, so a student who opens the
@@ -1303,6 +1351,7 @@ var Game = (function () {
     el.choices.addEventListener('click', onStageClick);
 
     el.next.addEventListener('click', nextItem);
+    el.save.addEventListener('click', saveNow);
     el.tabs.addEventListener('click', function (ev) {
       var tab = ev.target.closest('.tab');
       if (tab && !tab.disabled) goToLevel(+tab.dataset.level);

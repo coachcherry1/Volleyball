@@ -473,7 +473,32 @@ h2 { font-size: 0.95rem; margin: 0; }
 
 /* ---------------------------------------------------------------- controls */
 
-.controls { margin-top: 12px; }
+.controls { margin-top: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.secondary {
+  font: inherit;
+  font-weight: 600;
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+.save-note { font-size: 0.8rem; color: var(--muted); }
+.save-note.ok { color: var(--good); font-weight: 600; }
+.save-note.bad { color: var(--bad); font-weight: 600; }
+
+.screen-resume {
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  background: var(--good-bg);
+  border: 1px solid var(--good);
+  color: var(--good);
+  font-size: 0.85rem;
+}
 
 .primary {
   font: inherit;

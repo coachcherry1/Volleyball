@@ -82,9 +82,9 @@ is the −29 / −43 lesson again in a different costume.
 
 | Level | Name | What the student does |
 | --- | --- | --- |
-| 1 | **Read the losses** | The compound is named and drawn. Label each marked peak with what the molecule lost: −15, −18, −29, −43. Correlation table available. Six spectra. |
-| 2 | **Which compound is it?** | The same labelling job, but the compound is hidden — and **three candidate structures sit under the plot from the moment the item opens**. Read M⁺ off the plot, work out what each candidate weighs, label the losses, then say which one it is. Six spectra. |
-| 3 | **Predict the base peak** | **No spectrum.** From the structure alone, choose which loss leaves the most stable fragment, then work out where it lands. The spectrum is revealed afterwards, annotated, as the answer. Six compounds. |
+| 1 | **Read the losses** | The compound is named and drawn. Label each marked peak with what the molecule lost: −15, −18, −29, −43. Correlation table available. Seven spectra. |
+| 2 | **Which compound is it?** | The same labelling job, but the compound is hidden — and **three candidate structures sit under the plot from the moment the item opens**. Read M⁺ off the plot, work out what each candidate weighs, label the losses, then say which one it is. Seven spectra. |
+| 3 | **Predict the base peak** | **No spectrum.** From the structure alone, choose which loss leaves the most stable fragment, then work out where it lands. The spectrum is revealed afterwards, annotated, as the answer. Seven compounds. |
 
 Level 2 is deliberately the same *task* as Level 1 with something taken away and something
 given back. Taken away: the compound’s name. Given back: three structures to choose between,
@@ -95,9 +95,11 @@ candidates make that a comparison rather than a blank.
 Levels unlock in order. Wrong answers are never penalised: the tile returns to the tray
 and the feedback explains the discriminator.
 
-Eighteen items is a full class period. To shorten it, change `items` in the `LEVELS` table
-at the top of `src/js/game.js`; each level needs at least five to keep one compound per
-theme.
+Twenty-one items is a full class period. To shorten it, change `items` in the `LEVELS`
+table at the top of `src/js/game.js`. Each level needs at least six to keep one compound
+per theme, and going *above* seven starts forcing repeats: Levels 1 and 2 share a pool, so
+a theme with only two members there runs dry. `tools/validate.js` fails the build if that
+happens, so you will hear about it rather than discover it in class.
 
 ### Level 3 in detail
 
@@ -323,23 +325,23 @@ target, so a McLafferty peak can never be scored by accident.
 
 ## The compound bank
 
-30 compounds across six themes. The draw is **balanced by theme, not purely random**: every
+32 compounds across six themes. The draw is **balanced by theme, not purely random**: every
 level takes one compound per theme before filling the remaining places freely, so a run
 always contains an alcohol, a carbonyl, an arene, a branched chain, a heteroatom compound
 and a halide.
 
 **No compound is ever drawn twice in the same run.** The used-list is kept for the whole
-sitting rather than per pool, so a student meets eighteen different spectra across the
+sitting rather than per pool, so a student meets twenty-one different spectra across the
 three levels. (It was once kept per pool, which let a compound tagged for two levels turn
 up in both — that is fixed, and `tools/validate.js` now fails the build if any theme
 guarantee could only be met by repeating a compound.)
 
 | Theme | Compounds | Teaches |
 | --- | --- | --- |
-| **alcohol** | 1-butanol, 2-butanol, *tert*-butanol, 2-methyl-2-butanol, cyclohexanol, 1-phenylethanol | α-cleavage at 1°/2°/3°, and −18 |
+| **alcohol** | 1-butanol, 2-butanol, *tert*-butanol, 2-methyl-2-butanol, cyclohexanol, cyclopentanol, 1-phenylethanol | α-cleavage at 1°/2°/3°, and −18 |
 | **carbonyl** | acetone, 2-butanone, 3-pentanone, 2-pentanone, acetophenone, benzaldehyde, methyl acetate | the fragment that keeps the C=O — m/z 43, 57, 105 |
 | **arene** | toluene, ethyl-, propyl-, isopropyl- and butylbenzene | m/z 91, and breaking next to a ring |
-| **branch** | hexane, 2-methylbutane, 2,2-dimethylbutane, 2,2,4-trimethylpentane | the tertiary carbocation at 57 |
+| **branch** | hexane, 2-methylbutane, 3-methylpentane, 2,2-dimethylbutane, 2,2,4-trimethylpentane | the tertiary carbocation at 57 |
 | **hetero** | 1-propanamine, diethylamine, diethyl ether, MTBE | α-cleavage at N and at ether O |
 | **halide** | 1-bromopropane, 1-chlorobutane, chlorobenzene, bromobenzene | M/M+2 isotope patterns |
 
@@ -409,7 +411,19 @@ To report a percent instead, set `cmi.core.score.raw` alongside the status in
 
 Progress is saved to `cmi.suspend_data` when the activity opens and after every answer, so
 a student who closes the window mid-activity resumes where they left off. It also mirrors to
-`localStorage`, which is what makes resume work outside an LMS.
+`localStorage`, which is what makes resume work outside an LMS. The largest save this bank
+can produce is about 430 characters, well inside SCORM 1.2's 4096-character limit.
+
+There is also a **Save progress** button next to *Next spectrum*. It saves nothing the
+activity was not already saving — its job is to *say so*, because a student packing up at
+the bell has no other way to know it is safe to close the window. It reports where the save
+landed: the gradebook, or this browser only when no LMS is present. A student who comes back
+is met with *"Welcome back — you are on Level 2, spectrum 3 of 7"* and a **Carry on** button
+instead of being dropped silently into the middle of a run.
+
+This package keeps its own `localStorage` key (`ms-rf-state`). The IR package uses
+`ir-dr-state`; sharing one meant whichever activity a student opened second wiped the
+other's standalone progress.
 
 The save carries a schema version (`SCHEMA` in `src/js/game.js`). **Bump it whenever you
 change the level list, the draw or the vocabulary** — a save written by an older build is
