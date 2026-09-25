@@ -38,7 +38,7 @@ var Game = (function () {
     { n: 2, name: 'One of three', items: 4, irMode: 'group', needM: true,
       named: false, reference: true, subs: true, ask: false, markers: true,
       candidates: 3, upfront: true, irD: 3, msD: 3,
-      blurb: 'The compound is one of the three shown. Label both spectra, then pick it — one wrong option needs the IR to rule out, the other needs the mass spectrum.' },
+      blurb: 'The compound is one of the three shown. Label both spectra, then pick it — and notice which spectrum rules out each wrong option.' },
     { n: 3, name: 'Build the case', items: 4, irMode: 'group', needM: false,
       named: false, reference: false, subs: false, ask: true, markers: true,
       candidates: 4, hints: true, irD: 3, msD: 3,
@@ -316,13 +316,14 @@ var Game = (function () {
     var printed = ms.peaks.filter(function (p) {
       return p.ab >= MS.THRESHOLD && p.role !== 'miso1' && p.role !== 'miso2' && p.role !== 'sat';
     }).map(function (p) { return p.mz; }).sort(function (a, b) { return b - a; });
-    var opts = [M || 'none'];
+    /* "No readable M+" is on offer every time — it is the option this
+       question exists to make a student consider. */
+    var opts = M ? [M, 'none'] : ['none'];
     function add(v) { if (v != null && opts.indexOf(v) < 0 && opts.length < 4) opts.push(v); }
     if (M) {
       add(M + 1);
       add(printed.filter(function (mz) { return mz < M; })[0]);
       add(Evidence.basePeak(compound) !== M ? Evidence.basePeak(compound) : null);
-      add('none');
     } else {
       printed.slice(0, 2).forEach(add);
       add(Evidence.basePeak(compound));
@@ -816,39 +817,53 @@ var Game = (function () {
     box.hidden = false;
     box.appendChild(make('h3', 'explain-title', 'How you could tell'));
     var ul = make('ul', 'explain-list');
-    var irOnly = 0, msOnly = 0;
+    var needIR = [], needMS = [];
     item.choices.filter(function (m) { return m.id !== item.compound.id; }).forEach(function (d) {
       var v = Evidence.whyNot(item.compound, d);
-      if (v.ir && !v.ms) irOnly++;
-      if (v.ms && !v.ir) msOnly++;
+      if (!v.ir) needMS.push(d.name);
+      else if (!v.msMass) needIR.push(d.name);
       var li = make('li', null);
       li.appendChild(make('strong', null, 'Not ' + d.name + '. '));
-      if (v.ir) {
-        var p1 = make('p', 'verdict ir');
-        p1.appendChild(make('span', 'spec-tag', 'IR'));
-        p1.appendChild(document.createTextNode(' ' + cap(v.ir)));
-        li.appendChild(p1);
-      } else {
-        li.appendChild(make('p', 'verdict none', 'IR: no help — its bands are the same as the answer’s.'));
-      }
-      if (v.ms) {
-        var p2 = make('p', 'verdict ms');
-        p2.appendChild(make('span', 'spec-tag', 'MS'));
-        p2.appendChild(document.createTextNode(' ' + cap(v.ms)));
-        li.appendChild(p2);
+      li.appendChild(v.ir ? verdictLine('ir', cap(v.ir))
+        : make('p', 'verdict none', 'IR: no help — its bands are the same as the answer’s.'));
+      if (v.msMass) {
+        li.appendChild(verdictLine('ms', cap(v.msMass) + (v.msFrag ? '; ' + v.msFrag : '') + '.'));
+      } else if (v.msFrag) {
+        li.appendChild(verdictLine('ms', 'The molecular ion cannot separate them — but ' + v.msFrag +
+                                         '. That takes the fragment reasoning, not just the mass.'));
       } else {
         li.appendChild(make('p', 'verdict none', 'MS: no help — its mass spectrum reads the same.'));
       }
       ul.appendChild(li);
     });
     box.appendChild(ul);
-    if (irOnly || msOnly) {
-      box.appendChild(make('p', 'explain-foot',
-        (msOnly ? msOnly + ' of these could only be ruled out by the mass spectrum' : '') +
-        (msOnly && irOnly ? ', and ' : '') +
-        (irOnly ? irOnly + ' only by the IR' : '') +
-        '. Neither spectrum alone would have been enough.'));
+    box.appendChild(make('p', 'explain-foot', summary(needIR, needMS)));
+  }
+
+  function verdictLine(spec, text) {
+    var p = make('p', 'verdict ' + spec);
+    p.appendChild(make('span', 'spec-tag', spec.toUpperCase()));
+    p.appendChild(document.createTextNode(' ' + text));
+    return p;
+  }
+
+  /* Says exactly what was true for THIS set of options — never that both
+     spectra were needed when one would have done. */
+  function summary(needIR, needMS) {
+    function names(a) { return a.join(' or '); }
+    if (needIR.length && needMS.length) {
+      return 'You needed both: the IR alone could not rule out ' + names(needMS) +
+             ', and the molecular ion alone could not rule out ' + names(needIR) + '.';
     }
+    if (needMS.length) {
+      return 'The IR alone could not have settled this — it cannot tell ' + names(needMS) +
+             ' from the answer. The mass spectrum could.';
+    }
+    if (needIR.length) {
+      return 'The molecular ion alone could not have settled this — ' + names(needIR) +
+             ' weighs the same. The IR could.';
+    }
+    return 'Either spectrum could have ruled these out on its own — but when both agree, you know.';
   }
 
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -1277,8 +1292,7 @@ var Game = (function () {
     if (id === item.compound.id) {
       credit(!item.picked || !item.picked.length);
       item.phase = 'done';
-      say(item.compound.name + ' — right. Both spectra were needed: see how each wrong option ' +
-          'was ruled out, below.', 'good');
+      say(item.compound.name + ' — right. Below: which spectrum ruled out each wrong option.', 'good');
       repaintAfterAnswer();
       el.next.focus();
     } else {

@@ -223,7 +223,10 @@ h2 { font-size: 0.95rem; margin: 0; }
 .slot.ir { border-color: var(--ir); color: var(--ir); }
 .slot:hover { background: var(--bg); }
 
+/* A filled chip is a label, not a target. It lets clicks and drops pass
+   through to the plot, so at Level 4 it never blocks the band next door. */
 .slot.ok {
+  pointer-events: none;
   width: auto;
   height: auto;
   padding: 4px 8px;
@@ -325,7 +328,7 @@ h2 { font-size: 0.95rem; margin: 0; }
 }
 .cand:hover { border-color: var(--accent); }
 .cand .structure { max-height: 58px; }
-.cand-name { font-size: 0.72rem; line-height: 1.25; overflow-wrap: anywhere; }
+.cand-name { font-size: 0.68rem; line-height: 1.25; overflow-wrap: break-word; hyphens: auto; }
 .cand-formula { font-size: 0.68rem; color: var(--muted); }
 .cand.preview { cursor: default; }
 .cand.preview:hover { border-color: var(--line); }
@@ -508,7 +511,7 @@ h2 { font-size: 0.95rem; margin: 0; }
 .explain-list li { font-size: 0.84rem; }
 .verdict { margin: 3px 0 0; font-size: 0.82rem; }
 .verdict.none { color: var(--muted); font-style: italic; }
-.explain-foot { margin: 10px 0 0; font-size: 0.82rem; font-weight: 600; color: var(--good); }
+.explain-foot { margin: 10px 0 0; font-size: 0.84rem; font-weight: 600; }
 
 .frag-head { margin: 0 0 10px; font-size: 0.8rem; color: var(--muted); }
 .frag-row { display: flex; gap: 10px; flex-wrap: wrap; }

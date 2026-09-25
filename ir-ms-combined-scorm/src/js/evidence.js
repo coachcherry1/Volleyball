@@ -226,24 +226,32 @@ var Evidence = (function () {
     return bits.join('; ') + '.';
   }
 
+  /* The mass spectrum rules things out at two levels. The MOLECULAR ION —
+     its mass, an M+2 pair, whether it is there at all — is arithmetic any
+     student can do against a candidate's formula. The FRAGMENTS — which peak
+     is tallest — take the stability reasoning from the mass spec unit. They
+     are kept apart so the feedback can say which one did the work. */
   function msVerdict(a, d) {
     var aM = readableM(a), dM = readableM(d);
     var aH = aM ? halogen(a) : null, dH = dM ? halogen(d) : null;
     var aB = basePeak(a), dB = basePeak(d);
-    var bits = [];
-    if (aM && dM && aM !== dM) bits.push('it weighs ' + dM + ', but M⁺ is at ' + aM);
-    else if (aM && !dM) bits.push('its molecular ion is too weak to read, yet this spectrum shows one at ' + aM);
-    else if (!aM && dM) bits.push('it would show a clear molecular ion at ' + dM + ', and this spectrum has none');
+    var mass = [];
+    if (aM && dM && aM !== dM) mass.push('it weighs ' + dM + ', but M⁺ is at ' + aM);
+    else if (aM && !dM) mass.push('its molecular ion is too weak to read, yet this spectrum shows one at ' + aM);
+    else if (!aM && dM) mass.push('it would show a clear molecular ion at ' + dM + ', and this spectrum has none');
     if (aM && dM && aH !== dH) {
-      bits.push(dH ? 'it would show an M+2 pair for ' + (dH === 'Cl' ? 'chlorine' : 'bromine')
+      mass.push(dH ? 'it would show an M+2 pair for ' + (dH === 'Cl' ? 'chlorine' : 'bromine')
                    : 'it has no halogen, so no M+2 pair');
     }
-    if (aB !== dB) bits.push('its base peak would be m/z ' + dB + ', not ' + aB);
-    if (!bits.length) return null;
-    return bits.join('; ') + '.';
+    var frag = aB !== dB ? 'its base peak would be m/z ' + dB + ', not ' + aB : null;
+    return { mass: mass.length ? mass.join('; ') : null, frag: frag };
   }
 
-  function whyNot(a, d) { return { ir: irVerdict(a, d), ms: msVerdict(a, d) }; }
+  function whyNot(a, d) {
+    var m = msVerdict(a, d);
+    var ms = [m.mass, m.frag].filter(Boolean).join('; ');
+    return { ir: irVerdict(a, d), ms: ms ? ms + '.' : null, msMass: m.mass, msFrag: m.frag };
+  }
 
   /* A pair neither spectrum can separate — in the terms this activity reads —
      is never offered against each other. */
@@ -258,8 +266,10 @@ var Evidence = (function () {
    *
    *   an IR twin    — same scored IR bands, so only the mass spectrum can
    *                   reject it (1-butanol against 2-butanol)
-   *   an MS twin    — same readable molecular mass, different IR, so the IR
-   *                   does it in one look (1-butanol against diethyl ether)
+   *   an MS twin    — the molecular ion cannot reject it (same mass, or no
+   *                   readable M+ in either), but the IR does it in one look
+   *                   (acetone against propanal, propanamide against
+   *                   1-butanamine)
    *
    * One of each is taken first when the bank has them; any remaining places
    * go to the closest compounds by theme, formula and shared bands. A small
@@ -284,7 +294,7 @@ var Evidence = (function () {
       return {
         c: d,
         irTwin: dIR.join(',') === aIR,
-        msTwin: dIR.join(',') !== aIR && !!aM && dM === aM,
+        msTwin: dIR.join(',') !== aIR && !msVerdict(answer, d).mass,
         score: shared * 2 +
                (d.theme === answer.theme ? 3 : 0) +
                (d.f === answer.f ? 4 : 0) +
